@@ -1,6 +1,8 @@
 package eu32k.neonshooter.core;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 
 import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
@@ -36,6 +38,15 @@ public class Neon extends Game {
 		Neon.ui.create();
 
 		Neon.ui.showScreen(LoadingScreen.class);
+	}
+
+	@Override
+	public void render() {
+		Neon.controls.update();
+
+		Gdx.graphics.getGL20().glClearColor(0, 0, 0, 1);
+		Gdx.graphics.getGL20().glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+		super.render();
 	}
 
 	@Override
