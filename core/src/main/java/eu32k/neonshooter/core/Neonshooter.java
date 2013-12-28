@@ -23,7 +23,7 @@ public class Neonshooter implements ApplicationListener {
 
 	@Override
 	public void render () {
-		elapsed += Gdx.graphics.getDeltaTime();
+		elapsed += Gdx.graphics.getDeltaTime()*50;
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
