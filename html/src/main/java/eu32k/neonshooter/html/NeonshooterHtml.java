@@ -14,6 +14,6 @@ public class NeonshooterHtml extends GwtApplication {
 
 	@Override
 	public GwtApplicationConfiguration getConfig() {
-		return new GwtApplicationConfiguration(640, 480);
+		return new GwtApplicationConfiguration(1024, 576);
 	}
 }
