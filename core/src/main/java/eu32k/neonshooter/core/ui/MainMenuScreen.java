@@ -1,33 +1,25 @@
 package eu32k.neonshooter.core.ui;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL10;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.Actions;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import eu32k.neonshooter.core.Neon;
 
 public class MainMenuScreen implements Screen {
-	Stage stage;
-	Texture texture;
-	SpriteBatch batch;
-	float elapsed;
+
+	private Stage stage;
+	private TextButton start;
+	private TextButton settings;
+	private TextButton exit;
 
 	@Override
 	public void render(float delta) {
-		elapsed += delta;
-		Gdx.gl.glClearColor(0, 0, 0, 0);
-		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(texture, 100 + 100 * (float) Math.cos(elapsed),
-				100 + 25 * (float) Math.sin(elapsed));
-		batch.end();
-
 		stage.act(delta);
 		stage.draw();
 	}
@@ -42,21 +34,47 @@ public class MainMenuScreen implements Screen {
 		if (stage == null) {
 			buildStage();
 		}
-
+		Gdx.input.setInputProcessor(stage);
 	}
 
 	private void buildStage() {
-		texture = new Texture(Gdx.files.internal("textures/debug.png"));
-		batch = new SpriteBatch();
 		stage = new Stage();
+
 		Table table = new Table(Neon.assets.skin);
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		Label label = new Label("Hello", Neon.assets.skin);
-		table.add(label);
-		label.addAction(Actions.forever(Actions.sequence(
-				Actions.moveBy(0f, 20f, 2f), Actions.moveBy(0f, -20f, 2f))));
+		start = new TextButton("Start", Neon.assets.skin);
+		table.add(start).row();
+		start.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				Neon.ui.showScreen(InGameScreen.class);
+				return false;
+			}
+		});
+
+		settings = new TextButton("Settings", Neon.assets.skin);
+		table.add(settings).row();
+		settings.addListener(new InputListener() {
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				Neon.ui.showScreen(SettingsScreen.class);
+				return false;
+			}
+		});
+
+		if (Gdx.app.getType() != ApplicationType.WebGL) {
+			exit = new TextButton("Exit", Neon.assets.skin);
+			table.add(exit);
+			exit.addListener(new InputListener() {
+				@Override
+				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+					Gdx.app.exit();
+					return false;
+				}
+			});
+		}
 	}
 
 	@Override
@@ -78,5 +96,4 @@ public class MainMenuScreen implements Screen {
 	public void dispose() {
 
 	}
-
 }
