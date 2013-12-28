@@ -46,7 +46,7 @@ public class MainMenuScreen implements Screen {
 	}
 
 	private void buildStage() {
-		texture = new Texture(Gdx.files.internal("image.png"));
+		texture = new Texture(Gdx.files.internal("textures/debug.png"));
 		batch = new SpriteBatch();
 		stage = new Stage();
 		Table table = new Table(Neon.assets.skin);

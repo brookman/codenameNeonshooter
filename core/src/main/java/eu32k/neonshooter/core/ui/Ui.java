@@ -8,10 +8,10 @@ import com.badlogic.gdx.Screen;
 import eu32k.neonshooter.core.Neon;
 
 public class Ui {
-	private Map<Class, Screen> screens;
+	private Map<Class<?>, Screen> screens;
 
 	public Ui() {
-		screens = new HashMap<Class, Screen>();
+		screens = new HashMap<Class<?>, Screen>();
 	}
 
 	public void create() {
@@ -24,11 +24,10 @@ public class Ui {
 		screens.put(screen.getClass(), screen);
 	}
 
-	public void showScreen(Class clazz) {
+	public void showScreen(Class<?> clazz) {
 		Screen screen = screens.get(clazz);
 		if (screen != null) {
 			Neon.instance.setScreen(screen);
 		}
 	}
-
 }
