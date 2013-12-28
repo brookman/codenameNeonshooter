@@ -1,0 +1,12 @@
+*.class
+bin
+.classpath
+.project
+.settings
+*/target
+*/libs
+*/war
+html/src/main/gwt-unitCache
+html/src/main/webapp/WEB-INF
+android/*.jar
+*.gwt-log
