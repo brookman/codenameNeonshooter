@@ -9,7 +9,7 @@ import eu32k.neonshooter.core.Neon;
 public class NeonshooterDesktop {
 	public static void main(String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = "Space-Dingus";
+		config.title = "Neonshooter";
 		config.vSyncEnabled = true;
 		config.resizable = true;
 		config.useGL20 = true;
