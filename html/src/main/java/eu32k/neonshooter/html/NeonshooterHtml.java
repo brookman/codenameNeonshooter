@@ -1,19 +1,19 @@
 package eu32k.neonshooter.html;
 
-import eu32k.neonshooter.core.Neon;
-
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 
+import eu32k.neonshooter.core.Neon;
+
 public class NeonshooterHtml extends GwtApplication {
 	@Override
-	public ApplicationListener getApplicationListener () {
+	public ApplicationListener getApplicationListener() {
 		return new Neon();
 	}
-	
+
 	@Override
-	public GwtApplicationConfiguration getConfig () {
-		return new GwtApplicationConfiguration(480, 320);
+	public GwtApplicationConfiguration getConfig() {
+		return new GwtApplicationConfiguration(640, 480);
 	}
 }
