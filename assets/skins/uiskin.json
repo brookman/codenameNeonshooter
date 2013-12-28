@@ -1,6 +1,6 @@
 {
 com.badlogic.gdx.graphics.g2d.BitmapFont: { 
-	default-font: { file: "visitor_10.fnt" }
+	default-font: { file: "visitor_50.fnt" }
 	, visitor-25: { file: "visitor_25.fnt" }
 },
 com.badlogic.gdx.graphics.Color: {
