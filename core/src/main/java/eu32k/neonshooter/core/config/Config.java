@@ -2,8 +2,8 @@ package eu32k.neonshooter.core.config;
 
 public class Config {
 
-	private int resolutionX;
-	private int resolutionY;
+	public int resolutionX;
+	public int resolutionY;
 
 	public void create() {
 
