@@ -5,6 +5,7 @@ import com.badlogic.gdx.Game;
 import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
 import eu32k.neonshooter.core.input.Controls;
+import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.ui.MainMenuScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
@@ -14,6 +15,7 @@ public class Neon extends Game {
 	public static Ui ui;
 	public static Config config;
 	public static Settings settings;
+	public static Assets assets;
 
 	public Neon() {
 		Neon.config = new Config();
@@ -25,9 +27,11 @@ public class Neon extends Game {
 		Neon.settings = new Settings();
 		Neon.controls = new Controls();
 		Neon.ui = new Ui();
+		Neon.assets = new Assets();
 
 		Neon.config.create();
 		Neon.settings.create();
+		Neon.assets.create();
 		Neon.controls.create();
 		Neon.ui.create();
 
