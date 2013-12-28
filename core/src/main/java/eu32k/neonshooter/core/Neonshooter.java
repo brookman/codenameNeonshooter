@@ -7,14 +7,14 @@ import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.Gdx;
 
 public class Neonshooter implements ApplicationListener {
-	Texture texture;
-	SpriteBatch batch;
+//	Texture texture;
+//	SpriteBatch batch;
 	float elapsed;
 
 	@Override
 	public void create () {
-		texture = new Texture(Gdx.files.internal("libgdx-logo.png"));
-		batch = new SpriteBatch();
+//		texture = new Texture(Gdx.files.internal("libgdx-logo.png"));
+//		batch = new SpriteBatch();
 	}
 
 	@Override
@@ -26,9 +26,9 @@ public class Neonshooter implements ApplicationListener {
 		elapsed += Gdx.graphics.getDeltaTime();
 		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
-		batch.begin();
-		batch.draw(texture, 100+100*(float)Math.cos(elapsed), 100+25*(float)Math.sin(elapsed));
-		batch.end();
+//		batch.begin();
+//		batch.draw(texture, 100+100*(float)Math.cos(elapsed), 100+25*(float)Math.sin(elapsed));
+//		batch.end();
 	}
 
 	@Override
