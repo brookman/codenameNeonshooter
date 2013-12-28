@@ -1,6 +1,6 @@
 package eu32k.neonshooter.android;
 
-import eu32k.neonshooter.core.Neonshooter;
+import eu32k.neonshooter.core.Neon;
 
 import android.os.Bundle;
 
@@ -14,6 +14,6 @@ public class NeonshooterActivity extends AndroidApplication {
 			super.onCreate(savedInstanceState);
 			AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 			config.useGL20 = true;
-			initialize(new Neonshooter(), config);
+			initialize(new Neon(), config);
 	}
 }
