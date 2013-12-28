@@ -6,7 +6,7 @@ import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
 import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
-import eu32k.neonshooter.core.ui.MainMenuScreen;
+import eu32k.neonshooter.core.ui.LoadingScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
 public class Neon extends Game {
@@ -35,7 +35,7 @@ public class Neon extends Game {
 		Neon.controls.create();
 		Neon.ui.create();
 
-		Neon.ui.showScreen(MainMenuScreen.class);
+		Neon.ui.showScreen(LoadingScreen.class);
 	}
 
 	@Override

@@ -9,23 +9,24 @@ import eu32k.neonshooter.core.Neon;
 
 public class Ui {
 	private Map<Class, Screen> screens;
-	
-	public Ui(){
+
+	public Ui() {
 		screens = new HashMap<Class, Screen>();
 	}
-	
+
 	public void create() {
+		addScreen(new LoadingScreen(MainMenuScreen.class));
 		addScreen(new MainMenuScreen());
 		addScreen(new InGameScreen());
 	}
-	
-	protected void addScreen(Screen screen){
+
+	protected void addScreen(Screen screen) {
 		screens.put(screen.getClass(), screen);
 	}
-	
-	public void showScreen(Class clazz){
+
+	public void showScreen(Class clazz) {
 		Screen screen = screens.get(clazz);
-		if(screen != null){
+		if (screen != null) {
 			Neon.instance.setScreen(screen);
 		}
 	}
