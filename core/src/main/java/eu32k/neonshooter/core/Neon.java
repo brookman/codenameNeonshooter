@@ -37,5 +37,6 @@ public class Neon extends Game {
 	@Override
 	public void resize(int width, int height) {
 		Neon.config.setResolution(width, height);
+		super.resize(width, height);
 	}
 }
