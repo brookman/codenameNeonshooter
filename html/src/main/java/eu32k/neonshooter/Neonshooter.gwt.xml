@@ -9,4 +9,5 @@
 	<entry-point class='eu32k.neonshooter.html.NeonshooterHtml'/>
 	<set-configuration-property name="gdx.assetpath" value="assets" />
 	<set-configuration-property name="gdx.assetoutputpath" value="html/target/webapp" />
+	<extend-configuration-property name="gdx.reflect.include" value="eu32k" />
 </module>
