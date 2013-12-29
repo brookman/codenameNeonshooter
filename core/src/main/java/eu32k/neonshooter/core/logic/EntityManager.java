@@ -44,7 +44,7 @@ public class EntityManager {
 			enemies.add((Enemy) entity);
 		} else if (entity instanceof Projectile) {
 			Projectile projectile = (Projectile) entity;
-			if (player != null && player.equals(projectile.source)) {
+			if (projectile.shotByPlayer) {
 				playerProjectiles.add(projectile);
 			} else {
 				enemyProjectiles.add(projectile);
@@ -69,7 +69,7 @@ public class EntityManager {
 			enemies.remove(entity);
 		} else if (entity instanceof Projectile) {
 			Projectile projectile = (Projectile) entity;
-			if (player != null && player.equals(projectile.source)) {
+			if (projectile.shotByPlayer) {
 				playerProjectiles.remove(projectile);
 			} else {
 				enemyProjectiles.remove(projectile);

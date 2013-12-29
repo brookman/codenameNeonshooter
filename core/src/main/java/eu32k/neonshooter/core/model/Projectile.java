@@ -7,7 +7,7 @@ public class Projectile extends GameEntity {
 	private float speed = 400.0f;
 	private Vector2 velocity = new Vector2();
 
-	public GameEntity source;
+	public boolean shotByPlayer;
 
 	public Projectile() {
 		this(0, 0);

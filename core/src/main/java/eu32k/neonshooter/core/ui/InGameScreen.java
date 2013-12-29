@@ -33,7 +33,7 @@ public class InGameScreen implements Screen {
 
 	}
 
-	private void shoot(float x, float y, float direction) {
+	private void shoot(float x, float y, float direction, boolean shotByPlayer) {
 		Projectile projectile = Pools.obtain(Projectile.class);
 		projectile.setPosition(x, y);
 		projectile.setRotation(direction);
@@ -50,7 +50,8 @@ public class InGameScreen implements Screen {
 		// ugly test code:
 
 		Vector2 direction = new Vector2();
-		direction.add(Neon.controls.right ? 1 : 0 + (Neon.controls.left ? -1 : 0), Neon.controls.up ? 1 : 0 + (Neon.controls.down ? -1 : 0));
+		direction.add(Neon.controls.right ? 1 : 0 + (Neon.controls.left ? -1
+				: 0), Neon.controls.up ? 1 : 0 + (Neon.controls.down ? -1 : 0));
 		if (direction.len() > 0.0f) {
 			direction.nor().scl(delta * 600.0f);
 			player.velocity.add(direction);
@@ -67,9 +68,12 @@ public class InGameScreen implements Screen {
 
 		// mainStage.getCamera().position.set(player.getX(), player.getY(), 0);
 
-		if (Neon.controls.mousePressed && System.currentTimeMillis() - lastShot > 200) {
-			float angle = VectorUtils.getAngleOnStage(mainStage, Neon.controls.mouseX, Neon.controls.mouseY, player.getX(), player.getY());
-			shoot(player.getX(), player.getY(), angle);
+		if (Neon.controls.mousePressed
+				&& System.currentTimeMillis() - lastShot > 200) {
+			float angle = VectorUtils.getAngleOnStage(mainStage,
+					Neon.controls.mouseX, Neon.controls.mouseY, player.getX(),
+					player.getY());
+			shoot(player.getX(), player.getY(), angle, true);
 			lastShot = System.currentTimeMillis();
 		}
 
@@ -77,8 +81,10 @@ public class InGameScreen implements Screen {
 			if (actor.getClass() == Projectile.class) {
 				Projectile projectile = (Projectile) actor;
 				projectile.update(delta);
-				Rectangle worldRectangle = new Rectangle(-300, -300, Neon.VIRTUAL_WIDTH + 300, Neon.VIRTUAL_HEIGHT + 300);
-				if (!worldRectangle.contains(projectile.getX(), projectile.getY())) {
+				Rectangle worldRectangle = new Rectangle(-300, -300,
+						Neon.VIRTUAL_WIDTH + 300, Neon.VIRTUAL_HEIGHT + 300);
+				if (!worldRectangle.contains(projectile.getX(),
+						projectile.getY())) {
 					projectile.remove();
 					Pools.free(projectile);
 				}
@@ -92,8 +98,10 @@ public class InGameScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		Rectangle viewport = Neon.viewport;
-		mainStage.setViewport(mainStage.getWidth(), mainStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+		mainStage.setViewport(mainStage.getWidth(), mainStage.getHeight(),
+				true, viewport.x, viewport.y, viewport.width, viewport.height);
+		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true,
+				viewport.x, viewport.y, viewport.width, viewport.height);
 	}
 
 	@Override
