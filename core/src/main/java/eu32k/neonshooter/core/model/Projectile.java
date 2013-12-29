@@ -4,7 +4,7 @@ import com.badlogic.gdx.math.Vector2;
 
 public class Projectile extends GameEntity {
 
-	private float speed = 200.0f;
+	private float speed = 400.0f;
 	private Vector2 velocity = new Vector2();
 
 	public Projectile() {
@@ -13,9 +13,9 @@ public class Projectile extends GameEntity {
 
 	public Projectile(float x, float y) {
 		super("projectile", x, y);
-		setWidth(30);
-		setHeight(30);
-		setColor(1, 1, 1, 0.8f);
+		setWidth(5);
+		setHeight(5);
+		setColor(0, 1, 0, 1);
 	}
 
 	public void update(float delta) {

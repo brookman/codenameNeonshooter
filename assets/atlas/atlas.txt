@@ -18,15 +18,15 @@ square
   index: -1
 debug
   rotate: false
-  xy: 496, 370
+  xy: 496, 482
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
 projectile
-  rotate: true
-  xy: 864, 2
-  size: 232, 110
+  rotate: false
+  xy: 496, 370
+  size: 362, 110
   orig: 512, 512
-  offset: 138, 201
+  offset: 74, 201
   index: -1
