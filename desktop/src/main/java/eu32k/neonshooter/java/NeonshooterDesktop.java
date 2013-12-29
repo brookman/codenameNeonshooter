@@ -19,5 +19,6 @@ public class NeonshooterDesktop {
 		config.addIcon("icons/icon32.png", FileType.Local);
 
 		new LwjglApplication(new Neon(), config);
+		// new LwjglApplication(new VirtualViewportExampleMain(), config);
 	}
 }

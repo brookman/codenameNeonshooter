@@ -29,6 +29,6 @@ public class Controls {
 		mousePressed = Gdx.input.isButtonPressed(Buttons.LEFT);
 
 		mouseX = Gdx.input.getX();
-		mouseY = Gdx.graphics.getHeight() - Gdx.input.getY();
+		mouseY = Gdx.input.getY();
 	}
 }

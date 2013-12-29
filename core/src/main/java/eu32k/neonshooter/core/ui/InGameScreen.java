@@ -2,7 +2,7 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -12,6 +12,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.model.Enemy;
 import eu32k.neonshooter.core.model.Player;
 import eu32k.neonshooter.core.model.Projectile;
+import eu32k.neonshooter.core.rendering.utils.VectorUtils;
 
 public class InGameScreen implements Screen {
 
@@ -21,6 +22,7 @@ public class InGameScreen implements Screen {
 	private Player player;
 
 	public InGameScreen() {
+
 		mainStage = new Stage();
 		hudStage = new Stage();
 
@@ -52,7 +54,6 @@ public class InGameScreen implements Screen {
 		if (direction.len() > 0.0f) {
 			direction.nor().scl(delta * 600.0f);
 			player.velocity.add(direction);
-
 			float speed = Math.min(player.velocity.len(), 200);
 			player.velocity.nor().scl(speed);
 		} else {
@@ -64,17 +65,20 @@ public class InGameScreen implements Screen {
 		player.setX(player.getX() + player.velocity.x * delta);
 		player.setY(player.getY() + player.velocity.y * delta);
 
+		// mainStage.getCamera().position.set(player.getX(), player.getY(), 0);
+
 		if (Neon.controls.mousePressed && System.currentTimeMillis() - lastShot > 200) {
-			float rot = MathUtils.atan2(Neon.controls.mouseY - player.getY(), Neon.controls.mouseX - player.getX()) * MathUtils.radDeg;
-			shoot(player.getX(), player.getY(), rot);
+			float angle = VectorUtils.getAngleOnStage(mainStage, Neon.controls.mouseX, Neon.controls.mouseY, player.getX(), player.getY());
+			shoot(player.getX(), player.getY(), angle);
 			lastShot = System.currentTimeMillis();
 		}
 
 		for (Actor actor : mainStage.getActors()) {
-			if (actor instanceof Projectile) {
+			if (actor.getClass() == Projectile.class) {
 				Projectile projectile = (Projectile) actor;
 				projectile.update(delta);
-				if (projectile.getX() < -100 || projectile.getX() > Gdx.graphics.getWidth() + 100 || projectile.getY() < -100 || projectile.getY() > Gdx.graphics.getHeight() + 100) {
+				Rectangle worldRectangle = new Rectangle(-300, -300, Neon.VIRTUAL_WIDTH + 300, Neon.VIRTUAL_HEIGHT + 300);
+				if (!worldRectangle.contains(projectile.getX(), projectile.getY())) {
 					projectile.remove();
 					Pools.free(projectile);
 				}
@@ -87,6 +91,9 @@ public class InGameScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
+		Rectangle viewport = Neon.viewport;
+		mainStage.setViewport(mainStage.getWidth(), mainStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
 	}
 
 	@Override

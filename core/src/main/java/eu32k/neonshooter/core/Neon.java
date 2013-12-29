@@ -3,6 +3,9 @@ package eu32k.neonshooter.core;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Scaling;
 
 import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
@@ -12,12 +15,17 @@ import eu32k.neonshooter.core.ui.LoadingScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
 public class Neon extends Game {
+
 	public static Neon instance;
 	public static Controls controls;
 	public static Ui ui;
 	public static Config config;
 	public static Settings settings;
 	public static Assets assets;
+	public static Rectangle viewport;
+
+	public static final float VIRTUAL_WIDTH = 1024;
+	public static final float VIRTUAL_HEIGHT = 576;
 
 	public Neon() {
 		Neon.config = new Config();
@@ -25,6 +33,7 @@ public class Neon extends Game {
 
 	@Override
 	public void create() {
+
 		Neon.instance = this;
 		Neon.settings = new Settings();
 		Neon.controls = new Controls();
@@ -36,6 +45,8 @@ public class Neon extends Game {
 		Neon.assets.create();
 		Neon.controls.create();
 		Neon.ui.create();
+
+		viewport = new Rectangle();
 
 		Neon.ui.showScreen(LoadingScreen.class);
 	}
@@ -51,6 +62,11 @@ public class Neon extends Game {
 
 	@Override
 	public void resize(int width, int height) {
+		Vector2 size = Scaling.fit.apply(VIRTUAL_WIDTH, VIRTUAL_HEIGHT, width, height);
+		viewport.setPosition((width - size.x) / 2, (height - size.y) / 2);
+		viewport.setSize(size.x, size.y);
+		Gdx.gl.glViewport((int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
+
 		Neon.config.setResolution(width, height);
 		super.resize(width, height);
 	}
