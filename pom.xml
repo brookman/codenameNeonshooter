@@ -21,6 +21,15 @@
 			<id>gdx-nightlies</id>
 			<url>https://oss.sonatype.org/content/repositories/snapshots/</url>
 		</repository>
+		
+		<repository>
+			<id>repo</id>
+			<url>https://raw.github.com/brookman/gdx-extensions/master/repo</url>
+			<snapshots>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</snapshots>
+		</repository>
 	</repositories>
 
 	<build>

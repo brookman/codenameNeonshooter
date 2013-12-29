@@ -29,7 +29,6 @@ public class IntroScreen implements Screen {
 	private AnimationController animation;
 
 	public IntroScreen() {
-
 		environment = new Environment();
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
