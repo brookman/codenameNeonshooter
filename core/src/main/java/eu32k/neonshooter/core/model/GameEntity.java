@@ -3,12 +3,14 @@ package eu32k.neonshooter.core.model;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import eu32k.neonshooter.core.Neon;
 
 public class GameEntity extends Actor {
 
+	public Vector2 velocity = new Vector2();
 	private float rotation = 0;
 	private String textureRegionName;
 	private TextureRegion region;
