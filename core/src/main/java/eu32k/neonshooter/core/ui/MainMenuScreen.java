@@ -28,7 +28,8 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		Rectangle viewport = Neon.viewport;
-		stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+		stage.setViewport(stage.getWidth(), stage.getHeight(), true,
+				viewport.x, viewport.y, viewport.width, viewport.height);
 	}
 
 	@Override
@@ -50,7 +51,8 @@ public class MainMenuScreen implements Screen {
 		table.add(start).row();
 		start.addListener(new InputListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
 				Neon.ui.showScreen(InGameScreen.class);
 				return false;
 			}
@@ -60,7 +62,8 @@ public class MainMenuScreen implements Screen {
 		table.add(settings).row();
 		settings.addListener(new InputListener() {
 			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+			public boolean touchDown(InputEvent event, float x, float y,
+					int pointer, int button) {
 				Neon.ui.showScreen(SettingsScreen.class);
 				return false;
 			}
@@ -71,7 +74,8 @@ public class MainMenuScreen implements Screen {
 			table.add(exit);
 			exit.addListener(new InputListener() {
 				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+				public boolean touchDown(InputEvent event, float x, float y,
+						int pointer, int button) {
 					Gdx.app.exit();
 					return false;
 				}
