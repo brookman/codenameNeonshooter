@@ -5,13 +5,13 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
 import com.badlogic.gdx.graphics.VertexAttributes.Usage;
+import com.badlogic.gdx.graphics.g3d.Environment;
+import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
-import com.badlogic.gdx.graphics.g3d.lights.DirectionalLight;
-import com.badlogic.gdx.graphics.g3d.lights.Lights;
-import com.badlogic.gdx.graphics.g3d.materials.ColorAttribute;
-import com.badlogic.gdx.graphics.g3d.materials.Material;
+import com.badlogic.gdx.graphics.g3d.attributes.ColorAttribute;
+import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
@@ -21,7 +21,7 @@ import eu32k.neonshooter.core.Neon;
 
 public class IntroScreen implements Screen {
 
-	public Lights lights;
+	public Environment environment;
 	public PerspectiveCamera camera;
 	public ModelBatch modelBatch;
 	public Model model;
@@ -30,12 +30,9 @@ public class IntroScreen implements Screen {
 
 	public IntroScreen() {
 
-		lights = new Lights(new Color(0.4f, 0.4f, 0.4f, 1.0f));
-
-		DirectionalLight dl = new DirectionalLight();
-		dl.set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f);
-
-		lights.add(dl);
+		environment = new Environment();
+		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.f));
+		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
 		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.position.set(3f, 3f, 3f);
@@ -50,7 +47,8 @@ public class IntroScreen implements Screen {
 		model = modelBuilder.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position | Usage.Normal);
 
 		Neon.assets.manager.finishLoading();
-		instance = new ModelInstance(Neon.assets.manager.get("models/test.g3db", Model.class));
+		Model model = Neon.assets.manager.get("models/test.g3db", Model.class);
+		instance = new ModelInstance(model);
 		animation = new AnimationController(instance);
 		animation.animate("Default Take", 1, 1f, null, 0.0f).listener = new AnimationListener() {
 
@@ -70,7 +68,7 @@ public class IntroScreen implements Screen {
 		animation.update(delta);
 
 		modelBatch.begin(camera);
-		modelBatch.render(instance, lights);
+		modelBatch.render(instance, environment);
 		modelBatch.end();
 	}
 
