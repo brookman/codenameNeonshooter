@@ -16,6 +16,7 @@ public class NeonshooterDesktop {
 		config.samples = 8;
 		config.width = 1024;
 		config.height = 576;
+		config.foregroundFPS = 60;
 		config.addIcon("icons/icon32.png", FileType.Local);
 
 		new LwjglApplication(new Neon(), config);

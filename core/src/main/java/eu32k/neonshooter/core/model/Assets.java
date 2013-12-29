@@ -47,22 +47,11 @@ public class Assets {
 		return manager.getQueuedAssets() == 0;
 	}
 
-	// public boolean updateManager() {
-	// return manager.update();
-	// }
-
-	// public float getProgress() {
-	// return manager.getProgress();
-	// }
-
-	float debug = 0.0f;
-
 	public boolean updateManager() {
-		return manager.update() && debug >= 1.0f;
+		return manager.update();
 	}
 
 	public float getProgress() {
-		debug += Gdx.graphics.getDeltaTime();
-		return debug;
+		return manager.getProgress();
 	}
 }
