@@ -17,7 +17,7 @@ public class MovableSystem extends EntityProcessingSystem {
 
 	@SuppressWarnings("unchecked")
 	public MovableSystem() {
-		super(Aspect.getAspectForAll(MovableComponent.class));
+		super(Aspect.getAspectForAll(MovableComponent.class, ActorComponent.class));
 	}
 
 	@Override
