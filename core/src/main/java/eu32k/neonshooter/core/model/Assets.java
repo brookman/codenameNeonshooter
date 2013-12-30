@@ -29,7 +29,7 @@ public class Assets {
 		// Queue sound fx, images for loading etc...
 		manager.load("textures/debug.png", Texture.class);
 		manager.load(TEXTURE_ATLAS, TextureAtlas.class);
-		manager.load("models/test.g3dj", Model.class);
+		manager.load("models/text.g3dj", Model.class);
 	}
 
 	public TextureRegion getTextureRegion(String path) {

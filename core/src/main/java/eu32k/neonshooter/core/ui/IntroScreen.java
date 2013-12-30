@@ -29,8 +29,8 @@ public class IntroScreen implements Screen {
 		environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.f));
 		environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
 
-		camera = new PerspectiveCamera(67, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.position.set(3f, 3f, 3f);
+		camera = new PerspectiveCamera(50, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		camera.position.set(0f, 1f, 5f);
 		camera.lookAt(0, 0, 0);
 		camera.near = 0.1f;
 		camera.far = 300f;
@@ -48,7 +48,7 @@ public class IntroScreen implements Screen {
 			// Material(ColorAttribute.createDiffuse(Color.GREEN)),
 			// Usage.Position |
 			// Usage.Normal);
-			model = Neon.assets.manager.get("models/test.g3dj", Model.class);
+			model = Neon.assets.manager.get("models/text.g3dj", Model.class);
 			instance = new ModelInstance(model);
 			animation = new AnimationController(instance);
 			animation.animate("Default Take", 1, 1f, null, 0.0f).listener = new AnimationListener() {
