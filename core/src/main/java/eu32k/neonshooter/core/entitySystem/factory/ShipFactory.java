@@ -7,7 +7,8 @@ import eu32k.gdx.artemis.extension.ExtendedWorld;
 import eu32k.gdx.artemis.extension.component.TextureRegionComponent;
 import eu32k.gdx.artemis.extension.factory.Factory;
 import eu32k.neonshooter.core.Neon;
-import eu32k.neonshooter.core.entitySystem.component.MovableComponent;
+import eu32k.neonshooter.core.entitySystem.component.ControlableComponent;
+import eu32k.neonshooter.core.entitySystem.component.VelocityComponent;
 
 public class ShipFactory extends Factory {
 
@@ -18,11 +19,10 @@ public class ShipFactory extends Factory {
 	public Entity createShip(float x, float y) {
 		Entity e = createActorEntity(x, y, 25, 25, 0, null);
 
-		e.addComponent(get(MovableComponent.class).init(100, 0));
+		e.addComponent(get(VelocityComponent.class).init(0, 0));
+		e.addComponent(get(ControlableComponent.class));
 		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
-		// e.addComponent(Pools.obtain(StabilizerComponent.class).init(true,
-		// true));
-		// e.addComponent(Pools.obtain(HealthComponent.class).init(100));
+
 		return e;
 	}
 }

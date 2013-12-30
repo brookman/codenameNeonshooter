@@ -12,7 +12,8 @@ import eu32k.gdx.artemis.extension.ExtendedWorld;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.factory.ShipFactory;
-import eu32k.neonshooter.core.entitySystem.system.MovableSystem;
+import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.entitySystem.system.MoveSystem;
 
 public class InGameScreen implements Screen {
 
@@ -32,7 +33,8 @@ public class InGameScreen implements Screen {
 
 		ShipFactory shipFactory = new ShipFactory(artemisWorld, gameStage);
 
-		artemisWorld.setSystem(new MovableSystem());
+		artemisWorld.setSystem(new ControlSystem());
+		artemisWorld.setSystem(new MoveSystem());
 		artemisWorld.setSystem(new RemoveSystem());
 
 		artemisWorld.initialize();

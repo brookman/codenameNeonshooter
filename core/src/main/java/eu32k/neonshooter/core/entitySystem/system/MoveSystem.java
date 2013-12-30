@@ -8,32 +8,32 @@ import eu32k.gdx.artemis.base.ComponentMapper;
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.systems.EntityProcessingSystem;
 import eu32k.gdx.artemis.extension.component.ActorComponent;
-import eu32k.neonshooter.core.entitySystem.component.MovableComponent;
+import eu32k.neonshooter.core.entitySystem.component.VelocityComponent;
 
-public class MovableSystem extends EntityProcessingSystem {
+public class MoveSystem extends EntityProcessingSystem {
 
-	private ComponentMapper<MovableComponent> movableMapper;
+	private ComponentMapper<VelocityComponent> velocityMapper;
 	private ComponentMapper<ActorComponent> actorMapper;
 
 	@SuppressWarnings("unchecked")
-	public MovableSystem() {
-		super(Aspect.getAspectForAll(MovableComponent.class, ActorComponent.class));
+	public MoveSystem() {
+		super(Aspect.getAspectForAll(VelocityComponent.class, ActorComponent.class));
 	}
 
 	@Override
 	protected void initialize() {
-		movableMapper = world.getMapper(MovableComponent.class);
+		velocityMapper = world.getMapper(VelocityComponent.class);
 		actorMapper = world.getMapper(ActorComponent.class);
 	}
 
 	@Override
 	protected void process(Entity e) {
-		MovableComponent movableComponent = movableMapper.get(e);
+		VelocityComponent velocityComponent = velocityMapper.get(e);
 		ActorComponent actorComponent = actorMapper.get(e);
 
 		Actor actor = actorComponent.actor;
 
-		actor.setX(actor.getX() + movableComponent.speedX * Gdx.graphics.getDeltaTime());
-		actor.setY(actor.getY() + movableComponent.speedY * Gdx.graphics.getDeltaTime());
+		actor.setX(actor.getX() + velocityComponent.velocity.x * Gdx.graphics.getDeltaTime());
+		actor.setY(actor.getY() + velocityComponent.velocity.y * Gdx.graphics.getDeltaTime());
 	}
 }
