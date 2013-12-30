@@ -2,10 +2,13 @@ package eu32k.neonshooter.core.model;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.assets.loaders.resolvers.InternalFileHandleResolver;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.g3d.Model;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
@@ -14,10 +17,12 @@ public class Assets {
 	private TextureAtlas atlas;
 
 	public Skin skin;
+	private TmxMapLoader tmxLoader;
 
 	public void create() {
 		createEssentials();
 		manager = new AssetManager();
+		tmxLoader = new TmxMapLoader(new InternalFileHandleResolver());
 		queueGameAssets();
 	}
 
@@ -27,6 +32,7 @@ public class Assets {
 
 	private void queueGameAssets() {
 		// Queue sound fx, images for loading etc...
+		manager.setLoader(TiledMap.class, tmxLoader);
 		manager.load("textures/debug.png", Texture.class);
 		manager.load(TEXTURE_ATLAS, TextureAtlas.class);
 		manager.load("models/text.g3dj", Model.class);
