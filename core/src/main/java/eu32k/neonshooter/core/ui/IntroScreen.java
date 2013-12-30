@@ -2,11 +2,8 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.PerspectiveCamera;
-import com.badlogic.gdx.graphics.VertexAttributes.Usage;
 import com.badlogic.gdx.graphics.g3d.Environment;
-import com.badlogic.gdx.graphics.g3d.Material;
 import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.graphics.g3d.ModelBatch;
 import com.badlogic.gdx.graphics.g3d.ModelInstance;
@@ -15,7 +12,6 @@ import com.badlogic.gdx.graphics.g3d.environment.DirectionalLight;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationDesc;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener;
-import com.badlogic.gdx.graphics.g3d.utils.ModelBuilder;
 
 import eu32k.neonshooter.core.Neon;
 
@@ -40,26 +36,33 @@ public class IntroScreen implements Screen {
 		camera.far = 300f;
 		camera.update();
 
-		modelBatch = new ModelBatch();
+	}
 
-		ModelBuilder modelBuilder = new ModelBuilder();
-		model = modelBuilder.createBox(5f, 5f, 5f, new Material(ColorAttribute.createDiffuse(Color.GREEN)), Usage.Position | Usage.Normal);
+	@Override
+	public void show() {
+		if (modelBatch == null) {
+			modelBatch = new ModelBatch();
 
-		Neon.assets.manager.finishLoading();
-		Model model = Neon.assets.manager.get("models/test.g3db", Model.class);
-		instance = new ModelInstance(model);
-		animation = new AnimationController(instance);
-		animation.animate("Default Take", 1, 1f, null, 0.0f).listener = new AnimationListener() {
+			// ModelBuilder modelBuilder = new ModelBuilder();
+			// model = modelBuilder.createBox(5f, 5f, 5f, new
+			// Material(ColorAttribute.createDiffuse(Color.GREEN)),
+			// Usage.Position |
+			// Usage.Normal);
+			model = Neon.assets.manager.get("models/test.g3dj", Model.class);
+			instance = new ModelInstance(model);
+			animation = new AnimationController(instance);
+			animation.animate("Default Take", 1, 1f, null, 0.0f).listener = new AnimationListener() {
 
-			@Override
-			public void onLoop(AnimationDesc animation) {
-			}
+				@Override
+				public void onLoop(AnimationDesc animation) {
+				}
 
-			@Override
-			public void onEnd(AnimationDesc animation) {
-				Neon.ui.showScreen(MainMenuScreen.class);
-			}
-		};
+				@Override
+				public void onEnd(AnimationDesc animation) {
+					Neon.ui.showScreen(MainMenuScreen.class);
+				}
+			};
+		}
 	}
 
 	@Override
@@ -73,11 +76,6 @@ public class IntroScreen implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-	}
-
-	@Override
-	public void show() {
-
 	}
 
 	@Override
