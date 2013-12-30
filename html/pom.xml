@@ -23,7 +23,7 @@
 			<artifactId>neonshooter-core</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>eu32k.gdx</groupId>
 			<artifactId>gdx-extensions</artifactId>
@@ -94,6 +94,7 @@
 				<configuration>
 					<webappDirectory>${project.build.directory}/webapp</webappDirectory>
 					<runTarget>index.html</runTarget>
+					<style>PRETTY</style>
 				</configuration>
 				<executions>
 					<execution>
