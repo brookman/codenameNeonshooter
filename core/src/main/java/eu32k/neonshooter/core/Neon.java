@@ -24,8 +24,8 @@ public class Neon extends Game {
 	public static Assets assets;
 	public static Rectangle viewport;
 
-	public static final float VIRTUAL_WIDTH = 1024;
-	public static final float VIRTUAL_HEIGHT = 576;
+	public static final float VIRTUAL_WIDTH = 10.24f;
+	public static final float VIRTUAL_HEIGHT = 5.76f;
 
 	public Neon() {
 		Neon.config = new Config();

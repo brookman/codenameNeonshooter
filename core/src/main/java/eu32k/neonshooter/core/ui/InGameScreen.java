@@ -4,16 +4,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
+import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.factory.ShipFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
-import eu32k.neonshooter.core.entitySystem.system.MoveSystem;
 
 public class InGameScreen implements Screen {
 
@@ -23,10 +25,12 @@ public class InGameScreen implements Screen {
 	private World box2dWorld;
 	private ExtendedWorld artemisWorld;
 
+	private Box2DDebugRenderer debugRenderer;
+
 	@Override
 	public void show() {
 		if (gameStage == null) {
-			gameStage = new Stage();
+			gameStage = new Stage(Neon.VIRTUAL_WIDTH, Neon.VIRTUAL_HEIGHT, true);
 			hudStage = new Stage();
 
 			box2dWorld = new World(new Vector2(0, 0), true);
@@ -35,13 +39,22 @@ public class InGameScreen implements Screen {
 
 			ShipFactory shipFactory = new ShipFactory(artemisWorld, gameStage);
 
+			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
-			artemisWorld.setSystem(new MoveSystem());
 			artemisWorld.setSystem(new RemoveSystem());
 
 			artemisWorld.initialize();
 
-			shipFactory.createShip(200, 200).addToWorld();
+			shipFactory.createPlayerShip(3, 3).addToWorld();
+			shipFactory.createShip(4, 3, GameBits.SCENERY).addToWorld();
+
+			debugRenderer = new Box2DDebugRenderer();
+			debugRenderer.setDrawAABBs(true);
+			debugRenderer.setDrawBodies(true);
+			// debugRenderer.setDrawContacts(true);
+			debugRenderer.setDrawInactiveBodies(true);
+			debugRenderer.setDrawJoints(true);
+			debugRenderer.setDrawVelocities(true);
 		}
 		Gdx.input.setInputProcessor(hudStage);
 	}
@@ -56,6 +69,8 @@ public class InGameScreen implements Screen {
 
 		gameStage.draw();
 		hudStage.draw();
+
+		debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 
 		// ugly test code:
 
