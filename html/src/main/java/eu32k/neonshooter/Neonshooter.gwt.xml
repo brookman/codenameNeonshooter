@@ -1,5 +1,6 @@
 <module rename-to='neonshooter'>
 	<inherits name='com.badlogic.gdx.backends.gdx_backends_gwt' />
+	<inherits name="neonshooter-core"/>
 
 	<source path='core'/>
 	<source path='html'/>
@@ -9,5 +10,5 @@
 	<entry-point class='eu32k.neonshooter.html.NeonshooterHtml'/>
 	<set-configuration-property name="gdx.assetpath" value="assets" />
 	<set-configuration-property name="gdx.assetoutputpath" value="html/target/webapp" />
-	<extend-configuration-property name="gdx.reflect.include" value="eu32k" />
+	<extend-configuration-property name="gdx.reflect.include" value="eu32k.neonshooter" />
 </module>
