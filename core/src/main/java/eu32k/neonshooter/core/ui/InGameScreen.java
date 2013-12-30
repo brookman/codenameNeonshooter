@@ -23,23 +23,27 @@ public class InGameScreen implements Screen {
 	private World box2dWorld;
 	private ExtendedWorld artemisWorld;
 
-	public InGameScreen() {
-		gameStage = new Stage();
-		hudStage = new Stage();
+	@Override
+	public void show() {
+		if (gameStage == null) {
+			gameStage = new Stage();
+			hudStage = new Stage();
 
-		box2dWorld = new World(new Vector2(0, 0), true);
-		artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
-		artemisWorld.setManager(new GroupManager());
+			box2dWorld = new World(new Vector2(0, 0), true);
+			artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
+			artemisWorld.setManager(new GroupManager());
 
-		ShipFactory shipFactory = new ShipFactory(artemisWorld, gameStage);
+			ShipFactory shipFactory = new ShipFactory(artemisWorld, gameStage);
 
-		artemisWorld.setSystem(new ControlSystem());
-		artemisWorld.setSystem(new MoveSystem());
-		artemisWorld.setSystem(new RemoveSystem());
+			artemisWorld.setSystem(new ControlSystem());
+			artemisWorld.setSystem(new MoveSystem());
+			artemisWorld.setSystem(new RemoveSystem());
 
-		artemisWorld.initialize();
+			artemisWorld.initialize();
 
-		shipFactory.createShip(200, 200).addToWorld();
+			shipFactory.createShip(200, 200).addToWorld();
+		}
+		Gdx.input.setInputProcessor(hudStage);
 	}
 
 	@Override
@@ -103,11 +107,6 @@ public class InGameScreen implements Screen {
 		Rectangle viewport = Neon.viewport;
 		gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
 		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-	}
-
-	@Override
-	public void show() {
-		Gdx.input.setInputProcessor(hudStage);
 	}
 
 	@Override

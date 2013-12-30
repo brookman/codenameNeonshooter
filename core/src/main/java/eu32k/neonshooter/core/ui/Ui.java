@@ -15,8 +15,8 @@ public class Ui {
 	}
 
 	public void create() {
-		addScreen(new LoadingScreen(IntroScreen.class));
-		addScreen(new IntroScreen());
+		addScreen(new LoadingScreen(MainMenuScreen.class));
+		// addScreen(new IntroScreen());
 		addScreen(new MainMenuScreen());
 		addScreen(new SettingsScreen());
 		addScreen(new InGameScreen());
