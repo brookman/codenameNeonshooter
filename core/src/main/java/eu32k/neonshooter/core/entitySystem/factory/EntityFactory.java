@@ -86,7 +86,7 @@ public class EntityFactory extends Factory {
 
 		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion(texture)));
 
-		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", model, 0.0f, 0.0f, 0.0f, GameBits.SCENERY, false, 1.0f);
+		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", model, 0.0f, 0.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
 		square.getBody().setType(BodyType.StaticBody);
 		PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
 		pc.activate(new Vector2(x, y), rotation, new Vector2(0, 0));
@@ -100,7 +100,7 @@ public class EntityFactory extends Factory {
 
 		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
 
-		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", "Square1", 1.0f, 1.0f, 0.0f, GameBits.SCENERY, false, 1.0f);
+		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", "Square1", 1.0f, 1.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
 		PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
 		pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
 		e.addComponent(pc);
