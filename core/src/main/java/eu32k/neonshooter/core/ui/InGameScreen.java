@@ -14,7 +14,7 @@ import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.GameBits;
-import eu32k.neonshooter.core.entitySystem.factory.ShipFactory;
+import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 
 public class InGameScreen implements Screen {
@@ -37,7 +37,7 @@ public class InGameScreen implements Screen {
 			artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
 			artemisWorld.setManager(new GroupManager());
 
-			ShipFactory shipFactory = new ShipFactory(artemisWorld, gameStage);
+			EntityFactory shipFactory = new EntityFactory(artemisWorld, gameStage);
 
 			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
@@ -47,6 +47,9 @@ public class InGameScreen implements Screen {
 
 			shipFactory.createPlayerShip(3, 3).addToWorld();
 			shipFactory.createShip(4, 3, GameBits.SCENERY).addToWorld();
+			shipFactory.createChlotz(9, 1).addToWorld();
+			shipFactory.createChlotz(9, 3).addToWorld();
+			shipFactory.createChlotz(2, 1).addToWorld();
 
 			debugRenderer = new Box2DDebugRenderer();
 			debugRenderer.setDrawAABBs(true);
