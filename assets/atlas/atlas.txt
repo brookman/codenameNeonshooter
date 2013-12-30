@@ -4,29 +4,43 @@ filter: Linear,Linear
 repeat: none
 ship
   rotate: false
-  xy: 2, 2
-  size: 492, 490
+  xy: 516, 2
+  size: 512, 512
   orig: 512, 512
-  offset: 10, 11
+  offset: 0, 0
   index: -1
 square
   rotate: false
-  xy: 496, 2
-  size: 366, 366
+  xy: 2, 1030
+  size: 512, 512
   orig: 512, 512
-  offset: 73, 73
+  offset: 0, 0
+  index: -1
+tile_v
+  rotate: false
+  xy: 2, 2
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
   index: -1
 debug
   rotate: false
-  xy: 496, 482
+  xy: 2, 1544
   size: 256, 256
   orig: 256, 256
   offset: 0, 0
   index: -1
+tile_c
+  rotate: false
+  xy: 2, 516
+  size: 512, 512
+  orig: 512, 512
+  offset: 0, 0
+  index: -1
 projectile
   rotate: false
-  xy: 496, 370
-  size: 362, 110
+  xy: 1030, 2
+  size: 512, 512
   orig: 512, 512
-  offset: 74, 201
+  offset: 0, 0
   index: -1

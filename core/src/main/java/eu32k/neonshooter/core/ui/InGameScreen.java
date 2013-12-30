@@ -13,7 +13,6 @@ import eu32k.gdx.artemis.extension.ExtendedWorld;
 import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
-import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 
@@ -46,13 +45,53 @@ public class InGameScreen implements Screen {
 			artemisWorld.initialize();
 
 			shipFactory.createPlayerShip(3, 3).addToWorld();
-			shipFactory.createShip(4, 3, GameBits.SCENERY).addToWorld();
-			shipFactory.createChlotz(9, 1).addToWorld();
-			shipFactory.createChlotz(9, 3).addToWorld();
-			shipFactory.createChlotz(2, 1).addToWorld();
+			shipFactory.createChlotz(4, 3).addToWorld();
+			shipFactory.createChlotz(5, 3.5f).addToWorld();
+			shipFactory.createChlotz(5, 2.5f).addToWorld();
+
+			shipFactory.createTile(1, 4, 0).addToWorld();
+			shipFactory.createTile(1, 3, 0).addToWorld();
+			shipFactory.createTile(1, 2, 0).addToWorld();
+
+			shipFactory.createTile(1, 1, 10).addToWorld();
+
+			shipFactory.createTile(2, 1, 1).addToWorld();
+			shipFactory.createTile(3, 1, 1).addToWorld();
+			shipFactory.createTile(4, 1, 1).addToWorld();
+			shipFactory.createTile(5, 1, 1).addToWorld();
+
+			shipFactory.createTile(6, 1, 11).addToWorld();
+			shipFactory.createTile(6, 2, 2).addToWorld();
+			shipFactory.createTile(6, 3, 5).addToWorld();
+
+			shipFactory.createTile(7, 3, 1).addToWorld();
+			shipFactory.createTile(8, 3, 4).addToWorld();
+			shipFactory.createTile(8, 2, 0).addToWorld();
+			shipFactory.createTile(8, 1, 10).addToWorld();
+
+			shipFactory.createTile(9, 1, 1).addToWorld();
+
+			shipFactory.createTile(10, 1, 11).addToWorld();
+
+			shipFactory.createTile(10, 2, 2).addToWorld();
+			shipFactory.createTile(10, 3, 2).addToWorld();
+			shipFactory.createTile(10, 4, 2).addToWorld();
+
+			shipFactory.createTile(10, 5, 8).addToWorld();
+
+			shipFactory.createTile(2, 5, 3).addToWorld();
+			shipFactory.createTile(3, 5, 3).addToWorld();
+			shipFactory.createTile(4, 5, 3).addToWorld();
+			shipFactory.createTile(5, 5, 3).addToWorld();
+			shipFactory.createTile(6, 5, 3).addToWorld();
+			shipFactory.createTile(7, 5, 3).addToWorld();
+			shipFactory.createTile(8, 5, 3).addToWorld();
+			shipFactory.createTile(9, 5, 3).addToWorld();
+
+			shipFactory.createTile(1, 5, 9).addToWorld();
 
 			debugRenderer = new Box2DDebugRenderer();
-			debugRenderer.setDrawAABBs(true);
+			// debugRenderer.setDrawAABBs(true);
 			debugRenderer.setDrawBodies(true);
 			// debugRenderer.setDrawContacts(true);
 			debugRenderer.setDrawInactiveBodies(true);
@@ -74,50 +113,6 @@ public class InGameScreen implements Screen {
 		hudStage.draw();
 
 		debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
-
-		// ugly test code:
-
-		// Vector2 direction = new Vector2();
-		// direction.add(Neon.controls.right ? 1 : 0 + (Neon.controls.left ? -1
-		// : 0), Neon.controls.up ? 1 : 0 + (Neon.controls.down ? -1 : 0));
-		// if (direction.len() > 0.0f) {
-		// direction.nor().scl(delta * 600.0f);
-		// player.velocity.add(direction);
-		// float speed = Math.min(player.velocity.len(), 200);
-		// player.velocity.nor().scl(speed);
-		// } else {
-		// player.velocity.scl(0.9f);
-		// }
-		//
-		// player.setRotation(player.velocity.angle());
-		//
-		// player.setX(player.getX() + player.velocity.x * delta);
-		// player.setY(player.getY() + player.velocity.y * delta);
-		//
-		// // mainStage.getCamera().position.set(player.getX(), player.getY(),
-		// 0);
-		//
-		// if (Neon.controls.mousePressed && System.currentTimeMillis() -
-		// lastShot > 200) {
-		// float angle = VectorUtils.getAngleOnStage(mainStage,
-		// Neon.controls.mouseX, Neon.controls.mouseY, player.getX(),
-		// player.getY());
-		// shoot(player.getX(), player.getY(), angle, true);
-		// lastShot = System.currentTimeMillis();
-		// }
-		//
-		// for (Actor actor : mainStage.getActors()) {
-		// if (actor.getClass() == Projectile.class) {
-		// Projectile projectile = (Projectile) actor;
-		// projectile.update(delta);
-		// Rectangle worldRectangle = new Rectangle(-300, -300,
-		// Neon.VIRTUAL_WIDTH + 300, Neon.VIRTUAL_HEIGHT + 300);
-		// if (!worldRectangle.contains(projectile.getX(), projectile.getY())) {
-		// projectile.remove();
-		// Pools.free(projectile);
-		// }
-		// }
-		// }
 	}
 
 	@Override

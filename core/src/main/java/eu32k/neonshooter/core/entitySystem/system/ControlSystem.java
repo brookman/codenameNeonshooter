@@ -46,7 +46,9 @@ public class ControlSystem extends EntityProcessingSystem {
 		velocity.nor().scl(2);
 
 		physicsComponent.body.setLinearVelocity(velocity);
-		physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
+		if (velocity.len2() > 0.01f) {
+			physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
+		}
 		physicsComponent.body.setAngularVelocity(0);
 	}
 }
