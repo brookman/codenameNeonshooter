@@ -114,6 +114,7 @@ public class EntityFactory extends Factory {
 		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
 
 		PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 1.0f);
+		shipModel.getBody().setLinearDamping(3.0f);
 		PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
 		pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
 		e.addComponent(pc);
