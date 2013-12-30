@@ -3,6 +3,7 @@ package eu32k.neonshooter.core.ui;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -53,7 +54,7 @@ public class MainMenuScreen implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y,
 					int pointer, int button) {
-				Neon.ui.showScreen(InGameScreen.class);
+				start();
 				return false;
 			}
 		});
@@ -101,5 +102,10 @@ public class MainMenuScreen implements Screen {
 	@Override
 	public void dispose() {
 
+	}
+
+	private void start() {
+		Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
+		Neon.ui.loadThenShowScreen(InGameScreen.class);
 	}
 }

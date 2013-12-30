@@ -9,21 +9,23 @@ import eu32k.neonshooter.core.Neon;
 
 public class Ui {
 	private Map<Class<?>, Screen> screens;
+	private LoadingScreen loadingScreen;
 
 	public Ui() {
 		screens = new HashMap<Class<?>, Screen>();
 	}
 
 	public void create() {
-		addScreen(new LoadingScreen(IntroScreen.class));
+		loadingScreen = addScreen(new LoadingScreen(IntroScreen.class));
 		addScreen(new IntroScreen());
 		addScreen(new MainMenuScreen());
 		addScreen(new SettingsScreen());
 		addScreen(new InGameScreen());
 	}
 
-	protected void addScreen(Screen screen) {
+	protected <T extends Screen> T addScreen(T screen) {
 		screens.put(screen.getClass(), screen);
+		return screen;
 	}
 
 	public void showScreen(Class<?> clazz) {
@@ -31,5 +33,14 @@ public class Ui {
 		if (screen != null) {
 			Neon.instance.setScreen(screen);
 		}
+	}
+
+	public void loadThenShowScreen(Class<?> clazz) {
+		if (loadingScreen == null) {
+			showScreen(clazz);
+			return;
+		}
+		loadingScreen.targetScreen = clazz;
+		showScreen(loadingScreen.getClass());
 	}
 }

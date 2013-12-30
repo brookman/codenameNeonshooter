@@ -57,6 +57,7 @@ public class LoadingScreen implements Screen {
 	@Override
 	public void show() {
 		Gdx.input.setInputProcessor(stage);
+		Gdx.app.log("LoadingScreen", "Show");
 	}
 
 	@Override

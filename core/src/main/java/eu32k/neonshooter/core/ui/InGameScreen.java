@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -36,7 +37,8 @@ public class InGameScreen implements Screen {
 			artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
 			artemisWorld.setManager(new GroupManager());
 
-			EntityFactory shipFactory = new EntityFactory(artemisWorld, gameStage);
+			EntityFactory shipFactory = new EntityFactory(artemisWorld,
+					gameStage);
 
 			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
@@ -98,6 +100,9 @@ public class InGameScreen implements Screen {
 			debugRenderer.setDrawJoints(true);
 			debugRenderer.setDrawVelocities(true);
 		}
+		TiledMap map = Neon.assets.manager.get(Neon.game.nextLevel,
+				TiledMap.class);
+		Neon.game.level().load(map);
 		Gdx.input.setInputProcessor(hudStage);
 	}
 
@@ -118,8 +123,10 @@ public class InGameScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		Rectangle viewport = Neon.viewport;
-		gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+		gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(),
+				true, viewport.x, viewport.y, viewport.width, viewport.height);
+		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true,
+				viewport.x, viewport.y, viewport.width, viewport.height);
 	}
 
 	@Override
