@@ -5,7 +5,6 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.g3d.Model;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 
 public class Assets {
@@ -29,7 +28,7 @@ public class Assets {
 		// Queue sound fx, images for loading etc...
 		manager.load("textures/debug.png", Texture.class);
 		manager.load(TEXTURE_ATLAS, TextureAtlas.class);
-		manager.load("models/test.g3db", Model.class);
+		// manager.load("models/test.g3db", Model.class);
 	}
 
 	public TextureRegion getTextureRegion(String path) {
