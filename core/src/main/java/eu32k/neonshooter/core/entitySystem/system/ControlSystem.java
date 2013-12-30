@@ -43,10 +43,10 @@ public class ControlSystem extends EntityProcessingSystem {
 		if (Neon.controls.right) {
 			velocity.add(1, 0);
 		}
-		velocity.nor().scl(2);
+		velocity.nor().scl(2.5f);
 
-		physicsComponent.body.setLinearVelocity(velocity);
 		if (velocity.len2() > 0.01f) {
+			physicsComponent.body.setLinearVelocity(velocity);
 			physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
 		}
 		physicsComponent.body.setAngularVelocity(0);
