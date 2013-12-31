@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
@@ -21,6 +22,7 @@ public class InGameScreen implements Screen {
 
 	private Stage gameStage;
 	private Stage hudStage;
+	private Label fpsLabel;
 
 	private World box2dWorld;
 	private ExtendedWorld artemisWorld;
@@ -32,13 +34,14 @@ public class InGameScreen implements Screen {
 		if (gameStage == null) {
 			gameStage = new Stage(Neon.VIRTUAL_WIDTH, Neon.VIRTUAL_HEIGHT, true);
 			hudStage = new Stage();
+			fpsLabel = new Label(" ", Neon.assets.skin);
+			hudStage.addActor(fpsLabel);
 
 			box2dWorld = new World(new Vector2(0, 0), true);
 			artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
 			artemisWorld.setManager(new GroupManager());
 
-			EntityFactory shipFactory = new EntityFactory(artemisWorld,
-					gameStage);
+			EntityFactory shipFactory = new EntityFactory(artemisWorld, gameStage);
 
 			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
@@ -100,8 +103,7 @@ public class InGameScreen implements Screen {
 			debugRenderer.setDrawJoints(true);
 			debugRenderer.setDrawVelocities(true);
 		}
-		TiledMap map = Neon.assets.manager.get(Neon.game.nextLevel,
-				TiledMap.class);
+		TiledMap map = Neon.assets.manager.get(Neon.game.nextLevel, TiledMap.class);
 		Neon.game.level().load(map);
 		Gdx.input.setInputProcessor(hudStage);
 	}
@@ -114,6 +116,8 @@ public class InGameScreen implements Screen {
 		artemisWorld.setDelta(delta);
 		artemisWorld.process();
 
+		fpsLabel.setText(" FPS: " + Gdx.graphics.getFramesPerSecond());
+
 		gameStage.draw();
 		hudStage.draw();
 
@@ -123,10 +127,8 @@ public class InGameScreen implements Screen {
 	@Override
 	public void resize(int width, int height) {
 		Rectangle viewport = Neon.viewport;
-		gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(),
-				true, viewport.x, viewport.y, viewport.width, viewport.height);
-		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true,
-				viewport.x, viewport.y, viewport.width, viewport.height);
+		gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+		hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
 	}
 
 	@Override
