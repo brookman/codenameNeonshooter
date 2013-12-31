@@ -18,114 +18,114 @@ import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 
 public class EntityFactory extends Factory {
 
-	public EntityFactory(ExtendedWorld world, Stage stage) {
-		super(world, stage);
-	}
+   public EntityFactory(ExtendedWorld world, Stage stage) {
+      super(world, stage);
+   }
 
-	public Entity createTile(float x, float y, int type) {
-		Entity e = createActorEntity(x, y, 1, 1, 0, null);
+   public Entity createTile(float x, float y, int type) {
+      Entity e = createActorEntity(x, y, 1, 1, 0, null);
 
-		float rot0 = 0;
-		float rot90 = MathUtils.PI / 2.0f;
-		float rot180 = 2.0f * rot90;
-		float rot270 = 3.0f * rot90;
+      float rot0 = 0;
+      float rot90 = MathUtils.PI / 2.0f;
+      float rot180 = 2.0f * rot90;
+      float rot270 = 3.0f * rot90;
 
-		String texture = "";
-		String model = "";
-		float rotation = 0;
+      String texture = "";
+      String model = "";
+      float rotation = 0;
 
-		if (type == 0) {
-			texture = "tile_v";
-			model = "Tile1";
-			rotation = rot0;
-		} else if (type == 1) {
-			texture = "tile_v";
-			model = "Tile1";
-			rotation = rot90;
-		} else if (type == 2) {
-			texture = "tile_v";
-			model = "Tile1";
-			rotation = rot180;
-		} else if (type == 3) {
-			texture = "tile_v";
-			model = "Tile1";
-			rotation = rot270;
-		} else if (type == 4) {
-			texture = "tile_c";
-			model = "Tile2";
-			rotation = rot0;
-		} else if (type == 5) {
-			texture = "tile_c";
-			model = "Tile2";
-			rotation = rot90;
-		} else if (type == 6) {
-			texture = "tile_c";
-			model = "Tile2";
-			rotation = rot180;
-		} else if (type == 7) {
-			texture = "tile_c";
-			model = "Tile2";
-			rotation = rot270;
-		} else if (type == 8) {
-			texture = "tile_c";
-			model = "Tile3";
-			rotation = rot0;
-		} else if (type == 9) {
-			texture = "tile_c";
-			model = "Tile3";
-			rotation = rot90;
-		} else if (type == 10) {
-			texture = "tile_c";
-			model = "Tile3";
-			rotation = rot180;
-		} else if (type == 11) {
-			texture = "tile_c";
-			model = "Tile3";
-			rotation = rot270;
-		}
+      if (type == 0) {
+         texture = "tile_v";
+         model = "Tile1";
+         rotation = rot0;
+      } else if (type == 1) {
+         texture = "tile_v";
+         model = "Tile1";
+         rotation = rot90;
+      } else if (type == 2) {
+         texture = "tile_v";
+         model = "Tile1";
+         rotation = rot180;
+      } else if (type == 3) {
+         texture = "tile_v";
+         model = "Tile1";
+         rotation = rot270;
+      } else if (type == 4) {
+         texture = "tile_c";
+         model = "Tile2";
+         rotation = rot0;
+      } else if (type == 5) {
+         texture = "tile_c";
+         model = "Tile2";
+         rotation = rot90;
+      } else if (type == 6) {
+         texture = "tile_c";
+         model = "Tile2";
+         rotation = rot180;
+      } else if (type == 7) {
+         texture = "tile_c";
+         model = "Tile2";
+         rotation = rot270;
+      } else if (type == 8) {
+         texture = "tile_c";
+         model = "Tile3";
+         rotation = rot0;
+      } else if (type == 9) {
+         texture = "tile_c";
+         model = "Tile3";
+         rotation = rot90;
+      } else if (type == 10) {
+         texture = "tile_c";
+         model = "Tile3";
+         rotation = rot180;
+      } else if (type == 11) {
+         texture = "tile_c";
+         model = "Tile3";
+         rotation = rot270;
+      }
 
-		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion(texture)));
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion(texture)));
 
-		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", model, 0.0f, 0.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
-		square.getBody().setType(BodyType.StaticBody);
-		PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
-		pc.activate(new Vector2(x, y), rotation, new Vector2(0, 0));
-		e.addComponent(pc);
+      PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", model, 0.0f, 0.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
+      square.getBody().setType(BodyType.StaticBody);
+      PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
+      pc.activate(new Vector2(x, y), rotation, new Vector2(0, 0));
+      e.addComponent(pc);
 
-		return e;
-	}
+      return e;
+   }
 
-	public Entity createChlotz(float x, float y) {
-		Entity e = createActorEntity(x, y, 1, 1, 0, null);
+   public Entity createChlotz(float x, float y) {
+      Entity e = createActorEntity(x, y, 1, 1, 0, null);
 
-		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
 
-		PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", "Square1", 1.0f, 1.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
-		PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
-		pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
-		e.addComponent(pc);
+      PhysicsModel square = new PhysicsModel(world.box2dWorld, e, "models.json", "Square1", 1.0f, 1.0f, 0.5f, GameBits.SCENERY, false, 1.0f);
+      PhysicsComponent pc = get(PhysicsComponent.class).init(square.getBody());
+      pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
+      e.addComponent(pc);
 
-		return e;
-	}
+      return e;
+   }
 
-	public Entity createShip(float x, float y, Bits bits) {
-		Entity e = createActorEntity(x, y, 1, 1, 0, null);
+   public Entity createShip(float x, float y, Bits bits) {
+      Entity e = createActorEntity(x, y, 1, 1, 0, null);
 
-		e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
 
-		PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 1.0f);
-		shipModel.getBody().setLinearDamping(3.0f);
-		PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
-		pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
-		e.addComponent(pc);
+      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 1.0f);
+      shipModel.getBody().setLinearDamping(3.0f);
+      PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
+      pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
+      e.addComponent(pc);
 
-		return e;
-	}
+      return e;
+   }
 
-	public Entity createPlayerShip(float x, float y) {
-		Entity e = createShip(x, y, GameBits.PLAYER);
-		e.addComponent(get(ControllableComponent.class));
-		return e;
-	}
+   public Entity createPlayerShip(float x, float y) {
+      Entity e = createShip(x, y, GameBits.PLAYER);
+      e.addComponent(get(ControllableComponent.class));
+      return e;
+   }
 
 }

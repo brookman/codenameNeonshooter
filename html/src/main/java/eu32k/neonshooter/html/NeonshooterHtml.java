@@ -7,13 +7,16 @@ import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
 import eu32k.neonshooter.core.Neon;
 
 public class NeonshooterHtml extends GwtApplication {
-	@Override
-	public ApplicationListener getApplicationListener() {
-		return new Neon();
-	}
+   @Override
+   public ApplicationListener getApplicationListener() {
+      return new Neon();
+   }
 
-	@Override
-	public GwtApplicationConfiguration getConfig() {
-		return new GwtApplicationConfiguration(1024, 576);
-	}
+   @Override
+   public GwtApplicationConfiguration getConfig() {
+      GwtApplicationConfiguration config = new GwtApplicationConfiguration(1024, 576);
+      config.antialiasing = true;
+      config.fps = 30;
+      return config;
+   }
 }

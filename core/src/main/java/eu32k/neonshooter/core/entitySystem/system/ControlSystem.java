@@ -13,42 +13,42 @@ import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 
 public class ControlSystem extends EntityProcessingSystem {
 
-	private ComponentMapper<PhysicsComponent> physicsMapper;
+   private ComponentMapper<PhysicsComponent> physicsMapper;
 
-	@SuppressWarnings("unchecked")
-	public ControlSystem() {
-		super(Aspect.getAspectForAll(PhysicsComponent.class, ControllableComponent.class));
-	}
+   @SuppressWarnings("unchecked")
+   public ControlSystem() {
+      super(Aspect.getAspectForAll(PhysicsComponent.class, ControllableComponent.class));
+   }
 
-	@Override
-	protected void initialize() {
-		physicsMapper = world.getMapper(PhysicsComponent.class);
-	}
+   @Override
+   protected void initialize() {
+      physicsMapper = world.getMapper(PhysicsComponent.class);
+   }
 
-	@Override
-	protected void process(Entity e) {
-		PhysicsComponent physicsComponent = physicsMapper.get(e);
+   @Override
+   protected void process(Entity e) {
+      PhysicsComponent physicsComponent = physicsMapper.get(e);
 
-		Vector2 velocity = new Vector2();
+      Vector2 velocity = new Vector2();
 
-		if (Neon.controls.up) {
-			velocity.add(0, 1);
-		}
-		if (Neon.controls.down) {
-			velocity.add(0, -1);
-		}
-		if (Neon.controls.left) {
-			velocity.add(-1, 0);
-		}
-		if (Neon.controls.right) {
-			velocity.add(1, 0);
-		}
-		velocity.nor().scl(2.5f);
+      if (Neon.controls.up) {
+         velocity.add(0, 1);
+      }
+      if (Neon.controls.down) {
+         velocity.add(0, -1);
+      }
+      if (Neon.controls.left) {
+         velocity.add(-1, 0);
+      }
+      if (Neon.controls.right) {
+         velocity.add(1, 0);
+      }
+      velocity.nor().scl(2.5f);
 
-		if (velocity.len2() > 0.01f) {
-			physicsComponent.body.setLinearVelocity(velocity);
-			physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
-		}
-		physicsComponent.body.setAngularVelocity(0);
-	}
+      if (velocity.len2() > 0.01f) {
+         physicsComponent.body.setLinearVelocity(velocity);
+         physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
+      }
+      physicsComponent.body.setAngularVelocity(0);
+   }
 }
