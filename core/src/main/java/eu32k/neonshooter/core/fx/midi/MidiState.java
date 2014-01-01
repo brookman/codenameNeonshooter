@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import com.badlogic.gdx.Gdx;
 import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
 import com.leff.midi.event.Controller;
@@ -14,14 +15,14 @@ import com.leff.midi.event.NoteOn;
 import com.leff.midi.util.MidiEventListener;
 import com.leff.midi.util.MidiProcessor;
 
-public class TrackState {
+public class MidiState {
 	private MidiTrack track;
 	private Map<Integer, NoteInfo> noteState;
 	private Map<Integer, ControllerInfo> controllerState;
 	private MidiProcessor processor;
 	private MidiFile file;
 
-	public TrackState() {
+	public MidiState() {
 		noteState = new HashMap<Integer, NoteInfo>();
 		controllerState = new HashMap<Integer, ControllerInfo>();
 	}
@@ -209,6 +210,6 @@ public class TrackState {
 			builder.append("Controller ( + " + controller.channel + "/" + controller.type + "): " + controller.value
 					+ " ;");
 		}
-		System.out.println(builder.toString());
+		Gdx.app.log("MidiState", builder.toString());
 	}
 }
