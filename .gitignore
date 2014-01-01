@@ -4,7 +4,7 @@ bin
 .project
 .settings
 */target
-*/libs
+android/libs
 */war
 html/src/main/gwt-unitCache
 html/src/main/webapp/WEB-INF
