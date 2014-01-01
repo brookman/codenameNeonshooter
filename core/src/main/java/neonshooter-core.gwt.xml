@@ -3,4 +3,5 @@
 <module>
 	<source path="java/util" />
 	<source path="eu32k" />
+	<source path="com.leff.midi" />
 </module>
