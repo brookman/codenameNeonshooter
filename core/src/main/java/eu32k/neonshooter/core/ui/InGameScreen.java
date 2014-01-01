@@ -22,6 +22,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
 import eu32k.neonshooter.core.fx.midi.MidiState;
 import eu32k.neonshooter.core.fx.midi.MidiStateDisplay;
 
@@ -54,50 +55,117 @@ public class InGameScreen implements Screen {
 			artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
 			artemisWorld.setManager(new GroupManager());
 
+<<<<<<< HEAD
 			EntityFactory shipFactory = new EntityFactory(artemisWorld, gameStage);
+=======
+         EntityFactory factory = new EntityFactory(artemisWorld, gameStage);
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
 			artemisWorld.setSystem(new RemoveSystem());
+=======
+         artemisWorld.setSystem(new WeaponSystem(factory));
+         artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
+         artemisWorld.setSystem(new ControlSystem());
+         artemisWorld.setSystem(new RemoveSystem());
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
 			artemisWorld.initialize();
 			Mappers.init(artemisWorld);
 
+<<<<<<< HEAD
 			shipFactory.createPlayerShip(3, 3).addToWorld();
 			shipFactory.createChlotz(4, 3).addToWorld();
 			shipFactory.createChlotz(5, 3.5f).addToWorld();
 			shipFactory.createChlotz(5, 2.5f).addToWorld();
+=======
+         factory.createPlayerShip(3, 3).addToWorld();
+         factory.createChlotz(4, 3).addToWorld();
+         factory.createChlotz(5, 3.5f).addToWorld();
+         factory.createChlotz(5, 2.5f).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(1, 4, 0).addToWorld();
 			shipFactory.createTile(1, 3, 0).addToWorld();
 			shipFactory.createTile(1, 2, 0).addToWorld();
+=======
+         factory.createTile(1, 4, 0).addToWorld();
+         factory.createTile(1, 3, 0).addToWorld();
+         factory.createTile(1, 2, 0).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(1, 1, 10).addToWorld();
+=======
+         factory.createTile(1, 1, 10).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(2, 1, 1).addToWorld();
 			shipFactory.createTile(3, 1, 1).addToWorld();
 			shipFactory.createTile(4, 1, 1).addToWorld();
 			shipFactory.createTile(5, 1, 1).addToWorld();
+=======
+         factory.createTile(2, 1, 1).addToWorld();
+         factory.createTile(3, 1, 1).addToWorld();
+         factory.createTile(4, 1, 1).addToWorld();
+         factory.createTile(5, 1, 1).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(6, 1, 11).addToWorld();
 			shipFactory.createTile(6, 2, 2).addToWorld();
 			shipFactory.createTile(6, 3, 5).addToWorld();
+=======
+         factory.createTile(6, 1, 11).addToWorld();
+         factory.createTile(6, 2, 2).addToWorld();
+         factory.createTile(6, 3, 5).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(7, 3, 1).addToWorld();
 			shipFactory.createTile(8, 3, 4).addToWorld();
 			shipFactory.createTile(8, 2, 0).addToWorld();
 			shipFactory.createTile(8, 1, 10).addToWorld();
+=======
+         factory.createTile(7, 3, 1).addToWorld();
+         factory.createTile(8, 3, 4).addToWorld();
+         factory.createTile(8, 2, 0).addToWorld();
+         factory.createTile(8, 1, 10).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(9, 1, 1).addToWorld();
+=======
+         factory.createTile(9, 1, 1).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(10, 1, 11).addToWorld();
+=======
+         factory.createTile(10, 1, 11).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(10, 2, 2).addToWorld();
 			shipFactory.createTile(10, 3, 2).addToWorld();
 			shipFactory.createTile(10, 4, 2).addToWorld();
+=======
+         factory.createTile(10, 2, 2).addToWorld();
+         factory.createTile(10, 3, 2).addToWorld();
+         factory.createTile(10, 4, 2).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(10, 5, 8).addToWorld();
+=======
+         factory.createTile(10, 5, 8).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(2, 5, 3).addToWorld();
 			shipFactory.createTile(3, 5, 3).addToWorld();
 			shipFactory.createTile(4, 5, 3).addToWorld();
@@ -106,8 +174,22 @@ public class InGameScreen implements Screen {
 			shipFactory.createTile(7, 5, 3).addToWorld();
 			shipFactory.createTile(8, 5, 3).addToWorld();
 			shipFactory.createTile(9, 5, 3).addToWorld();
+=======
+         factory.createTile(2, 5, 3).addToWorld();
+         factory.createTile(3, 5, 3).addToWorld();
+         factory.createTile(4, 5, 3).addToWorld();
+         factory.createTile(5, 5, 3).addToWorld();
+         factory.createTile(6, 5, 3).addToWorld();
+         factory.createTile(7, 5, 3).addToWorld();
+         factory.createTile(8, 5, 3).addToWorld();
+         factory.createTile(9, 5, 3).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
+<<<<<<< HEAD
 			shipFactory.createTile(1, 5, 9).addToWorld();
+=======
+         factory.createTile(1, 5, 9).addToWorld();
+>>>>>>> branch 'master' of https://github.com/brookman/codenameNeonshooter.git
 
 			debugRenderer = new Box2DDebugRenderer();
 			// debugRenderer.setDrawAABBs(true);

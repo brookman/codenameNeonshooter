@@ -9,16 +9,21 @@ import eu32k.gdx.artemis.base.systems.EntityProcessingSystem;
 import eu32k.gdx.artemis.extension.EntityActor;
 import eu32k.gdx.artemis.extension.component.ActorComponent;
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
+import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 
 public class WeaponSystem extends EntityProcessingSystem {
 
    private Vector2 velocity;
 
+   private EntityFactory factory;
+
    @SuppressWarnings("unchecked")
-   public WeaponSystem() {
+   public WeaponSystem(EntityFactory factory) {
       super(Aspect.getAspectForAll(WeaponComponent.class, ActorComponent.class));
+      this.factory = factory;
       velocity = new Vector2();
    }
 
@@ -42,7 +47,9 @@ public class WeaponSystem extends EntityProcessingSystem {
       velocity.set(weaponComponent.targetX - stagePosition.x, weaponComponent.targetY - stagePosition.y);
       velocity.rotate((MathUtils.random() * weaponComponent.precision - weaponComponent.precision / 2.0f) * 360);
 
-      velocity.nor().scl(3.0f);
+      velocity.nor().scl(10.0f);
+
+      factory.createProjectile(actor.getX(), actor.getY(), GameBits.PLAYER_BULLET, velocity).addToWorld();
 
       // shoot
       weaponComponent.shoot();
