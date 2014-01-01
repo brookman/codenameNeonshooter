@@ -3,6 +3,7 @@ package eu32k.neonshooter.core.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Input.Buttons;
+import com.badlogic.gdx.math.Vector2;
 
 public class Controls {
 
@@ -10,6 +11,9 @@ public class Controls {
    public boolean down = false;
    public boolean left = false;
    public boolean right = false;
+
+   public Vector2 padLeft = new Vector2();
+   public Vector2 padRight = new Vector2();
 
    public boolean mousePressed = false;
 
