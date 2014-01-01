@@ -19,6 +19,7 @@ import eu32k.gdx.artemis.extension.ExtendedWorld;
 import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.fx.midi.MidiState;
@@ -60,6 +61,7 @@ public class InGameScreen implements Screen {
 			artemisWorld.setSystem(new RemoveSystem());
 
 			artemisWorld.initialize();
+			Mappers.init(artemisWorld);
 
 			shipFactory.createPlayerShip(3, 3).addToWorld();
 			shipFactory.createChlotz(4, 3).addToWorld();
@@ -151,7 +153,6 @@ public class InGameScreen implements Screen {
 		table.add(padRight).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
 
 		hudStage.addActor(table);
-
 		midiDisplay = new MidiStateDisplay(null);
 		hudStage.addActor(midiDisplay);
 	}
@@ -173,8 +174,6 @@ public class InGameScreen implements Screen {
 		hudStage.draw();
 
 		midiState.update(delta);
-		midiState.print();
-
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}
