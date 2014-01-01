@@ -16,7 +16,7 @@ public class NeonshooterHtml extends GwtApplication {
    public GwtApplicationConfiguration getConfig() {
       GwtApplicationConfiguration config = new GwtApplicationConfiguration(1024, 576);
       config.antialiasing = true;
-      config.fps = 30;
+      config.fps = 60;
       return config;
    }
 }
