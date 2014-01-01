@@ -201,14 +201,13 @@ public class MidiState {
 			return;
 		}
 		StringBuilder builder = new StringBuilder();
+		for (ControllerInfo controller : controllerState.values()) {
+			builder.append("C-+ " + controller.channel + "-" + controller.type + ": " + controller.value + " | ");
+		}
 		for (NoteInfo note : noteState.values()) {
 			if (note.on) {
-				builder.append("Note (" + note.channel + "/" + note.note + ") on; ");
+				builder.append("N-" + note.channel + "-" + note.note + " | ");
 			}
-		}
-		for (ControllerInfo controller : controllerState.values()) {
-			builder.append("Controller ( + " + controller.channel + "/" + controller.type + "): " + controller.value
-					+ " ;");
 		}
 		Gdx.app.log("MidiState", builder.toString());
 	}

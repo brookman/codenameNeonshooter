@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -11,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
+import com.leff.midi.MidiFile;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
@@ -19,6 +21,7 @@ import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.fx.midi.MidiState;
 
 public class InGameScreen implements Screen {
 
@@ -33,6 +36,9 @@ public class InGameScreen implements Screen {
 	private ExtendedWorld artemisWorld;
 
 	private Box2DDebugRenderer debugRenderer;
+	private Music music;
+
+	private MidiState midiState;
 
 	@Override
 	public void show() {
@@ -110,6 +116,17 @@ public class InGameScreen implements Screen {
 		TiledMap map = Neon.assets.manager.get(Neon.game.nextLevel, TiledMap.class);
 		Neon.game.level().load(map);
 		Gdx.input.setInputProcessor(hudStage);
+		if (this.music != null) {
+			this.music.stop();
+		}
+		this.music = Neon.assets.manager.get("music/acid rain.ogg", Music.class);
+		MidiFile mid = Neon.assets.manager.get("music/acid rain.mid", MidiFile.class);
+		if (midiState == null) {
+			midiState = new MidiState();
+		}
+		midiState.load(mid);
+		midiState.start();
+		music.play();
 	}
 
 	private void createHud() {
@@ -149,6 +166,7 @@ public class InGameScreen implements Screen {
 		gameStage.draw();
 		hudStage.draw();
 
+		midiState.print();
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}
