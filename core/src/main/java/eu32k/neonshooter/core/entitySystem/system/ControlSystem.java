@@ -4,16 +4,14 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 
 import eu32k.gdx.artemis.base.Aspect;
-import eu32k.gdx.artemis.base.ComponentMapper;
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.systems.EntityProcessingSystem;
 import eu32k.gdx.artemis.extension.component.PhysicsComponent;
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 
 public class ControlSystem extends EntityProcessingSystem {
-
-   private ComponentMapper<PhysicsComponent> physicsMapper;
 
    @SuppressWarnings("unchecked")
    public ControlSystem() {
@@ -21,13 +19,8 @@ public class ControlSystem extends EntityProcessingSystem {
    }
 
    @Override
-   protected void initialize() {
-      physicsMapper = world.getMapper(PhysicsComponent.class);
-   }
-
-   @Override
    protected void process(Entity e) {
-      PhysicsComponent physicsComponent = physicsMapper.get(e);
+      PhysicsComponent physicsComponent = Mappers.physicsMapper.get(e);
 
       Vector2 velocity = new Vector2();
 
