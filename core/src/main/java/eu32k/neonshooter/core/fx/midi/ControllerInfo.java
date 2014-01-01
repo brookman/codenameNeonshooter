@@ -5,6 +5,7 @@ public class ControllerInfo {
 	public int type;
 	public int initValue;
 	public int value;
+	public String trackName;
 
 	public ControllerInfo(int channel, int note) {
 		this.channel = channel;

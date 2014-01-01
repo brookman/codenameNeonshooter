@@ -22,6 +22,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.fx.midi.MidiState;
+import eu32k.neonshooter.core.fx.midi.MidiStateDisplay;
 
 public class InGameScreen implements Screen {
 
@@ -39,6 +40,7 @@ public class InGameScreen implements Screen {
 	private Music music;
 
 	private MidiState midiState;
+	private MidiStateDisplay midiDisplay;
 
 	@Override
 	public void show() {
@@ -125,6 +127,7 @@ public class InGameScreen implements Screen {
 			midiState = new MidiState();
 		}
 		midiState.load(mid);
+		midiDisplay.setState(midiState);
 		midiState.start();
 		music.play();
 	}
@@ -148,6 +151,9 @@ public class InGameScreen implements Screen {
 		table.add(padRight).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
 
 		hudStage.addActor(table);
+
+		midiDisplay = new MidiStateDisplay(null);
+		hudStage.addActor(midiDisplay);
 	}
 
 	@Override
@@ -166,7 +172,9 @@ public class InGameScreen implements Screen {
 		gameStage.draw();
 		hudStage.draw();
 
+		midiState.update(delta);
 		midiState.print();
+
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}
