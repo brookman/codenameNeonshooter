@@ -120,23 +120,20 @@ public class EntityFactory extends Factory {
       pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
       e.addComponent(pc);
 
-      e.addComponent(get(WeaponComponent.class).init(100));
+      e.addComponent(get(WeaponComponent.class).init(200));
 
       return e;
    }
 
-   public Entity createProjectile(float x, float y, Bits bits, float direction) {
-      Entity e = createActorEntity(x, y, 1, 1, 0, null);
+   public Entity createProjectile(float x, float y, Bits bits, Vector2 velocity) {
+      Entity e = createActorEntity(x, y, 0.3f, 0.3f, velocity.angle(), null);
 
-      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("projectile")));
 
-      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 1.0f);
-      shipModel.getBody().setLinearDamping(3.0f);
-      PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
-      pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
+      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, "models.json", "Projectile", 0.3f, 1.0f, 0.0f, bits, false, 0.5f);
+      PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
+      pc.activate(new Vector2(x, y), velocity.angle() * MathUtils.degRad, velocity);
       e.addComponent(pc);
-
-      e.addComponent(get(WeaponComponent.class).init(100));
 
       return e;
    }
