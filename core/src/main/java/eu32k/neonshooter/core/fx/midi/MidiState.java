@@ -58,7 +58,7 @@ public class MidiState implements TimedQueueListener<MidiEvent> {
 		MidiProcessor processor = new MidiProcessor(file);
 		registerProcessorEvents(processor);
 
-		resolution = 60f / (120f * file.getResolution());
+		resolution = 60f / (130f * file.getResolution());
 		this.file = file;
 		List<MidiTrack> tracks = file.getTracks();
 
