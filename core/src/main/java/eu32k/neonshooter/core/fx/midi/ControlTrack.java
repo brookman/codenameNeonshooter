@@ -150,6 +150,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
          return;
       }
       note.on = true;
+      note.notifyNoteOn();
    }
 
    protected void noteOff(NoteOff event) {
@@ -160,6 +161,8 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
          return;
       }
       note.on = false;
+      note.notifyNoteOff();
+      // TODO: On reset, all notes have to be turned off
    }
 
    protected void controllerEvent(Controller event) {
@@ -171,5 +174,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       }
       controller.value = event.getValue();
       controller.initValue = controller.value;
+      controller.notifyHandlers();
+      // TODO: On reset, all handlers have to communicate their init value
    }
 }
