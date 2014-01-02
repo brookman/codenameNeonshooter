@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 import eu32k.neonshooter.core.Neon;
 
-public class MidiStateDisplay extends Actor {
+public class ControlTracksDisplay extends Actor {
 	public final static int SIZE = 32;
 	public final static int PADDING = 0;
 	private BitmapFont font;
 	private ControlTracks state;
 	private Texture texture;
 
-	public MidiStateDisplay(BitmapFont font) {
+	public ControlTracksDisplay(BitmapFont font) {
 		this.font = font;
 		this.texture = Neon.assets.manager.get("textures/square.png", Texture.class);
 	}

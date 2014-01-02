@@ -25,8 +25,7 @@ import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.entitySystem.system.TomsUberPhysiccsSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
 import eu32k.neonshooter.core.fx.midi.ControlTracks;
-import eu32k.neonshooter.core.fx.midi.MidiState;
-import eu32k.neonshooter.core.fx.midi.MidiStateDisplay;
+import eu32k.neonshooter.core.fx.midi.ControlTracksDisplay;
 
 public class InGameScreen implements Screen {
 
@@ -43,9 +42,8 @@ public class InGameScreen implements Screen {
 	private Box2DDebugRenderer debugRenderer;
 	private Music music;
 
-	private MidiState midiState;
 	private ControlTracks controlTracks;
-	private MidiStateDisplay midiDisplay;
+	private ControlTracksDisplay midiDisplay;
 	private Sound sound;
 	private long soundId;
 	private TomsUberPhysiccsSystem physicsSystem;
@@ -138,13 +136,8 @@ public class InGameScreen implements Screen {
 		// Music.class);
 		this.sound = Neon.assets.manager.get("music/acid rain.ogg", Sound.class);
 		MidiFile mid = Neon.assets.manager.get("music/acid rain.mid", MidiFile.class);
-		if (midiState == null) {
-			midiState = new MidiState();
-		}
-		midiState.load(mid);
 		controlTracks.load(mid);
 		midiDisplay.setState(controlTracks);
-		midiState.start();
 		controlTracks.play();
 		soundId = sound.play(0.5f);
 		Neon.game.timeScale = 1f;
@@ -170,7 +163,7 @@ public class InGameScreen implements Screen {
 		table.add(padRight).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
 
 		hudStage.addActor(table);
-		midiDisplay = new MidiStateDisplay(null);
+		midiDisplay = new ControlTracksDisplay(null);
 		hudStage.addActor(midiDisplay);
 	}
 
@@ -203,7 +196,6 @@ public class InGameScreen implements Screen {
 		gameStage.draw();
 		hudStage.draw();
 
-		midiState.update(scaledDelta);
 		controlTracks.update(scaledDelta);
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
