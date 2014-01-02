@@ -107,8 +107,10 @@ public class MainMenuScreen implements Screen {
 		Gdx.app.log("MainMenuScreen", "Loading music");
 		Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
 		// Neon.assets.manager.load("music/acid rain.ogg", Music.class);
-		Neon.assets.manager.load("music/acid rain.ogg", Sound.class);
-		Neon.assets.manager.load("music/acid rain.mid", MidiFile.class);
+		// Neon.assets.manager.load("music/acid rain.ogg", Sound.class);
+		// Neon.assets.manager.load("music/acid rain.mid", MidiFile.class);
+		Neon.assets.manager.load("music/too damn long.ogg", Sound.class);
+		Neon.assets.manager.load("music/too damn long.mid", MidiFile.class);
 		Neon.ui.loadThenShowScreen(InGameScreen.class);
 	}
 }

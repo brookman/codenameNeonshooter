@@ -146,7 +146,7 @@ public class EntityFactory extends Factory {
 		ActorComponent actor = actorMapper.get(e);
 		actor.actor.addAction(Actions.alpha(0f));
 		actor.actor.act(1f);
-		actor.actor.addAction(Actions.alpha(1f, 0.01f));
+		actor.actor.addAction(Actions.alpha(1f, 0.01f * Neon.game.timeScale));
 		return e;
 	}
 

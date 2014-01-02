@@ -58,7 +58,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 	public void load(MidiTrack track, float resolution) {
 		clear();
 		// TODO: Find out where the bpm come from...
-		this.resolution = 60f / (130f * resolution);
+		this.resolution = 60f / (175f * resolution);
 		for (MidiEvent event : track.getEvents()) {
 			registerEvent(event, resolution);
 		}

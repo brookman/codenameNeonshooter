@@ -134,8 +134,12 @@ public class InGameScreen implements Screen {
 
 		// this.music = Neon.assets.manager.get("music/acid rain.ogg",
 		// Music.class);
-		this.sound = Neon.assets.manager.get("music/acid rain.ogg", Sound.class);
-		MidiFile mid = Neon.assets.manager.get("music/acid rain.mid", MidiFile.class);
+		this.sound = Neon.assets.manager.get("music/too damn long.ogg", Sound.class);
+		MidiFile mid = Neon.assets.manager.get("music/too damn long.mid", MidiFile.class);
+		// this.sound = Neon.assets.manager.get("music/acid rain.ogg",
+		// Sound.class);
+		// MidiFile mid = Neon.assets.manager.get("music/acid rain.mid",
+		// MidiFile.class);
 		controlTracks.load(mid);
 		midiDisplay.setState(controlTracks);
 		controlTracks.play();
