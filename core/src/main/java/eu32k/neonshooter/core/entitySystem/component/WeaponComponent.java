@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.entitySystem.component;
 
 import eu32k.gdx.artemis.base.Component;
 import eu32k.gdx.common.Time;
+import eu32k.neonshooter.core.Neon;
 
 public class WeaponComponent extends Component {
 
@@ -24,7 +25,7 @@ public class WeaponComponent extends Component {
    }
 
    public boolean shouldShoot() {
-      return shootRequested && Time.getTime() - lastShoot >= shootDelay;
+      return shootRequested && Time.getTime() - lastShoot >= shootDelay / Neon.game.timeScale;
    }
 
    public void shoot() {

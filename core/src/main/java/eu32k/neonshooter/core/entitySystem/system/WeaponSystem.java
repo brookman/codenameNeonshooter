@@ -36,6 +36,8 @@ public class WeaponSystem extends EntityProcessingSystem {
          weaponComponent.shootRequested = true;
          weaponComponent.targetX = actor.getX() + Neon.controls.padRight.x;
          weaponComponent.targetY = actor.getY() + Neon.controls.padRight.y;
+      } else {
+         weaponComponent.shootRequested = false;
       }
 
       if (!weaponComponent.shouldShoot()) {
