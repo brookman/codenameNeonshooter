@@ -17,12 +17,12 @@ import com.leff.midi.MidiFile;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
-import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.entitySystem.system.TomsUberPhysiccsSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
 import eu32k.neonshooter.core.fx.midi.MidiState;
 import eu32k.neonshooter.core.fx.midi.MidiStateDisplay;
@@ -61,7 +61,7 @@ public class InGameScreen implements Screen {
 			EntityFactory factory = new EntityFactory(artemisWorld, gameStage);
 
 			artemisWorld.setSystem(new WeaponSystem(factory));
-			artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
+			artemisWorld.setSystem(new TomsUberPhysiccsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
 			artemisWorld.setSystem(new RemoveSystem());
 
@@ -138,6 +138,7 @@ public class InGameScreen implements Screen {
 		midiDisplay.setState(midiState);
 		midiState.start();
 		soundId = sound.play(0.5f);
+		Neon.game.timeScale = 1f;
 		// music.play();
 	}
 
@@ -164,27 +165,26 @@ public class InGameScreen implements Screen {
 		hudStage.addActor(midiDisplay);
 	}
 
-	float soundScale = 1f;
-
 	@Override
 	public void render(float delta) {
-		if (Neon.controls.mouseLeft.isDown) {
-			soundScale *= 0.9f;
-			sound.setPitch(soundId, soundScale);
-			Gdx.app.log("InGameScreen", "Sound scale set to " + soundScale);
+		if (Neon.controls.comma.isDown) {
+			Neon.game.timeScale *= 0.9f;
+			sound.setPitch(soundId, Neon.game.timeScale);
+			Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
 		}
-		if (Neon.controls.mouseRight.isDown) {
-			soundScale /= 0.9f;
-			sound.setPitch(soundId, soundScale);
-			Gdx.app.log("InGameScreen", "Sound scale set to " + soundScale);
+		if (Neon.controls.period.isDown) {
+			Neon.game.timeScale /= 0.9f;
+			sound.setPitch(soundId, Neon.game.timeScale);
+			Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
 		}
+		float scaledDelta = delta * Neon.game.timeScale;
 		Neon.controls.padLeft.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
 		Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
 
-		gameStage.act(delta);
-		hudStage.act(delta);
+		gameStage.act(scaledDelta);
+		hudStage.act(scaledDelta);
 
-		artemisWorld.setDelta(delta);
+		artemisWorld.setDelta(scaledDelta);
 		artemisWorld.process();
 
 		fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
@@ -192,7 +192,7 @@ public class InGameScreen implements Screen {
 		gameStage.draw();
 		hudStage.draw();
 
-		midiState.update(delta * soundScale);
+		midiState.update(scaledDelta);
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}

@@ -27,6 +27,9 @@ public class Controls {
 	public ButtonTrap mouseLeft;
 	public ButtonTrap mouseRight;
 
+	public KeyTrap comma;
+	public KeyTrap period;
+
 	private List<Trap> traps;
 
 	public void create() {
@@ -34,10 +37,14 @@ public class Controls {
 		touchAny = new TouchTrap();
 		mouseLeft = new ButtonTrap(Input.Buttons.LEFT);
 		mouseRight = new ButtonTrap(Input.Buttons.RIGHT);
+		comma = new KeyTrap(Input.Keys.COMMA);
+		period = new KeyTrap(Input.Keys.PERIOD);
 
 		traps.add(touchAny);
 		traps.add(mouseLeft);
 		traps.add(mouseRight);
+		traps.add(comma);
+		traps.add(period);
 	}
 
 	public void update() {
