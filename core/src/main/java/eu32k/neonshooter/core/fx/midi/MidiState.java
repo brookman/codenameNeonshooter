@@ -273,4 +273,5 @@ public class MidiState implements TimedQueueListener<MidiEvent> {
 			controllerEvent((Controller) value);
 		}
 	}
+
 }

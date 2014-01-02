@@ -31,7 +31,10 @@ public class MidiStateDisplay extends Actor {
 		}
 		float y = 0;
 		drawLine(batch, state.beatTrack, y);
-		drawLine(batch, state.leadTrack, y + SIZE + PADDING);
+		drawLine(batch, state.bassTrack, y + SIZE + PADDING);
+		drawLine(batch, state.leadTrack, y + (SIZE + PADDING) * 2);
+		drawLine(batch, state.padTrack, y + (SIZE + PADDING) * 3);
+		drawLine(batch, state.fxTrack, y + (SIZE + PADDING) * 4);
 	}
 
 	private void drawLine(Batch batch, ControlTrack track, float y) {

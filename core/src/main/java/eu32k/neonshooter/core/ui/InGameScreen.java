@@ -145,6 +145,7 @@ public class InGameScreen implements Screen {
 		controlTracks.load(mid);
 		midiDisplay.setState(controlTracks);
 		midiState.start();
+		controlTracks.play();
 		soundId = sound.play(0.5f);
 		Neon.game.timeScale = 1f;
 		// music.play();
@@ -203,6 +204,7 @@ public class InGameScreen implements Screen {
 		hudStage.draw();
 
 		midiState.update(scaledDelta);
+		controlTracks.update(scaledDelta);
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}

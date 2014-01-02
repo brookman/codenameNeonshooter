@@ -14,7 +14,9 @@ import com.leff.midi.event.NoteOn;
 import com.leff.midi.event.meta.Tempo;
 import com.leff.midi.event.meta.TrackName;
 
-public class ControlTrack {
+import eu32k.neonshooter.core.fx.midi.TimedQueue.TimedQueueListener;
+
+public class ControlTrack implements TimedQueueListener<MidiEvent> {
 	public static final int NOTE_ON = 0x90;
 	public static final int NOTE_OFF = 0x80;
 	public static final String[] NOTE_NAMES = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
@@ -35,6 +37,7 @@ public class ControlTrack {
 		noteList = new ArrayList<NoteInfo>();
 		controllers = new HashMap<Integer, ControllerInfo>();
 		controllerList = new ArrayList<ControllerInfo>();
+		queue.setListener(this);
 	}
 
 	public void load(MidiTrack track, float resolution) {
@@ -44,6 +47,7 @@ public class ControlTrack {
 		for (MidiEvent event : track.getEvents()) {
 			registerEvent(event, resolution);
 		}
+		queue.init();
 	}
 
 	public void clear() {
@@ -101,5 +105,51 @@ public class ControlTrack {
 		note.trackName = trackName;
 		controllers.put(value, note);
 		controllerList.add(note);
+	}
+
+	public void update(float delta) {
+		queue.update(delta);
+	}
+
+	@Override
+	public void event(MidiEvent value, float time) {
+		if (value instanceof NoteOn) {
+			noteOn((NoteOn) value);
+		} else if (value instanceof NoteOff) {
+			noteOff((NoteOff) value);
+		} else if (value instanceof Controller) {
+			controllerEvent((Controller) value);
+		}
+	}
+
+	protected void noteOn(NoteOn event) {
+		// System.out.println("Note on ");
+		int value = event.getNoteValue();
+		NoteInfo note = notes.get(value);
+		if (note == null) {
+			return;
+		}
+		note.on = true;
+	}
+
+	protected void noteOff(NoteOff event) {
+		// System.out.println("Note off");
+		int value = event.getNoteValue();
+		NoteInfo note = notes.get(value);
+		if (note == null) {
+			return;
+		}
+		note.on = false;
+	}
+
+	protected void controllerEvent(Controller event) {
+		// System.out.println("Controller Change");
+		int value = event.getControllerType();
+		ControllerInfo controller = controllers.get(value);
+		if (controller == null) {
+			return;
+		}
+		controller.value = event.getValue();
+		controller.initValue = controller.value;
 	}
 }
