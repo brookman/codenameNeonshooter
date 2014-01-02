@@ -17,100 +17,100 @@ import eu32k.neonshooter.core.Neon;
 
 public class MainMenuScreen implements Screen {
 
-	private Stage stage;
-	private TextButton start;
-	private TextButton settings;
-	private TextButton exit;
+   private Stage stage;
+   private TextButton start;
+   private TextButton settings;
+   private TextButton exit;
 
-	@Override
-	public void render(float delta) {
-		stage.act(delta);
-		stage.draw();
-	}
+   @Override
+   public void render(float delta) {
+      stage.act(delta);
+      stage.draw();
+   }
 
-	@Override
-	public void resize(int width, int height) {
-		Rectangle viewport = Neon.viewport;
-		stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width,
-				viewport.height);
-	}
+   @Override
+   public void resize(int width, int height) {
+      Rectangle viewport = Neon.viewport;
+      stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+   }
 
-	@Override
-	public void show() {
-		if (stage == null) {
-			buildStage();
-		}
-		Gdx.input.setInputProcessor(stage);
-	}
+   @Override
+   public void show() {
+      if (stage == null) {
+         buildStage();
+      }
+      Gdx.input.setInputProcessor(stage);
+   }
 
-	private void buildStage() {
-		stage = new Stage();
+   private void buildStage() {
+      stage = new Stage();
 
-		Table table = new Table(Neon.assets.skin);
-		table.setFillParent(true);
-		stage.addActor(table);
+      Table table = new Table(Neon.assets.skin);
+      table.setFillParent(true);
+      stage.addActor(table);
 
-		start = new TextButton("Start", Neon.assets.skin);
-		table.add(start).row();
-		start.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				start();
-				return false;
-			}
-		});
+      start = new TextButton("Start", Neon.assets.skin);
+      table.add(start).row();
+      start.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            start();
+            return false;
+         }
+      });
 
-		settings = new TextButton("Settings", Neon.assets.skin);
-		table.add(settings).row();
-		settings.addListener(new InputListener() {
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-				Neon.ui.showScreen(SettingsScreen.class);
-				return false;
-			}
-		});
+      settings = new TextButton("Settings", Neon.assets.skin);
+      table.add(settings).row();
+      settings.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            Neon.ui.showScreen(SettingsScreen.class);
+            return false;
+         }
+      });
 
-		if (Gdx.app.getType() != ApplicationType.WebGL) {
-			exit = new TextButton("Exit", Neon.assets.skin);
-			table.add(exit);
-			exit.addListener(new InputListener() {
-				@Override
-				public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-					Gdx.app.exit();
-					return false;
-				}
-			});
-		}
-	}
+      if (Gdx.app.getType() != ApplicationType.WebGL) {
+         exit = new TextButton("Exit", Neon.assets.skin);
+         table.add(exit);
+         exit.addListener(new InputListener() {
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+               Gdx.app.exit();
+               return false;
+            }
+         });
+      }
+   }
 
-	@Override
-	public void hide() {
+   @Override
+   public void hide() {
 
-	}
+   }
 
-	@Override
-	public void pause() {
+   @Override
+   public void pause() {
 
-	}
+   }
 
-	@Override
-	public void resume() {
+   @Override
+   public void resume() {
 
-	}
+   }
 
-	@Override
-	public void dispose() {
+   @Override
+   public void dispose() {
 
-	}
+   }
 
-	private void start() {
-		Gdx.app.log("MainMenuScreen", "Loading music");
-		Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
-		// Neon.assets.manager.load("music/acid rain.ogg", Music.class);
-		// Neon.assets.manager.load("music/acid rain.ogg", Sound.class);
-		// Neon.assets.manager.load("music/acid rain.mid", MidiFile.class);
-		Neon.assets.manager.load("music/too damn long.ogg", Sound.class);
-		Neon.assets.manager.load("music/too damn long.mid", MidiFile.class);
-		Neon.ui.loadThenShowScreen(InGameScreen.class);
-	}
+   private void start() {
+      Gdx.app.log("MainMenuScreen", "Loading music");
+      Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
+      // Neon.assets.manager.load("music/acid rain.ogg", Music.class);
+      Neon.game.setSoundset(Neon.assets.MUSIC_TOO_DAMN_LONG);
+      Neon.assets.manager.load(Neon.game.soundFile, Sound.class);
+      Neon.assets.manager.load(Neon.game.controlFile, MidiFile.class);
+      // Neon.assets.manager.load("music/too damn long.ogg", Sound.class);
+      // Neon.assets.manager.load("music/too damn long.mid", MidiFile.class);
+      Neon.ui.loadThenShowScreen(InGameScreen.class);
+   }
 }
