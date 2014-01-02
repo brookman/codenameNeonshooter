@@ -210,7 +210,7 @@ public class InGameScreen implements Screen {
 
       mapRenderer.render();
 
-      Neon.config.update(scaledDelta);
+      Neon.fx.update(scaledDelta);
 
       gameStage.act(scaledDelta);
       hudStage.act(scaledDelta);

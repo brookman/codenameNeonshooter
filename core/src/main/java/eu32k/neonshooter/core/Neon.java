@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.Scaling;
 
 import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
+import eu32k.neonshooter.core.fx.FxManager;
 import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.model.GameState;
@@ -25,6 +26,7 @@ public class Neon extends Game {
    public static Assets assets;
    public static GameState game;
    public static Rectangle viewport;
+   public static FxManager fx;
 
    public static final float VIRTUAL_WIDTH = 10.24f;
    public static final float VIRTUAL_HEIGHT = 5.76f;
@@ -38,16 +40,18 @@ public class Neon extends Game {
 
       Neon.instance = this;
       Neon.settings = new Settings();
-      Neon.controls = new Controls();
-      Neon.ui = new Ui();
       Neon.assets = new Assets();
+      Neon.fx = new FxManager();
+      Neon.ui = new Ui();
+      Neon.controls = new Controls();
       Neon.game = new GameState();
 
       Neon.config.create();
       Neon.settings.create();
       Neon.assets.create();
-      Neon.controls.create();
+      Neon.fx.create();
       Neon.ui.create();
+      Neon.controls.create();
       Neon.game.create();
 
       viewport = new Rectangle();
