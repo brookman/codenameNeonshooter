@@ -23,8 +23,8 @@ public class Assets {
    private TmxMapLoader tmxLoader;
    private MidiLoader midiLoader;
 
-   public final SoundSet MUSIC_ACID_RAIN = new SoundSet("music/acid rain.ogg", "music/acid rain.mid");
-   public final SoundSet MUSIC_TOO_DAMN_LONG = new SoundSet("music/too damn long.ogg", "music/too damn long.mid");
+   public final SoundSet MUSIC_ACID_RAIN = new SoundSet("atombrot", "acid rain", "music/acid rain.ogg", "music/acid rain.mid");
+   public final SoundSet MUSIC_TOO_DAMN_LONG = new SoundSet("0x1d vs terasun vs satelite jack vs atombrot", "this is too damn long", "music/too damn long.ogg", "music/too damn long.mid");
 
    public void create() {
       createEssentials();
@@ -73,10 +73,14 @@ public class Assets {
    }
 
    public class SoundSet {
+      final public String artist;
+      final public String title;
       final public String soundFile;
       final public String controlFile;
 
-      public SoundSet(String sound, String control) {
+      public SoundSet(String artist, String title, String sound, String control) {
+         this.artist = artist;
+         this.title = title;
          this.soundFile = sound;
          this.controlFile = control;
       }
