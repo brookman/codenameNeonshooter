@@ -24,6 +24,7 @@ import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.entitySystem.system.TomsUberPhysiccsSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
+import eu32k.neonshooter.core.fx.midi.ControlTracks;
 import eu32k.neonshooter.core.fx.midi.MidiState;
 import eu32k.neonshooter.core.fx.midi.MidiStateDisplay;
 
@@ -43,10 +44,15 @@ public class InGameScreen implements Screen {
 	private Music music;
 
 	private MidiState midiState;
+	private ControlTracks controlTracks;
 	private MidiStateDisplay midiDisplay;
 	private Sound sound;
 	private long soundId;
 	private TomsUberPhysiccsSystem physicsSystem;
+
+	public InGameScreen() {
+		controlTracks = new ControlTracks();
+	}
 
 	@Override
 	public void show() {
@@ -136,7 +142,8 @@ public class InGameScreen implements Screen {
 			midiState = new MidiState();
 		}
 		midiState.load(mid);
-		midiDisplay.setState(midiState);
+		controlTracks.load(mid);
+		midiDisplay.setState(controlTracks);
 		midiState.start();
 		soundId = sound.play(0.5f);
 		Neon.game.timeScale = 1f;

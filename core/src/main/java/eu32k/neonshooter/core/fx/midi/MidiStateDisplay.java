@@ -12,7 +12,7 @@ public class MidiStateDisplay extends Actor {
 	public final static int SIZE = 32;
 	public final static int PADDING = 0;
 	private BitmapFont font;
-	private MidiState state;
+	private ControlTracks state;
 	private Texture texture;
 
 	public MidiStateDisplay(BitmapFont font) {
@@ -20,7 +20,7 @@ public class MidiStateDisplay extends Actor {
 		this.texture = Neon.assets.manager.get("textures/square.png", Texture.class);
 	}
 
-	public void setState(MidiState state) {
+	public void setState(ControlTracks state) {
 		this.state = state;
 	}
 
@@ -29,14 +29,20 @@ public class MidiStateDisplay extends Actor {
 		if (state == null) {
 			return;
 		}
+		float y = 0;
+		drawLine(batch, state.beatTrack, y);
+		drawLine(batch, state.leadTrack, y + SIZE + PADDING);
+	}
+
+	private void drawLine(Batch batch, ControlTrack track, float y) {
 		float x = 0;
-		for (NoteInfo n : state.notes().values()) {
+		for (NoteInfo n : track.noteList) {
 			if (n.on) {
 				batch.setColor(Color.GREEN);
 			} else {
 				batch.setColor(Color.GRAY);
 			}
-			batch.draw(texture, 0 + x * (SIZE + PADDING), 0, SIZE, SIZE);
+			batch.draw(texture, 0 + x * (SIZE + PADDING), y, SIZE, SIZE);
 			x++;
 		}
 	}
