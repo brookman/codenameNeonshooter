@@ -46,6 +46,7 @@ public class InGameScreen implements Screen {
 	private MidiStateDisplay midiDisplay;
 	private Sound sound;
 	private long soundId;
+	private TomsUberPhysiccsSystem physicsSystem;
 
 	@Override
 	public void show() {
@@ -61,7 +62,7 @@ public class InGameScreen implements Screen {
 			EntityFactory factory = new EntityFactory(artemisWorld, gameStage);
 
 			artemisWorld.setSystem(new WeaponSystem(factory));
-			artemisWorld.setSystem(new TomsUberPhysiccsSystem(box2dWorld));
+			physicsSystem = artemisWorld.setSystem(new TomsUberPhysiccsSystem(box2dWorld));
 			artemisWorld.setSystem(new ControlSystem());
 			artemisWorld.setSystem(new RemoveSystem());
 
@@ -170,10 +171,12 @@ public class InGameScreen implements Screen {
 		if (Neon.controls.comma.isDown) {
 			Neon.game.timeScale *= 0.9f;
 			sound.setPitch(soundId, Neon.game.timeScale);
+			physicsSystem.setTimeScale(Neon.game.timeScale);
 			Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
 		}
 		if (Neon.controls.period.isDown) {
 			Neon.game.timeScale /= 0.9f;
+			physicsSystem.setTimeScale(Neon.game.timeScale);
 			sound.setPitch(soundId, Neon.game.timeScale);
 			Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
 		}

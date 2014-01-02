@@ -11,7 +11,6 @@ import eu32k.gdx.artemis.base.EntitySystem;
 import eu32k.gdx.artemis.base.utils.ImmutableBag;
 import eu32k.gdx.artemis.extension.component.ActorComponent;
 import eu32k.gdx.artemis.extension.component.PhysicsComponent;
-import eu32k.neonshooter.core.Neon;
 
 /**
  * Just a subtle hint that I can't edit the base physics system ;)
@@ -24,12 +23,15 @@ public class TomsUberPhysiccsSystem extends EntitySystem {
 	private ComponentMapper<PhysicsComponent> pm;
 	private ComponentMapper<ActorComponent> am;
 
+	private float timeScale;
+
 	private World box2dWorld;
 
 	@SuppressWarnings("unchecked")
 	public TomsUberPhysiccsSystem(World box2dWorld) {
 		super(Aspect.getAspectForAll(PhysicsComponent.class, ActorComponent.class));
 		this.box2dWorld = box2dWorld;
+		timeScale = 1f;
 	}
 
 	@Override
@@ -47,7 +49,7 @@ public class TomsUberPhysiccsSystem extends EntitySystem {
 	protected void processEntities(ImmutableBag<Entity> entities) {
 		// TODO: Maybe the direct access to neon is a bit bad. A generic scale
 		// variable would be better
-		box2dWorld.step(1.0f / 45.0f * Neon.game.timeScale, 6, 2);
+		box2dWorld.step(1.0f / 45.0f * timeScale, 6, 2);
 		for (int i = 0; i < entities.size(); i++) {
 			process(entities.get(i));
 		}
@@ -60,6 +62,14 @@ public class TomsUberPhysiccsSystem extends EntitySystem {
 		actor.setX(physics.body.getPosition().x);
 		actor.setY(physics.body.getPosition().y);
 		actor.setRotation(physics.body.getAngle() * MathUtils.radiansToDegrees);
+	}
+
+	public float getTimeScale() {
+		return timeScale;
+	}
+
+	public void setTimeScale(float timeScale) {
+		this.timeScale = timeScale;
 	}
 
 }
