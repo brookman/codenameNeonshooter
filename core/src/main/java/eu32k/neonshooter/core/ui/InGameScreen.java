@@ -3,6 +3,7 @@ package eu32k.neonshooter.core.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
@@ -43,6 +44,8 @@ public class InGameScreen implements Screen {
 
 	private MidiState midiState;
 	private MidiStateDisplay midiDisplay;
+	private Sound sound;
+	private long soundId;
 
 	@Override
 	public void show() {
@@ -123,7 +126,10 @@ public class InGameScreen implements Screen {
 		if (this.music != null) {
 			this.music.stop();
 		}
-		this.music = Neon.assets.manager.get("music/acid rain.ogg", Music.class);
+
+		// this.music = Neon.assets.manager.get("music/acid rain.ogg",
+		// Music.class);
+		this.sound = Neon.assets.manager.get("music/acid rain.ogg", Sound.class);
 		MidiFile mid = Neon.assets.manager.get("music/acid rain.mid", MidiFile.class);
 		if (midiState == null) {
 			midiState = new MidiState();
@@ -131,7 +137,8 @@ public class InGameScreen implements Screen {
 		midiState.load(mid);
 		midiDisplay.setState(midiState);
 		midiState.start();
-		music.play();
+		soundId = sound.play(0.5f);
+		// music.play();
 	}
 
 	private void createHud() {
@@ -157,8 +164,20 @@ public class InGameScreen implements Screen {
 		hudStage.addActor(midiDisplay);
 	}
 
+	float soundScale = 1f;
+
 	@Override
 	public void render(float delta) {
+		if (Neon.controls.mouseLeft.isDown) {
+			soundScale *= 0.9f;
+			sound.setPitch(soundId, soundScale);
+			Gdx.app.log("InGameScreen", "Sound scale set to " + soundScale);
+		}
+		if (Neon.controls.mouseRight.isDown) {
+			soundScale /= 0.9f;
+			sound.setPitch(soundId, soundScale);
+			Gdx.app.log("InGameScreen", "Sound scale set to " + soundScale);
+		}
 		Neon.controls.padLeft.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
 		Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
 
@@ -173,7 +192,7 @@ public class InGameScreen implements Screen {
 		gameStage.draw();
 		hudStage.draw();
 
-		midiState.update(delta);
+		midiState.update(delta * soundScale);
 		// Table.drawDebug(hudStage);
 		// debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
 	}

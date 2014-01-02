@@ -3,7 +3,7 @@ package eu32k.neonshooter.core.ui;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -106,7 +106,8 @@ public class MainMenuScreen implements Screen {
 	private void start() {
 		Gdx.app.log("MainMenuScreen", "Loading music");
 		Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
-		Neon.assets.manager.load("music/acid rain.ogg", Music.class);
+		// Neon.assets.manager.load("music/acid rain.ogg", Music.class);
+		Neon.assets.manager.load("music/acid rain.ogg", Sound.class);
 		Neon.assets.manager.load("music/acid rain.mid", MidiFile.class);
 		Neon.ui.loadThenShowScreen(InGameScreen.class);
 	}
