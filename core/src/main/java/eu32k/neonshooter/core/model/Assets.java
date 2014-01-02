@@ -41,7 +41,7 @@ public class Assets {
 		manager.setLoader(MidiFile.class, midiLoader);
 		manager.load("textures/debug.png", Texture.class);
 		manager.load("textures/square.png", Texture.class);
-		manager.load("textures/square.png", Texture.class);
+		manager.load("textures/square-filled.png", Texture.class);
 		manager.load(TEXTURE_ATLAS, TextureAtlas.class);
 		manager.load("models/text.g3dj", Model.class);
 	}

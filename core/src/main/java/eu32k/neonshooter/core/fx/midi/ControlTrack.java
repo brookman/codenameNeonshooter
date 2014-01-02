@@ -31,12 +31,27 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 	private String trackName;
 	private float resolution;
 
+	private ControllerInfo on;
+
+	public ControllerInfo on() {
+		return on;
+	}
+
+	private ControllerInfo intensity;
+
+	public ControllerInfo intensity() {
+		return intensity;
+	}
+
 	public ControlTrack() {
+		on = new ControllerInfo(0, 1);
+		intensity = new ControllerInfo(0, 2);
 		queue = new TimedQueue<MidiEvent>();
 		notes = new HashMap<Integer, NoteInfo>();
 		noteList = new ArrayList<NoteInfo>();
 		controllers = new HashMap<Integer, ControllerInfo>();
 		controllerList = new ArrayList<ControllerInfo>();
+		clear();
 		queue.setListener(this);
 	}
 
@@ -57,6 +72,10 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 		noteList.clear();
 		controllers.clear();
 		controllerList.clear();
+		controllers.put(on.type, on);
+		controllerList.add(on);
+		controllers.put(intensity.type, intensity);
+		controllerList.add(intensity);
 	}
 
 	private void registerEvent(MidiEvent event, float resolution) {
@@ -98,10 +117,11 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 
 	private void registerControllerEvent(Controller event) {
 		int value = event.getControllerType();
+		int channel = event.getChannel();
 		if (controllers.containsKey(value)) {
 			return;
 		}
-		ControllerInfo note = new ControllerInfo(event.getChannel(), event.getControllerType());
+		ControllerInfo note = new ControllerInfo(channel, event.getControllerType());
 		note.trackName = trackName;
 		controllers.put(value, note);
 		controllerList.add(note);
