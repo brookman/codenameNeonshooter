@@ -26,7 +26,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    List<NoteInfo> noteList;
    private Map<Integer, ControllerInfo> controllers;
    private List<ControllerInfo> controllerList;
-
+   private List<AnyNoteHandler> anyHandlers;
    public String key;
    private String trackName;
    private float resolution;
@@ -37,6 +37,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       return on;
    }
 
+   private int notesPlaying = 0;
    private ControllerInfo intensity;
 
    public ControllerInfo intensity() {
@@ -51,6 +52,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       noteList = new ArrayList<NoteInfo>();
       controllers = new HashMap<Integer, ControllerInfo>();
       controllerList = new ArrayList<ControllerInfo>();
+      anyHandlers = new ArrayList<AnyNoteHandler>();
       clear();
       queue.setListener(this);
    }
@@ -76,6 +78,8 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       controllerList.add(on);
       controllers.put(intensity.type, intensity);
       controllerList.add(intensity);
+      notesPlaying = 0;
+      // TODO: Remove all handlers?
    }
 
    private void registerEvent(MidiEvent event, float resolution) {
@@ -151,6 +155,10 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       }
       note.on = true;
       note.notifyNoteOn();
+      if (notesPlaying == 0) {
+         notifyAnyPlaying();
+      }
+      notesPlaying++;
    }
 
    protected void noteOff(NoteOff event) {
@@ -162,7 +170,23 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       }
       note.on = false;
       note.notifyNoteOff();
+      notesPlaying--;
+      if (notesPlaying == 0) {
+         notifyAnyStopped();
+      }
       // TODO: On reset, all notes have to be turned off
+   }
+
+   private void notifyAnyPlaying() {
+      for (AnyNoteHandler handler : anyHandlers) {
+         handler.playing(this);
+      }
+   }
+
+   private void notifyAnyStopped() {
+      for (AnyNoteHandler handler : anyHandlers) {
+         handler.stopped(this);
+      }
    }
 
    protected void controllerEvent(Controller event) {
@@ -176,5 +200,11 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       controller.initValue = controller.value;
       controller.notifyHandlers();
       // TODO: On reset, all handlers have to communicate their init value
+   }
+
+   public interface AnyNoteHandler {
+      public boolean playing(ControlTrack track);
+
+      public boolean stopped(ControlTrack track);
    }
 }

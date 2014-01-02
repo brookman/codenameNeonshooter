@@ -25,6 +25,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
 import eu32k.neonshooter.core.fx.midi.ControlTracks;
 import eu32k.neonshooter.core.fx.midi.ControlTracksDisplay;
@@ -71,6 +72,7 @@ public class InGameScreen implements Screen {
          artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
          artemisWorld.setSystem(new ControlSystem());
          artemisWorld.setSystem(new RemoveSystem());
+         artemisWorld.setSystem(new FxSystem());
 
          artemisWorld.initialize();
          Mappers.init(artemisWorld);
@@ -207,6 +209,8 @@ public class InGameScreen implements Screen {
       Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
 
       mapRenderer.render();
+
+      Neon.config.update(scaledDelta);
 
       gameStage.act(scaledDelta);
       hudStage.act(scaledDelta);
