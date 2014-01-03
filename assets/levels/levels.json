@@ -1,0 +1,10 @@
+{
+	levels:[
+		{
+			id: "test-01"
+			, name: "Test Level 1"
+			, file: "test.tmx"
+		}
+	]
+	, arcadeLevels: ["test-01"]
+}

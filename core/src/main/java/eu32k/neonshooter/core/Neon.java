@@ -1,5 +1,7 @@
 package eu32k.neonshooter.core;
 
+import java.util.Random;
+
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
@@ -10,6 +12,7 @@ import com.badlogic.gdx.utils.Scaling;
 import eu32k.neonshooter.core.config.Config;
 import eu32k.neonshooter.core.config.Settings;
 import eu32k.neonshooter.core.fx.FxManager;
+import eu32k.neonshooter.core.fx.MusicManager;
 import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.model.GameState;
@@ -27,6 +30,8 @@ public class Neon extends Game {
    public static GameState game;
    public static Rectangle viewport;
    public static FxManager fx;
+   public static MusicManager music;
+   public static Random random;
 
    public static final float VIRTUAL_WIDTH = 10.24f;
    public static final float VIRTUAL_HEIGHT = 5.76f;
@@ -39,17 +44,20 @@ public class Neon extends Game {
    public void create() {
 
       Neon.instance = this;
+      Neon.random = new Random();
       Neon.settings = new Settings();
       Neon.assets = new Assets();
       Neon.fx = new FxManager();
       Neon.ui = new Ui();
       Neon.controls = new Controls();
       Neon.game = new GameState();
+      Neon.music = new MusicManager();
 
       Neon.config.create();
       Neon.settings.create();
       Neon.assets.create();
       Neon.fx.create();
+      Neon.music.create();
       Neon.ui.create();
       Neon.controls.create();
       Neon.game.create();

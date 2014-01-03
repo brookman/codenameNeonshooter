@@ -1,0 +1,12 @@
+{
+	tracks:[
+		{
+			id: "too damn long"
+			, artist: "0x1d vs terasun vs satelite jack vs atombrot"
+			, track: "too damn long"
+			, audio: "music/too damn long.ogg"
+			, control: "music/too damn long.mid"
+		}
+	]
+	, arcadeTracks: ["too damn long"]
+}

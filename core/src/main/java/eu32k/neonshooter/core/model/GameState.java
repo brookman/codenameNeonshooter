@@ -2,12 +2,8 @@ package eu32k.neonshooter.core.model;
 
 import com.badlogic.gdx.maps.tiled.TiledMap;
 
-import eu32k.neonshooter.core.model.Assets.SoundSet;
-
 public class GameState {
    public String nextLevel = "levels/test.tmx";
-   public String soundFile = null;
-   public String controlFile = null;
    public float timeScale = 1f;
    public float targetTimeScale = 1f;
 
@@ -24,10 +20,5 @@ public class GameState {
 
    public void create() {
 
-   }
-
-   public void setSoundset(SoundSet set) {
-      soundFile = set.soundFile;
-      controlFile = set.controlFile;
    }
 }
