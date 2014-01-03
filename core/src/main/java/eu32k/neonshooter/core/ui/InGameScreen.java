@@ -32,6 +32,7 @@ import eu32k.neonshooter.core.fx.midi.ControlTracksDisplay;
 
 public class InGameScreen implements Screen {
 
+   private static final float TIME_SCALE_RATE = 0.8f;
    private Stage gameStage;
    private Stage hudStage;
 
@@ -194,16 +195,22 @@ public class InGameScreen implements Screen {
 
    @Override
    public void render(float delta) {
-      if (Neon.controls.comma.isDown) {
-         Neon.game.timeScale *= 0.9f;
-         sound.setPitch(soundId, Neon.game.timeScale);
-         Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
-      }
-      if (Neon.controls.period.isDown) {
-         Neon.game.timeScale /= 0.9f;
-         sound.setPitch(soundId, Neon.game.timeScale);
-         Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
-      }
+      float scale = Neon.game.timeScale;
+      float lastScale = scale;
+      float target = Neon.game.targetTimeScale;
+      // if (Neon.controls.comma.isDown) {
+      // scale *= 0.9f;
+      // Gdx.app.log("InGameScreen", "Sound scale set to " +
+      // Neon.game.timeScale);
+      // }
+      // if (Neon.controls.period.isDown) {
+      // Neon.game.timeScale /= 0.9f;
+      // sound.setPitch(soundId, Neon.game.timeScale);
+      // Gdx.app.log("InGameScreen", "Sound scale set to " +
+      // Neon.game.timeScale);
+      // }
+      handleTimeScale(delta, scale, lastScale, target);
+
       float scaledDelta = delta * Neon.game.timeScale;
       Neon.controls.padLeft.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
       Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
@@ -226,6 +233,26 @@ public class InGameScreen implements Screen {
       controlTracks.update(scaledDelta);
       // Table.drawDebug(hudStage);
       // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
+   }
+
+   private void handleTimeScale(float delta, float scale, float lastScale, float target) {
+      if (scale < target) {
+         scale += TIME_SCALE_RATE * delta;
+         if (scale > target) {
+            scale = target;
+         }
+         Neon.game.timeScale = scale;
+      } else if (scale > target) {
+         scale -= TIME_SCALE_RATE * delta;
+         if (scale < target) {
+            scale = target;
+         }
+      }
+      if (lastScale != scale) {
+         Neon.game.timeScale = scale;
+         sound.setPitch(soundId, Neon.game.timeScale);
+         Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
+      }
    }
 
    @Override

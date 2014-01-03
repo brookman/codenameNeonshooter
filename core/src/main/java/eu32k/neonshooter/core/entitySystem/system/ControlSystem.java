@@ -24,6 +24,12 @@ public class ControlSystem extends EntityProcessingSystem {
 
       Vector2 velocity = new Vector2();
 
+      if (Neon.controls.t.isPressed) {
+         Neon.game.targetTimeScale = 0.15f;
+      } else {
+         Neon.game.targetTimeScale = 1f;
+      }
+
       if (Neon.controls.up) {
          velocity.add(0, 1);
       }

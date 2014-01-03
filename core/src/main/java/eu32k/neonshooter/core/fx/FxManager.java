@@ -36,7 +36,7 @@ public class FxManager {
 
    protected void beat() {
       flashColorActor.clearActions();
-      flashColorActor.addAction(Actions.sequence(Actions.color(Color.WHITE, 0.01f), Actions.color(Color.BLACK, 0.25f)));
+      flashColorActor.addAction(Actions.sequence(Actions.color(Color.WHITE, 0.1f), Actions.color(Color.BLACK, 0.25f)));
    }
 
    public void create() {

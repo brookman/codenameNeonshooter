@@ -9,6 +9,7 @@ public class GameState {
    public String soundFile = null;
    public String controlFile = null;
    public float timeScale = 1f;
+   public float targetTimeScale = 1f;
 
    private LevelData level;
    public TiledMap map;
