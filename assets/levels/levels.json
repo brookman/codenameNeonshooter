@@ -3,7 +3,7 @@
 		{
 			id: "test-01"
 			, name: "Test Level 1"
-			, file: "levels/test.tmx"
+			, file: "levels/line.tmx"
 			, description: "A shitty test level"
 		}
 	]

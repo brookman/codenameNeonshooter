@@ -6,14 +6,16 @@ import java.util.List;
 import java.util.Map;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.rendering.BasicMapRenderer;
 
 public class LevelManager {
    private LevelInfo currentLevel;
@@ -21,7 +23,7 @@ public class LevelManager {
    private Map<String, LevelInfo> levels;
    private List<LevelInfo> arcadeLevels;
 
-   private OrthogonalTiledMapRenderer mapRenderer;
+   private MapRenderer mapRenderer;
 
    public LevelManager() {
       levels = new HashMap<String, LevelInfo>();
@@ -55,10 +57,10 @@ public class LevelManager {
       }
    }
 
-   public void loadLevel() {
+   public void loadLevel(World box2dWorld) {
       Neon.game.map = Neon.assets.manager.get(currentLevel.file, TiledMap.class);
       Neon.game.level().load(Neon.game.map);
-      mapRenderer = new OrthogonalTiledMapRenderer(Neon.game.map, 1f / 512f);
+      mapRenderer = new BasicMapRenderer(Neon.game.map, Neon.assets.manager.get("textures/line.png", Texture.class), box2dWorld);
    }
 
    public void prepareLevel(String id) {
@@ -81,8 +83,7 @@ public class LevelManager {
       }
    }
 
-   public TiledMapRenderer getMapRenderer() {
+   public MapRenderer getMapRenderer() {
       return mapRenderer;
    }
-
 }

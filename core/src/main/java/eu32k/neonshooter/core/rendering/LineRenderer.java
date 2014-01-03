@@ -22,10 +22,13 @@ public class LineRenderer {
    private Texture texture;
    private ImmediateModeRenderer20 iRend;
 
-   public LineRenderer(Camera camera, Texture texture) {
-      this.camera = camera;
+   public LineRenderer(Texture texture) {
       this.texture = texture;
       iRend = new ImmediateModeRenderer20(false, true, 1);
+   }
+
+   public void setCamera(Camera camera) {
+      this.camera = camera;
    }
 
    public void drawLineInterlolated(float x, float y, float x2, float y2, float thickness, Color color) {
