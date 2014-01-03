@@ -145,9 +145,7 @@ public class InGameScreen implements Screen {
       }
       Neon.game.map = Neon.assets.manager.get(Neon.game.nextLevel, TiledMap.class);
       Neon.game.level().load(Neon.game.map);
-      mapRenderer = new OrthogonalTiledMapRenderer(Neon.game.map);
-      Rectangle viewport = Neon.viewport;
-      mapRenderer.setView(gameStage.getCamera().projection, viewport.x, viewport.y, viewport.width, viewport.height);
+      mapRenderer = new OrthogonalTiledMapRenderer(Neon.game.map, 1f / 512f);
 
       Gdx.input.setInputProcessor(hudStage);
       if (this.music != null) {
@@ -215,8 +213,6 @@ public class InGameScreen implements Screen {
       Neon.controls.padLeft.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
       Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
 
-      mapRenderer.render();
-
       Neon.fx.update(scaledDelta);
 
       gameStage.act(scaledDelta);
@@ -227,10 +223,15 @@ public class InGameScreen implements Screen {
 
       fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
+      Rectangle viewport = Neon.viewport;
+      mapRenderer.setView(gameStage.getCamera().combined, viewport.x, viewport.y, viewport.width, viewport.height);
+      mapRenderer.render();
+
       gameStage.draw();
       hudStage.draw();
 
       controlTracks.update(scaledDelta);
+
       // Table.drawDebug(hudStage);
       // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
    }
@@ -260,9 +261,6 @@ public class InGameScreen implements Screen {
       Rectangle viewport = Neon.viewport;
       gameStage.setViewport(gameStage.getWidth(), gameStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
       hudStage.setViewport(hudStage.getWidth(), hudStage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-      if (mapRenderer != null) {
-         mapRenderer.setView(gameStage.getCamera().projection, viewport.x, viewport.y, viewport.width, viewport.height);
-      }
    }
 
    @Override
