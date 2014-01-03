@@ -1,17 +1,16 @@
 package eu32k.neonshooter.core.model;
 
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class LevelData {
    private World world;
-   private TiledMap level;
+   private ExtendedMap level;
 
    public boolean isLoaded() {
       return level != null;
    }
 
-   public void load(TiledMap level) {
+   public void load(ExtendedMap level) {
       if (isLoaded()) {
          unload();
       }

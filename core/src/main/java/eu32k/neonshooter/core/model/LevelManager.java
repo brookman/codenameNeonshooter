@@ -58,8 +58,9 @@ public class LevelManager {
    }
 
    public void loadLevel(World box2dWorld) {
-      Neon.game.map = Neon.assets.manager.get(currentLevel.file, TiledMap.class);
+      Neon.game.map = new ExtendedMap(Neon.assets.manager.get(currentLevel.file, TiledMap.class));
       Neon.game.level().load(Neon.game.map);
+
       mapRenderer = new BasicMapRenderer(Neon.game.map, Neon.assets.manager.get("textures/line.png", Texture.class), box2dWorld);
    }
 

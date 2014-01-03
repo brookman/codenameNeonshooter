@@ -43,6 +43,7 @@ public class InGameScreen implements Screen {
 
    @Override
    public void show() {
+      EntityFactory factory = null;
       if (gameStage == null) {
          gameStage = new Stage(Neon.VIRTUAL_WIDTH, Neon.VIRTUAL_HEIGHT, true);
 
@@ -52,7 +53,7 @@ public class InGameScreen implements Screen {
          artemisWorld = new ExtendedWorld(box2dWorld, gameStage);
          artemisWorld.setManager(new GroupManager());
 
-         EntityFactory factory = new EntityFactory(artemisWorld, gameStage);
+         factory = new EntityFactory(artemisWorld, gameStage);
 
          artemisWorld.setSystem(new WeaponSystem(factory));
          artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
@@ -63,8 +64,6 @@ public class InGameScreen implements Screen {
 
          artemisWorld.initialize();
          Mappers.init(artemisWorld);
-
-         factory.createPlayerShip(3, 3).addToWorld();
 
          debugRenderer = new Box2DDebugRenderer();
          // debugRenderer.setDrawAABBs(true);
@@ -77,6 +76,12 @@ public class InGameScreen implements Screen {
       }
       Neon.levels.loadLevel(box2dWorld);
       this.mapRenderer = Neon.levels.getMapRenderer();
+
+      factory.createPlayerShip(Neon.game.map.playerSpawn.x, Neon.game.map.playerSpawn.y).addToWorld();
+      for (Vector2 enemyPos : Neon.game.map.enemySpawns) {
+         factory.createEnemyShip(enemyPos.x, enemyPos.y).addToWorld();
+      }
+
       Neon.music.loadTrack();
       Neon.music.play();
       Gdx.input.setInputProcessor(hudStage);

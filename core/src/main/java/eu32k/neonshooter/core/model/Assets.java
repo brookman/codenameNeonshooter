@@ -45,7 +45,6 @@ public class Assets {
       manager.load("textures/square-filled.png", Texture.class);
       manager.load(TEXTURE_ATLAS, TextureAtlas.class);
       manager.load("models/text.g3dj", Model.class);
-      manager.load("levels/line.tmx", TiledMap.class);
       manager.load("textures/line.png", Texture.class);
    }
 

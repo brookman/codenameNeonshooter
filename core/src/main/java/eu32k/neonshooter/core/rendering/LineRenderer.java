@@ -1,11 +1,11 @@
 package eu32k.neonshooter.core.rendering;
 
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ImmediateModeRenderer20;
 import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
 public class LineRenderer {
@@ -18,17 +18,13 @@ public class LineRenderer {
    private Vector2 sw = new Vector2();
    private Vector2 se = new Vector2();
 
-   private Camera camera;
    private Texture texture;
    private ImmediateModeRenderer20 iRend;
+   private Matrix4 combined;
 
    public LineRenderer(Texture texture) {
       this.texture = texture;
       iRend = new ImmediateModeRenderer20(false, true, 1);
-   }
-
-   public void setCamera(Camera camera) {
-      this.camera = camera;
    }
 
    public void drawLineInterlolated(float x, float y, float x2, float y2, float thickness, Color color) {
@@ -49,6 +45,11 @@ public class LineRenderer {
       }
    }
 
+   public void begin(Matrix4 combined) {
+      this.combined = combined;
+      texture.bind();
+   }
+
    public void drawLine(float x, float y, float x2, float y2, float thickness, Color color) {
       e.set(x2 - x, y2 - y).nor().scl(thickness);
 
@@ -59,9 +60,7 @@ public class LineRenderer {
       sw.set(-ne.x, -ne.y);
       se.set(-nw.x, -nw.y);
 
-      texture.bind();
-
-      iRend.begin(camera.combined, GL20.GL_TRIANGLE_STRIP);
+      iRend.begin(combined, GL20.GL_TRIANGLE_STRIP);
 
       iRend.texCoord(0, 1);
       iRend.color(color.r, color.g, color.b, color.a);
@@ -96,5 +95,10 @@ public class LineRenderer {
       iRend.vertex(x2 + se.x, y2 + se.y, 0);
 
       iRend.end();
+
+   }
+
+   public void end() {
+
    }
 }

@@ -100,7 +100,7 @@ public class EntityFactory extends Factory {
       return e;
    }
 
-   public Entity createChlotz(float x, float y) {
+   public Entity createBox(float x, float y) {
       Entity e = createActorEntity(x, y, 1, 1, 0, null);
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
@@ -114,28 +114,25 @@ public class EntityFactory extends Factory {
    }
 
    public Entity createShip(float x, float y, Bits bits) {
-      Entity e = createActorEntity(x, y, 1, 1, 0, null);
+      Entity e = createActorEntity(x, y, 0.5f, 0.5f, 0, null);
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
 
-      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 1.0f);
+      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 1.0f, 0.0f, bits, false, 0.5f);
       shipModel.getBody().setLinearDamping(3.0f);
       PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
       pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
       e.addComponent(pc);
 
-      e.addComponent(get(WeaponComponent.class).init(200));
-      e.addComponent(get(CameraTargetComponent.class).init(false));
-
       return e;
    }
 
    public Entity createProjectile(float x, float y, Bits bits, Vector2 velocity) {
-      Entity e = createActorEntity(x, y, 0.3f, 0.3f, velocity.angle(), null);
+      Entity e = createActorEntity(x, y, 0.1f, 0.3f, velocity.angle(), null);
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("projectile")));
 
-      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, "models.json", "Projectile", 0.3f, 1.0f, 0.0f, bits, false, 0.5f);
+      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, "models.json", "Projectile", 0.3f, 1.0f, 0.0f, bits, false, 0.2f);
       PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
       pc.activate(new Vector2(x, y), velocity.angle() * MathUtils.degRad, velocity);
       e.addComponent(pc);
@@ -146,10 +143,16 @@ public class EntityFactory extends Factory {
       return e;
    }
 
-   public Entity createPlayerShip(float x, float y) {
-      Entity e = createShip(x, y, GameBits.PLAYER);
-      e.addComponent(get(ControllableComponent.class));
+   public Entity createEnemyShip(float x, float y) {
+      Entity e = createShip(x, y, GameBits.ENEMY);
       return e;
    }
 
+   public Entity createPlayerShip(float x, float y) {
+      Entity e = createShip(x, y, GameBits.PLAYER);
+      e.addComponent(get(ControllableComponent.class));
+      e.addComponent(get(WeaponComponent.class).init(200));
+      e.addComponent(get(CameraTargetComponent.class).init(false));
+      return e;
+   }
 }
