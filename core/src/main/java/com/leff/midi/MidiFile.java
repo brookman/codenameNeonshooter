@@ -18,7 +18,6 @@ package com.leff.midi;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -53,10 +52,6 @@ public class MidiFile {
       mTracks = tracks != null ? tracks : new ArrayList<MidiTrack>();
       mTrackCount = tracks.size();
       mType = mTrackCount > 1 ? 1 : 0;
-   }
-
-   public MidiFile(File fileIn) throws FileNotFoundException, IOException {
-      this(new FileInputStream(fileIn));
    }
 
    public MidiFile(InputStream rawIn) throws IOException {

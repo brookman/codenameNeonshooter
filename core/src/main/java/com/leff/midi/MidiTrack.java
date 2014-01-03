@@ -20,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -162,31 +161,34 @@ public class MidiTrack {
 
       MidiEvent prev = null, next = null;
 
+      // this code breaks on GWT -> removed
       // floor() and ceiling() are not supported on Android before API Level 9
       // (Gingerbread)
-      try {
-         Class treeSet = Class.forName("java.util.TreeSet");
-         Method floor = treeSet.getMethod("floor", Object.class);
-         Method ceiling = treeSet.getMethod("ceiling", Object.class);
-
-         prev = (MidiEvent) floor.invoke(mEvents, newEvent);
-         next = (MidiEvent) ceiling.invoke(mEvents, newEvent);
-
-      } catch (Exception e) {
-         // methods are not supported - must perform linear search
-         Iterator<MidiEvent> it = mEvents.iterator();
-
-         while (it.hasNext()) {
-            next = it.next();
-
-            if (next.getTick() > newEvent.getTick()) {
-               break;
-            }
-
-            prev = next;
-            next = null;
-         }
-      }
+      // try {
+      // Class treeSet = Class.forName("java.util.TreeSet");
+      // Method floor = treeSet.getMethod("floor", Object.class);
+      // Method ceiling = treeSet.getMethod("ceiling", Object.class);
+      //
+      // prev = (MidiEvent) floor.invoke(mEvents, newEvent);
+      // next = (MidiEvent) ceiling.invoke(mEvents, newEvent);
+      //
+      // } catch (Exception e) {
+      // // methods are not supported - must perform linear search
+      // Iterator<MidiEvent> it = mEvents.iterator();
+      //
+      // while (it.hasNext()) {
+      // next = it.next();
+      //
+      // if (next.getTick() > newEvent.getTick()) {
+      // break;
+      // }
+      //
+      // prev = next;
+      // next = null;
+      // }
+      // }
+      prev = mEvents.floor(newEvent);
+      next = mEvents.ceiling(newEvent);
 
       mEvents.add(newEvent);
       mSizeNeedsRecalculating = true;
