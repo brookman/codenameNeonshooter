@@ -16,6 +16,7 @@ import eu32k.neonshooter.core.fx.MusicManager;
 import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.model.GameState;
+import eu32k.neonshooter.core.model.LevelManager;
 import eu32k.neonshooter.core.ui.LoadingScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
@@ -32,6 +33,7 @@ public class Neon extends Game {
    public static FxManager fx;
    public static MusicManager music;
    public static Random random;
+   public static LevelManager levels;
 
    public static final float VIRTUAL_WIDTH = 10.24f;
    public static final float VIRTUAL_HEIGHT = 5.76f;
@@ -52,6 +54,7 @@ public class Neon extends Game {
       Neon.controls = new Controls();
       Neon.game = new GameState();
       Neon.music = new MusicManager();
+      Neon.levels = new LevelManager();
 
       Neon.config.create();
       Neon.settings.create();
@@ -60,6 +63,7 @@ public class Neon extends Game {
       Neon.music.create();
       Neon.ui.create();
       Neon.controls.create();
+      Neon.levels.create();
       Neon.game.create();
 
       viewport = new Rectangle();

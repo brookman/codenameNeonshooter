@@ -1,5 +1,7 @@
 package eu32k.neonshooter.core.config;
 
-public class Session {
+import eu32k.neonshooter.core.fx.SoundSet;
 
+public class Session {
+   public SoundSet set;
 }

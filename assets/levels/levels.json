@@ -4,6 +4,7 @@
 			id: "test-01"
 			, name: "Test Level 1"
 			, file: "test.tmx"
+			, description: "A shitty test level"
 		}
 	]
 	, arcadeLevels: ["test-01"]
