@@ -22,43 +22,35 @@ import java.io.OutputStream;
 import com.leff.midi.event.MidiEvent;
 import com.leff.midi.util.VariableLengthInt;
 
-public class EndOfTrack extends MetaEvent
-{
-    public EndOfTrack(long tick, long delta)
-    {
-        super(tick, delta, MetaEvent.END_OF_TRACK, new VariableLengthInt(0));
-    }
+public class EndOfTrack extends MetaEvent {
+   public EndOfTrack(long tick, long delta) {
+      super(tick, delta, MetaEvent.END_OF_TRACK, new VariableLengthInt(0));
+   }
 
-    @Override
-    protected int getEventSize()
-    {
-        return 3;
-    }
+   @Override
+   protected int getEventSize() {
+      return 3;
+   }
 
-    @Override
-    public void writeToFile(OutputStream out) throws IOException
-    {
-        super.writeToFile(out);
+   @Override
+   public void writeToFile(OutputStream out) throws IOException {
+      super.writeToFile(out);
 
-        out.write(0);
-    }
+      out.write(0);
+   }
 
-    @Override
-    public int compareTo(MidiEvent other)
-    {
-        if(mTick != other.getTick())
-        {
-            return mTick < other.getTick() ? -1 : 1;
-        }
-        if(mDelta.getValue() != other.getDelta())
-        {
-            return mDelta.getValue() < other.getDelta() ? 1 : -1;
-        }
+   @Override
+   public int compareTo(MidiEvent other) {
+      if (mTick != other.getTick()) {
+         return mTick < other.getTick() ? -1 : 1;
+      }
+      if (mDelta.getValue() != other.getDelta()) {
+         return mDelta.getValue() < other.getDelta() ? 1 : -1;
+      }
 
-        if(!(other instanceof EndOfTrack))
-        {
-            return 1;
-        }
-        return 0;
-    }
+      if (!(other instanceof EndOfTrack)) {
+         return 1;
+      }
+      return 0;
+   }
 }

@@ -1,11 +1,11 @@
 package eu32k.neonshooter.core.model;
 
 public interface WorldManager {
-	void clearWorld();
+   void clearWorld();
 
-	void clearEntities();
+   void clearEntities();
 
-	void addShip(float x, float y, boolean isPlayer);
+   void addShip(float x, float y, boolean isPlayer);
 
-	void shoot(GameEntity source);
+   void shoot(GameEntity source);
 }

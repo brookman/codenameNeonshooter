@@ -18,11 +18,10 @@ package com.leff.midi.util;
 
 import com.leff.midi.event.MidiEvent;
 
-public interface MidiEventListener
-{
-    public void onStart(boolean fromBeginning);
+public interface MidiEventListener {
+   public void onStart(boolean fromBeginning);
 
-    public void onEvent(MidiEvent event, long ms);
+   public void onEvent(MidiEvent event, long ms);
 
-    public void onStop(boolean finished);
+   public void onStop(boolean finished);
 }

@@ -32,337 +32,284 @@ import com.leff.midi.event.meta.TimeSignature;
 import com.leff.midi.util.MidiUtil;
 import com.leff.midi.util.VariableLengthInt;
 
-public class MidiTrack
-{
-    private static final boolean VERBOSE = false;
+public class MidiTrack {
+   private static final boolean VERBOSE = false;
 
-    public static final byte[] IDENTIFIER = { 'M', 'T', 'r', 'k' };
+   public static final byte[] IDENTIFIER = { 'M', 'T', 'r', 'k' };
 
-    private int mSize;
-    private boolean mSizeNeedsRecalculating;
-    private boolean mClosed;
-    private long mEndOfTrackDelta;
+   private int mSize;
+   private boolean mSizeNeedsRecalculating;
+   private boolean mClosed;
+   private long mEndOfTrackDelta;
 
-    private TreeSet<MidiEvent> mEvents;
+   private TreeSet<MidiEvent> mEvents;
 
-    public static MidiTrack createTempoTrack()
-    {
-        MidiTrack T = new MidiTrack();
+   public static MidiTrack createTempoTrack() {
+      MidiTrack T = new MidiTrack();
 
-        T.insertEvent(new TimeSignature());
-        T.insertEvent(new Tempo());
+      T.insertEvent(new TimeSignature());
+      T.insertEvent(new Tempo());
 
-        return T;
-    }
+      return T;
+   }
 
-    public MidiTrack()
-    {
-        mEvents = new TreeSet<MidiEvent>();
-        mSize = 0;
-        mSizeNeedsRecalculating = false;
-        mClosed = false;
-        mEndOfTrackDelta = 0;
-    }
+   public MidiTrack() {
+      mEvents = new TreeSet<MidiEvent>();
+      mSize = 0;
+      mSizeNeedsRecalculating = false;
+      mClosed = false;
+      mEndOfTrackDelta = 0;
+   }
 
-    public MidiTrack(InputStream in) throws IOException
-    {
-        this();
+   public MidiTrack(InputStream in) throws IOException {
+      this();
 
-        byte[] buffer = new byte[4];
-        in.read(buffer);
+      byte[] buffer = new byte[4];
+      in.read(buffer);
 
-        if(!MidiUtil.bytesEqual(buffer, IDENTIFIER, 0, 4))
-        {
-            System.err.println("Track identifier did not match MTrk!");
-            return;
-        }
+      if (!MidiUtil.bytesEqual(buffer, IDENTIFIER, 0, 4)) {
+         System.err.println("Track identifier did not match MTrk!");
+         return;
+      }
 
-        in.read(buffer);
-        mSize = MidiUtil.bytesToInt(buffer, 0, 4);
-        
-        buffer = new byte[mSize];
-        in.read(buffer);
-        
-        this.readTrackData(buffer);
-    }
-    
-    private void readTrackData(byte[] data) throws IOException
-    {
-        InputStream in = new ByteArrayInputStream(data);
+      in.read(buffer);
+      mSize = MidiUtil.bytesToInt(buffer, 0, 4);
 
-        long totalTicks = 0;
-        
-        while(in.available() > 0)
-        {
-            VariableLengthInt delta = new VariableLengthInt(in);
-            totalTicks += delta.getValue();
+      buffer = new byte[mSize];
+      in.read(buffer);
 
-            MidiEvent E = MidiEvent.parseEvent(totalTicks, delta.getValue(), in);
-            if(E == null)
-            {
-                System.out.println("Event skipped!");
-                continue;
-            }
+      this.readTrackData(buffer);
+   }
 
-            if(VERBOSE)
-            {
-                System.out.println(E);
-            }
+   private void readTrackData(byte[] data) throws IOException {
+      InputStream in = new ByteArrayInputStream(data);
 
-            // Not adding the EndOfTrack event here allows the track to be
-            // edited
-            // after being read in from file.
-            if(E.getClass().equals(EndOfTrack.class))
-            {
-                mEndOfTrackDelta = E.getDelta();
-                break;
-            }
-            mEvents.add(E);
-        }
-    }
+      long totalTicks = 0;
 
-    public TreeSet<MidiEvent> getEvents()
-    {
-        return mEvents;
-    }
+      while (in.available() > 0) {
+         VariableLengthInt delta = new VariableLengthInt(in);
+         totalTicks += delta.getValue();
 
-    public int getEventCount()
-    {
-        return mEvents.size();
-    }
+         MidiEvent E = MidiEvent.parseEvent(totalTicks, delta.getValue(), in);
+         if (E == null) {
+            System.out.println("Event skipped!");
+            continue;
+         }
 
-    public int getSize()
-    {
-        if(mSizeNeedsRecalculating)
-        {
-            recalculateSize();
-        }
-        return mSize;
-    }
+         if (VERBOSE) {
+            System.out.println(E);
+         }
 
-    public long getLengthInTicks()
-    {
-        if(mEvents.size() == 0)
-        {
-            return 0;
-        }
+         // Not adding the EndOfTrack event here allows the track to be
+         // edited
+         // after being read in from file.
+         if (E.getClass().equals(EndOfTrack.class)) {
+            mEndOfTrackDelta = E.getDelta();
+            break;
+         }
+         mEvents.add(E);
+      }
+   }
 
-        MidiEvent E = mEvents.last();
-        return E.getTick();
-    }
+   public TreeSet<MidiEvent> getEvents() {
+      return mEvents;
+   }
 
-    public long getEndOfTrackDelta()
-    {
-        return mEndOfTrackDelta;
-    }
+   public int getEventCount() {
+      return mEvents.size();
+   }
 
-    public void setEndOfTrackDelta(long delta)
-    {
-        mEndOfTrackDelta = delta;
-    }
+   public int getSize() {
+      if (mSizeNeedsRecalculating) {
+         recalculateSize();
+      }
+      return mSize;
+   }
 
-    public void insertNote(int channel, int pitch, int velocity, long tick, long duration)
-    {
+   public long getLengthInTicks() {
+      if (mEvents.size() == 0) {
+         return 0;
+      }
 
-        insertEvent(new NoteOn(tick, channel, pitch, velocity));
-        insertEvent(new NoteOn(tick + duration, channel, pitch, 0));
-    }
+      MidiEvent E = mEvents.last();
+      return E.getTick();
+   }
 
-    @SuppressWarnings({ "rawtypes", "unchecked" })
-    public void insertEvent(MidiEvent newEvent)
-    {
-        if(newEvent == null)
-        {
-            return;
-        }
+   public long getEndOfTrackDelta() {
+      return mEndOfTrackDelta;
+   }
 
-        if(mClosed)
-        {
-            System.err.println("Error: Cannot add an event to a closed track.");
-            return;
-        }
+   public void setEndOfTrackDelta(long delta) {
+      mEndOfTrackDelta = delta;
+   }
 
-        MidiEvent prev = null, next = null;
+   public void insertNote(int channel, int pitch, int velocity, long tick, long duration) {
 
-        // floor() and ceiling() are not supported on Android before API Level 9
-        // (Gingerbread)
-        try
-        {
-            Class treeSet = Class.forName("java.util.TreeSet");
-            Method floor = treeSet.getMethod("floor", Object.class);
-            Method ceiling = treeSet.getMethod("ceiling", Object.class);
+      insertEvent(new NoteOn(tick, channel, pitch, velocity));
+      insertEvent(new NoteOn(tick + duration, channel, pitch, 0));
+   }
 
-            prev = (MidiEvent) floor.invoke(mEvents, newEvent);
-            next = (MidiEvent) ceiling.invoke(mEvents, newEvent);
+   @SuppressWarnings({ "rawtypes", "unchecked" })
+   public void insertEvent(MidiEvent newEvent) {
+      if (newEvent == null) {
+         return;
+      }
 
-        }
-        catch(Exception e)
-        {
-            // methods are not supported - must perform linear search
-            Iterator<MidiEvent> it = mEvents.iterator();
+      if (mClosed) {
+         System.err.println("Error: Cannot add an event to a closed track.");
+         return;
+      }
 
-            while(it.hasNext())
-            {
-                next = it.next();
+      MidiEvent prev = null, next = null;
 
-                if(next.getTick() > newEvent.getTick())
-                {
-                    break;
-                }
+      // floor() and ceiling() are not supported on Android before API Level 9
+      // (Gingerbread)
+      try {
+         Class treeSet = Class.forName("java.util.TreeSet");
+         Method floor = treeSet.getMethod("floor", Object.class);
+         Method ceiling = treeSet.getMethod("ceiling", Object.class);
 
-                prev = next;
-                next = null;
-            }
-        }
+         prev = (MidiEvent) floor.invoke(mEvents, newEvent);
+         next = (MidiEvent) ceiling.invoke(mEvents, newEvent);
 
-        mEvents.add(newEvent);
-        mSizeNeedsRecalculating = true;
+      } catch (Exception e) {
+         // methods are not supported - must perform linear search
+         Iterator<MidiEvent> it = mEvents.iterator();
 
-        // Set its delta time based on the previous event (or itself if no
-        // previous event exists)
-        if(prev != null)
-        {
-            newEvent.setDelta(newEvent.getTick() - prev.getTick());
-        }
-        else
-        {
-            newEvent.setDelta(newEvent.getTick());
-        }
-
-        // Update the next event's delta time relative to the new event.
-        if(next != null)
-        {
-            next.setDelta(next.getTick() - newEvent.getTick());
-        }
-
-        mSize += newEvent.getSize();
-
-        if(newEvent.getClass().equals(EndOfTrack.class))
-        {
-            if(next != null)
-            {
-                throw new IllegalArgumentException("Attempting to insert EndOfTrack before an existing event. Use closeTrack() when finished with MidiTrack.");
-            }
-            mClosed = true;
-        }
-    }
-
-    public boolean removeEvent(MidiEvent E)
-    {
-        Iterator<MidiEvent> it = mEvents.iterator();
-        MidiEvent prev = null, curr = null, next = null;
-
-        while(it.hasNext())
-        {
+         while (it.hasNext()) {
             next = it.next();
 
-            if(E.equals(curr))
-            {
-                break;
+            if (next.getTick() > newEvent.getTick()) {
+               break;
             }
 
-            prev = curr;
-            curr = next;
+            prev = next;
             next = null;
-        }
+         }
+      }
 
-        if(next == null)
-        {
-            // Either the event was not found in the track,
-            // or this is the last event in the track.
-            // Either way, we won't need to update any delta times
-            return mEvents.remove(curr);
-        }
+      mEvents.add(newEvent);
+      mSizeNeedsRecalculating = true;
 
-        if(!mEvents.remove(curr))
-        {
-            return false;
-        }
+      // Set its delta time based on the previous event (or itself if no
+      // previous event exists)
+      if (prev != null) {
+         newEvent.setDelta(newEvent.getTick() - prev.getTick());
+      } else {
+         newEvent.setDelta(newEvent.getTick());
+      }
 
-        if(prev != null)
-        {
-            next.setDelta(next.getTick() - prev.getTick());
-        }
-        else
-        {
-            next.setDelta(next.getTick());
-        }
-        return true;
-    }
+      // Update the next event's delta time relative to the new event.
+      if (next != null) {
+         next.setDelta(next.getTick() - newEvent.getTick());
+      }
 
-    public void closeTrack()
-    {
-        long lastTick = 0;
-        if(mEvents.size() > 0)
-        {
-            MidiEvent last = mEvents.last();
-            lastTick = last.getTick();
-        }
-        EndOfTrack eot = new EndOfTrack(lastTick + mEndOfTrackDelta, 0);
-        insertEvent(eot);
-    }
+      mSize += newEvent.getSize();
 
-    public void dumpEvents()
-    {
-        Iterator<MidiEvent> it = mEvents.iterator();
-        while(it.hasNext())
-        {
-            System.out.println(it.next());
-        }
-    }
+      if (newEvent.getClass().equals(EndOfTrack.class)) {
+         if (next != null) {
+            throw new IllegalArgumentException("Attempting to insert EndOfTrack before an existing event. Use closeTrack() when finished with MidiTrack.");
+         }
+         mClosed = true;
+      }
+   }
 
-    private void recalculateSize()
-    {
-        mSize = 0;
+   public boolean removeEvent(MidiEvent E) {
+      Iterator<MidiEvent> it = mEvents.iterator();
+      MidiEvent prev = null, curr = null, next = null;
 
-        Iterator<MidiEvent> it = mEvents.iterator();
-        MidiEvent last = null;
-        while(it.hasNext())
-        {
-            MidiEvent E = it.next();
-            mSize += E.getSize();
+      while (it.hasNext()) {
+         next = it.next();
 
-            // If an event is of the same type as the previous event,
-            // no status byte is written.
-            if(last != null && !E.requiresStatusByte(last))
-            {
-                mSize--;
-            }
-            last = E;
-        }
+         if (E.equals(curr)) {
+            break;
+         }
 
-        mSizeNeedsRecalculating = false;
-    }
+         prev = curr;
+         curr = next;
+         next = null;
+      }
 
-    public void writeToFile(OutputStream out) throws IOException
-    {
-        if(!mClosed)
-        {
-            closeTrack();
-        }
+      if (next == null) {
+         // Either the event was not found in the track,
+         // or this is the last event in the track.
+         // Either way, we won't need to update any delta times
+         return mEvents.remove(curr);
+      }
 
-        if(mSizeNeedsRecalculating)
-        {
-            recalculateSize();
-        }
+      if (!mEvents.remove(curr)) {
+         return false;
+      }
 
-        out.write(IDENTIFIER);
-        out.write(MidiUtil.intToBytes(mSize, 4));
+      if (prev != null) {
+         next.setDelta(next.getTick() - prev.getTick());
+      } else {
+         next.setDelta(next.getTick());
+      }
+      return true;
+   }
 
-        Iterator<MidiEvent> it = mEvents.iterator();
-        MidiEvent lastEvent = null;
+   public void closeTrack() {
+      long lastTick = 0;
+      if (mEvents.size() > 0) {
+         MidiEvent last = mEvents.last();
+         lastTick = last.getTick();
+      }
+      EndOfTrack eot = new EndOfTrack(lastTick + mEndOfTrackDelta, 0);
+      insertEvent(eot);
+   }
 
-        while(it.hasNext())
-        {
-            MidiEvent event = it.next();
-            if(VERBOSE)
-            {
-                System.out.println("Writing: " + event);
-            }
+   public void dumpEvents() {
+      Iterator<MidiEvent> it = mEvents.iterator();
+      while (it.hasNext()) {
+         System.out.println(it.next());
+      }
+   }
 
-            event.writeToFile(out, event.requiresStatusByte(lastEvent));
+   private void recalculateSize() {
+      mSize = 0;
 
-            lastEvent = event;
-        }
-    }
+      Iterator<MidiEvent> it = mEvents.iterator();
+      MidiEvent last = null;
+      while (it.hasNext()) {
+         MidiEvent E = it.next();
+         mSize += E.getSize();
+
+         // If an event is of the same type as the previous event,
+         // no status byte is written.
+         if (last != null && !E.requiresStatusByte(last)) {
+            mSize--;
+         }
+         last = E;
+      }
+
+      mSizeNeedsRecalculating = false;
+   }
+
+   public void writeToFile(OutputStream out) throws IOException {
+      if (!mClosed) {
+         closeTrack();
+      }
+
+      if (mSizeNeedsRecalculating) {
+         recalculateSize();
+      }
+
+      out.write(IDENTIFIER);
+      out.write(MidiUtil.intToBytes(mSize, 4));
+
+      Iterator<MidiEvent> it = mEvents.iterator();
+      MidiEvent lastEvent = null;
+
+      while (it.hasNext()) {
+         MidiEvent event = it.next();
+         if (VERBOSE) {
+            System.out.println("Writing: " + event);
+         }
+
+         event.writeToFile(out, event.requiresStatusByte(lastEvent));
+
+         lastEvent = event;
+      }
+   }
 }

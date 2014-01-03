@@ -12,27 +12,27 @@ import com.leff.midi.MidiFile;
 
 public class MidiLoader extends SynchronousAssetLoader<MidiFile, MidiLoader.MidiTrackParameter> {
 
-	public MidiLoader(FileHandleResolver resolver) {
-		super(resolver);
-	}
+   public MidiLoader(FileHandleResolver resolver) {
+      super(resolver);
+   }
 
-	@Override
-	public MidiFile load(AssetManager assetManager, String fileName, FileHandle file, MidiTrackParameter parameter) {
-		try {
-			return new MidiFile(file.read());
-		} catch (Exception ex) {
-			Gdx.app.error("MidiLoader", "Could not load midi file.");
-			Gdx.app.error("MidiLoader", ex.getMessage());
-			return null;
-		}
-	}
+   @Override
+   public MidiFile load(AssetManager assetManager, String fileName, FileHandle file, MidiTrackParameter parameter) {
+      try {
+         return new MidiFile(file.read());
+      } catch (Exception ex) {
+         Gdx.app.error("MidiLoader", "Could not load midi file.");
+         Gdx.app.error("MidiLoader", ex.getMessage());
+         return null;
+      }
+   }
 
-	@Override
-	public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, MidiTrackParameter parameter) {
-		return null;
-	}
+   @Override
+   public Array<AssetDescriptor> getDependencies(String fileName, FileHandle file, MidiTrackParameter parameter) {
+      return null;
+   }
 
-	static public class MidiTrackParameter extends AssetLoaderParameters<MidiFile> {
-	}
+   static public class MidiTrackParameter extends AssetLoaderParameters<MidiFile> {
+   }
 
 }
