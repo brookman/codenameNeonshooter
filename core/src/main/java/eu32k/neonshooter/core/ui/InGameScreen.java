@@ -2,8 +2,6 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.maps.MapLayer;
@@ -25,7 +23,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.Touchpad;
-import com.leff.midi.MidiFile;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
@@ -39,8 +36,6 @@ import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
-import eu32k.neonshooter.core.fx.midi.ControlTracks;
-import eu32k.neonshooter.core.fx.midi.ControlTracksDisplay;
 import eu32k.neonshooter.core.rendering.LineRenderer;
 
 public class InGameScreen implements Screen {
@@ -56,18 +51,8 @@ public class InGameScreen implements Screen {
    private World box2dWorld;
    private ExtendedWorld artemisWorld;
 
-   private Box2DDebugRenderer debugRenderer;
-   private Music music;
-
-   private ControlTracks controlTracks;
-   private ControlTracksDisplay midiDisplay;
-   private Sound sound;
-   private long soundId;
    private LineRenderer lineRenderer;
-
-   public InGameScreen() {
-      controlTracks = new ControlTracks();
-   }
+   private Box2DDebugRenderer debugRenderer;
 
    @Override
    public void show() {
@@ -133,24 +118,7 @@ public class InGameScreen implements Screen {
       }
 
       Gdx.input.setInputProcessor(hudStage);
-      if (this.music != null) {
-         this.music.stop();
-      }
-
-      // this.music = Neon.assets.manager.get("music/acid rain.ogg",
-      // Music.class);
-      // this.sound = Neon.assets.manager.get("music/too damn long.ogg",
-      // Sound.class);
-      // MidiFile mid = Neon.assets.manager.get("music/too damn long.mid",
-      // MidiFile.class);
-      this.sound = Neon.assets.manager.get(Neon.game.soundFile, Sound.class);
-      MidiFile mid = Neon.assets.manager.get(Neon.game.controlFile, MidiFile.class);
-      controlTracks.load(mid);
-      midiDisplay.setState(controlTracks);
-      controlTracks.play();
-      soundId = sound.play(0.5f);
       Neon.game.timeScale = 1f;
-      // music.play();
    }
 
    private void createHud() {
@@ -172,8 +140,7 @@ public class InGameScreen implements Screen {
       table.add(padRight).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
 
       hudStage.addActor(table);
-      midiDisplay = new ControlTracksDisplay(null);
-      hudStage.addActor(midiDisplay);
+      hudStage.addActor(Neon.music.getMidiDisplay());
    }
 
    @Override
@@ -181,17 +148,7 @@ public class InGameScreen implements Screen {
       float scale = Neon.game.timeScale;
       float lastScale = scale;
       float target = Neon.game.targetTimeScale;
-      // if (Neon.controls.comma.isDown) {
-      // scale *= 0.9f;
-      // Gdx.app.log("InGameScreen", "Sound scale set to " +
-      // Neon.game.timeScale);
-      // }
-      // if (Neon.controls.period.isDown) {
-      // Neon.game.timeScale /= 0.9f;
-      // sound.setPitch(soundId, Neon.game.timeScale);
-      // Gdx.app.log("InGameScreen", "Sound scale set to " +
-      // Neon.game.timeScale);
-      // }
+
       handleTimeScale(delta, scale, lastScale, target);
 
       float scaledDelta = delta * Neon.game.timeScale;
@@ -232,7 +189,7 @@ public class InGameScreen implements Screen {
       gameStage.draw();
       hudStage.draw();
 
-      controlTracks.update(scaledDelta);
+      Neon.music.update(scaledDelta);
 
       // Table.drawDebug(hudStage);
       // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
@@ -253,7 +210,7 @@ public class InGameScreen implements Screen {
       }
       if (lastScale != scale) {
          Neon.game.timeScale = scale;
-         sound.setPitch(soundId, Neon.game.timeScale);
+         Neon.music.pitch(Neon.game.timeScale);
          Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
       }
    }

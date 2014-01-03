@@ -3,7 +3,6 @@ package eu32k.neonshooter.core.ui;
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -11,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.leff.midi.MidiFile;
 
 import eu32k.neonshooter.core.Neon;
 
@@ -105,12 +103,7 @@ public class MainMenuScreen implements Screen {
    private void start() {
       Gdx.app.log("MainMenuScreen", "Loading music");
       Neon.assets.manager.load("levels/test.tmx", TiledMap.class);
-      // Neon.assets.manager.load("music/acid rain.ogg", Music.class);
-      Neon.game.setSoundset(Neon.assets.MUSIC_TOO_DAMN_LONG);
-      Neon.assets.manager.load(Neon.game.soundFile, Sound.class);
-      Neon.assets.manager.load(Neon.game.controlFile, MidiFile.class);
-      // Neon.assets.manager.load("music/too damn long.ogg", Sound.class);
-      // Neon.assets.manager.load("music/too damn long.mid", MidiFile.class);
+      Neon.music.prepareAnyArcadeTrack();
       Neon.ui.loadThenShowScreen(InGameScreen.class);
    }
 }
