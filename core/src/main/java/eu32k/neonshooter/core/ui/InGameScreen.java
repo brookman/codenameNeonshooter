@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
@@ -225,8 +226,7 @@ public class InGameScreen implements Screen {
 
       fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-      Rectangle viewport = Neon.viewport;
-      mapRenderer.setView(gameStage.getCamera().combined, viewport.x, viewport.y, viewport.width, viewport.height);
+      mapRenderer.setView((OrthographicCamera) gameStage.getCamera());
       mapRenderer.render();
 
       gameStage.draw();

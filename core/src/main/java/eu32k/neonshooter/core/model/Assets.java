@@ -40,6 +40,7 @@ public class Assets {
 
    private void queueGameAssets() {
       // Queue sound fx, images for loading etc...
+
       manager.setLoader(TiledMap.class, tmxLoader);
       manager.setLoader(MidiFile.class, midiLoader);
       manager.load("textures/debug.png", Texture.class);
