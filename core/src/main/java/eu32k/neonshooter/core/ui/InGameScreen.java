@@ -19,6 +19,7 @@ import com.leff.midi.MidiFile;
 
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
+import eu32k.gdx.artemis.extension.system.CameraSystem;
 import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
@@ -74,6 +75,7 @@ public class InGameScreen implements Screen {
          artemisWorld.setSystem(new ControlSystem());
          artemisWorld.setSystem(new RemoveSystem());
          artemisWorld.setSystem(new FxSystem());
+         artemisWorld.setSystem(new CameraSystem(gameStage.getCamera()));
 
          artemisWorld.initialize();
          Mappers.init(artemisWorld);

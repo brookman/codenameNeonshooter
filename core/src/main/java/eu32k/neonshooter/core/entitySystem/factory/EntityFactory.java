@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
 import eu32k.gdx.artemis.extension.component.ActorComponent;
+import eu32k.gdx.artemis.extension.component.CameraTargetComponent;
 import eu32k.gdx.artemis.extension.component.PhysicsComponent;
 import eu32k.gdx.artemis.extension.component.TextureRegionComponent;
 import eu32k.gdx.artemis.extension.factory.Factory;
@@ -124,6 +125,7 @@ public class EntityFactory extends Factory {
       e.addComponent(pc);
 
       e.addComponent(get(WeaponComponent.class).init(200));
+      e.addComponent(get(CameraTargetComponent.class).init(false));
 
       return e;
    }
