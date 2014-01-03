@@ -7,6 +7,13 @@
 			, audio: "music/too damn long.ogg"
 			, control: "music/too damn long.mid"
 		}
+		, {
+			id: "acid rain"
+			, artist: "atombrot"
+			, track: "acid rain"
+			, audio: "music/acid rain.ogg"
+			, control: "music/acid rain.mid"
+		}
 	]
-	, arcadeTracks: ["too damn long"]
+	, arcadeTracks: ["too damn long", "acid rain"]
 }

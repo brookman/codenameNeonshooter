@@ -3,9 +3,7 @@ package eu32k.neonshooter.core.ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -132,9 +130,8 @@ public class InGameScreen implements Screen {
          debugRenderer.setDrawJoints(true);
          debugRenderer.setDrawVelocities(true);
       }
-      Neon.game.map = Neon.assets.manager.get(Neon.game.nextLevel, TiledMap.class);
-      Neon.game.level().load(Neon.game.map);
-      mapRenderer = new OrthogonalTiledMapRenderer(Neon.game.map, 1f / 512f);
+      Neon.levels.loadLevel();
+      this.mapRenderer = Neon.levels.getMapRenderer();
       Neon.music.loadTrack();
       Neon.music.play();
       Gdx.input.setInputProcessor(hudStage);
