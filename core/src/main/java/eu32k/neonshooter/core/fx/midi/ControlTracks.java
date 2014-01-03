@@ -8,6 +8,8 @@ import com.leff.midi.MidiTrack;
 import com.leff.midi.event.MidiEvent;
 import com.leff.midi.event.meta.TrackName;
 
+import eu32k.neonshooter.core.Neon;
+
 public class ControlTracks {
    public final static String KEY_BEAT = "beat";
    public final static String KEY_BASS = "bass";
@@ -66,6 +68,9 @@ public class ControlTracks {
          if (controlTrack != null) {
             controlTrack.load(track, file.getResolution(), bpm);
          }
+      }
+      if (beatTrack.noteList.size() > 0) {
+         beatTrack.noteList.get(0).addHandler(Neon.fx.beatHandler());
       }
    }
 
