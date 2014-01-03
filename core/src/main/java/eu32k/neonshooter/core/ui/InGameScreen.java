@@ -2,11 +2,23 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObject;
+import com.badlogic.gdx.maps.objects.PolylineMapObject;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.EdgeShape;
+import com.badlogic.gdx.physics.box2d.Filter;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -19,11 +31,13 @@ import eu32k.gdx.artemis.extension.system.CameraSystem;
 import eu32k.gdx.artemis.extension.system.PhysicsSystem;
 import eu32k.gdx.artemis.extension.system.RemoveSystem;
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
+import eu32k.neonshooter.core.rendering.LineRenderer;
 
 public class InGameScreen implements Screen {
 
@@ -38,8 +52,8 @@ public class InGameScreen implements Screen {
    private World box2dWorld;
    private ExtendedWorld artemisWorld;
 
+   private LineRenderer lineRenderer;
    private Box2DDebugRenderer debugRenderer;
-
    private TiledMapRenderer mapRenderer;
 
    @Override
@@ -66,61 +80,33 @@ public class InGameScreen implements Screen {
          Mappers.init(artemisWorld);
 
          factory.createPlayerShip(3, 3).addToWorld();
-         // factory.createChlotz(4, 3).addToWorld();
-         // factory.createChlotz(5, 3.5f).addToWorld();
-         // factory.createChlotz(5, 2.5f).addToWorld();
+
          for (int y = 0; y < 3; y++) {
             for (int x = 0; x < 12; x++) {
                factory.createChlotz(4f + x / 3f * 2, 3.5f + y / 3f * 2).addToWorld();
             }
          }
 
-         // factory.createChlotz(6, 3).addToWorld();
-         // factory.createChlotz(7, 3.5f).addToWorld();
-         // factory.createChlotz(8, 2.5f).addToWorld();
-         // factory.createChlotz(4, 2).addToWorld();
-         // factory.createChlotz(5, 4.5f).addToWorld();
-         // factory.createChlotz(5, 4.5f).addToWorld();
+         TiledMap map = Neon.assets.manager.get("levels/line.tmx", TiledMap.class);
+         MapLayer layer = map.getLayers().get(0);
+         float s = 32;
+         for (MapObject object : layer.getObjects()) {
+            if (object instanceof PolylineMapObject) {
+               PolylineMapObject polylineMapObject = (PolylineMapObject) object;
+               float[] vertices = polylineMapObject.getPolyline().getTransformedVertices();
+               for (int i = 0; i < vertices.length - 2; i += 2) {
+                  createEdge(vertices[i] / s, vertices[i + 1] / s, vertices[i + 2] / s, vertices[i + 3] / s);
+               }
+            } else if (object instanceof RectangleMapObject) {
+               RectangleMapObject rectangleMapObject = (RectangleMapObject) object;
+               Rectangle rect = rectangleMapObject.getRectangle();
 
-         factory.createTile(1, 4, 0).addToWorld();
-         factory.createTile(1, 3, 0).addToWorld();
-         factory.createTile(1, 2, 0).addToWorld();
-
-         factory.createTile(1, 1, 10).addToWorld();
-
-         factory.createTile(2, 1, 1).addToWorld();
-         factory.createTile(3, 1, 1).addToWorld();
-         factory.createTile(4, 1, 1).addToWorld();
-         factory.createTile(5, 1, 1).addToWorld();
-
-         factory.createTile(6, 1, 11).addToWorld();
-         factory.createTile(6, 2, 2).addToWorld();
-         factory.createTile(6, 3, 5).addToWorld();
-
-         factory.createTile(7, 3, 1).addToWorld();
-         factory.createTile(8, 3, 4).addToWorld();
-         factory.createTile(8, 2, 0).addToWorld();
-         factory.createTile(8, 1, 10).addToWorld();
-
-         factory.createTile(9, 1, 1).addToWorld();
-
-         factory.createTile(10, 1, 11).addToWorld();
-         factory.createTile(10, 2, 2).addToWorld();
-         factory.createTile(10, 3, 2).addToWorld();
-         factory.createTile(10, 4, 2).addToWorld();
-
-         factory.createTile(10, 5, 8).addToWorld();
-
-         factory.createTile(2, 5, 3).addToWorld();
-         factory.createTile(3, 5, 3).addToWorld();
-         factory.createTile(4, 5, 3).addToWorld();
-         factory.createTile(5, 5, 3).addToWorld();
-         factory.createTile(6, 5, 3).addToWorld();
-         factory.createTile(7, 5, 3).addToWorld();
-         factory.createTile(8, 5, 3).addToWorld();
-         factory.createTile(9, 5, 3).addToWorld();
-
-         factory.createTile(1, 5, 9).addToWorld();
+               createEdge(rect.x / s, rect.y / s, rect.width / s, rect.y / s);
+               createEdge(rect.x / s, rect.y / s, rect.x / s, rect.height / s);
+               createEdge(rect.width / s, rect.height / s, rect.x / s, rect.height / s);
+               createEdge(rect.width / s, rect.height / s, rect.width / s, rect.y / s);
+            }
+         }
 
          debugRenderer = new Box2DDebugRenderer();
          // debugRenderer.setDrawAABBs(true);
@@ -129,6 +115,8 @@ public class InGameScreen implements Screen {
          debugRenderer.setDrawInactiveBodies(true);
          debugRenderer.setDrawJoints(true);
          debugRenderer.setDrawVelocities(true);
+
+         lineRenderer = new LineRenderer(gameStage.getCamera(), Neon.assets.manager.get("textures/line.png", Texture.class));
       }
       Neon.levels.loadLevel();
       this.mapRenderer = Neon.levels.getMapRenderer();
@@ -165,17 +153,7 @@ public class InGameScreen implements Screen {
       float scale = Neon.game.timeScale;
       float lastScale = scale;
       float target = Neon.game.targetTimeScale;
-      // if (Neon.controls.comma.isDown) {
-      // scale *= 0.9f;
-      // Gdx.app.log("InGameScreen", "Sound scale set to " +
-      // Neon.game.timeScale);
-      // }
-      // if (Neon.controls.period.isDown) {
-      // Neon.game.timeScale /= 0.9f;
-      // sound.setPitch(soundId, Neon.game.timeScale);
-      // Gdx.app.log("InGameScreen", "Sound scale set to " +
-      // Neon.game.timeScale);
-      // }
+
       handleTimeScale(delta, scale, lastScale, target);
 
       float scaledDelta = delta * Neon.game.timeScale;
@@ -192,8 +170,26 @@ public class InGameScreen implements Screen {
 
       fpsLabel.setText("FPS: " + Gdx.graphics.getFramesPerSecond());
 
-      mapRenderer.setView((OrthographicCamera) gameStage.getCamera());
-      mapRenderer.render();
+      TiledMap map = Neon.assets.manager.get("levels/line.tmx", TiledMap.class);
+      MapLayer layer = map.getLayers().get(0);
+      float s = 32;
+      for (MapObject object : layer.getObjects()) {
+         if (object instanceof PolylineMapObject) {
+            PolylineMapObject polylineMapObject = (PolylineMapObject) object;
+            float[] vertices = polylineMapObject.getPolyline().getTransformedVertices();
+            for (int i = 0; i < vertices.length - 2; i += 2) {
+               lineRenderer.drawLine(vertices[i] / s, vertices[i + 1] / s, vertices[i + 2] / s, vertices[i + 3] / s, 0.04f, Color.ORANGE);
+            }
+         } else if (object instanceof RectangleMapObject) {
+            RectangleMapObject rectangleMapObject = (RectangleMapObject) object;
+            Rectangle rect = rectangleMapObject.getRectangle();
+
+            lineRenderer.drawLine(rect.x / s, rect.y / s, rect.width / s, rect.y / s, 0.04f, Color.ORANGE);
+            lineRenderer.drawLine(rect.x / s, rect.y / s, rect.x / s, rect.height / s, 0.04f, Color.ORANGE);
+            lineRenderer.drawLine(rect.width / s, rect.height / s, rect.x / s, rect.height / s, 0.04f, Color.ORANGE);
+            lineRenderer.drawLine(rect.width / s, rect.height / s, rect.width / s, rect.y / s, 0.04f, Color.ORANGE);
+         }
+      }
 
       gameStage.draw();
       hudStage.draw();
@@ -245,5 +241,20 @@ public class InGameScreen implements Screen {
 
    @Override
    public void dispose() {
+   }
+
+   private void createEdge(float x1, float y1, float x2, float y2) {
+      BodyDef bodyDef = new BodyDef();
+      bodyDef.type = BodyType.StaticBody;
+
+      Body body = box2dWorld.createBody(bodyDef);
+
+      EdgeShape edge = new EdgeShape();
+      edge.set(x1, y1, x2, y2);
+      Fixture fixture = body.createFixture(edge, 0f);
+      Filter filter = fixture.getFilterData();
+      filter.categoryBits = GameBits.SCENERY.category;
+      filter.maskBits = GameBits.SCENERY.mask;
+      fixture.setFilterData(filter);
    }
 }

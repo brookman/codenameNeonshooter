@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="10" height="10" tilewidth="32" tileheight="32">
+ <objectgroup name="objects" width="10" height="10">
+  <object x="32" y="288">
+   <polyline points="0,0 32,0 32,-32"/>
+  </object>
+  <object x="192" y="256">
+   <polyline points="0,0 0,32 32,0"/>
+  </object>
+  <object x="0" y="128" width="256" height="192"/>
+  <object x="32" y="128">
+   <polyline points="0,0 32,32 32,64 64,96"/>
+  </object>
+  <object x="160" y="224">
+   <polyline points="0,0 0,-32 32,-64 64,-64"/>
+  </object>
+  <object x="224" y="160">
+   <polyline points="0,0 0,32 32,32"/>
+  </object>
+ </objectgroup>
+</map>
