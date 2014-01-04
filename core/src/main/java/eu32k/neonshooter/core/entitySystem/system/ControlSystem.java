@@ -46,13 +46,21 @@ public class ControlSystem extends EntityProcessingSystem {
 
       if (Neon.controls.padLeft.len() > 0) {
          velocity.set(Neon.controls.padLeft);
-         velocity.scl(2.5f);
+         velocity.scl(world.getDelta() * 5.0f);
       }
 
       if (velocity.len2() > 0.01f) {
-         physicsComponent.body.setLinearVelocity(velocity);
+         physicsComponent.body.applyForceToCenter(velocity, true);
+         physicsComponent.body.setLinearDamping(7);
+         // physicsComponent.body.setLinearVelocity(velocity);
+         // physicsComponent.body.setTransform(physicsComponent.body.getPosition(),
+         // velocity.angle() * MathUtils.degRad);
          physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
+      } else {
+         physicsComponent.body.setLinearDamping(10);
       }
+
       physicsComponent.body.setAngularVelocity(0);
+
    }
 }
