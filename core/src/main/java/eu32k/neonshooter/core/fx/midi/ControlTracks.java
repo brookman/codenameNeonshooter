@@ -108,4 +108,21 @@ public class ControlTracks {
    public enum TrackType {
       Beat, Bass, Lead, Pad, Fx
    }
+
+   public ControlTrack getTrack(TrackType track) {
+      switch (track) {
+      case Bass:
+         return bassTrack;
+      case Beat:
+         return beatTrack;
+      case Lead:
+         return leadTrack;
+      case Pad:
+         return padTrack;
+      case Fx:
+         return fxTrack;
+      default:
+         return null;
+      }
+   }
 }

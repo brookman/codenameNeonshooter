@@ -6,6 +6,12 @@
 			, file: "levels/line.tmx"
 			, description: "A shitty test level"
 		}
+		, {
+			id: "test-02"
+			, name: "Test Level 2"
+			, file: "levels/line2.tmx"
+			, description: "A shitty test level. Testing spawners."
+		}
 	]
-	, arcadeLevels: ["test-01"]
+	, arcadeLevels: ["test-02"]
 }

@@ -18,6 +18,7 @@ public class ExtendedMap {
    public List<Line> lines = new ArrayList<Line>();
    public Vector2 playerSpawn = new Vector2();
    public List<Vector2> enemySpawns = new ArrayList<Vector2>();
+   public List<Vector2> spawnerSpawns = new ArrayList<Vector2>();
 
    public ExtendedMap(TiledMap map) {
       this.map = map;
@@ -54,6 +55,10 @@ public class ExtendedMap {
                Vector2 enemySpawn = new Vector2(ellipse.getEllipse().x + ellipse.getEllipse().width / 2.0f, ellipse.getEllipse().y + ellipse.getEllipse().height / 2.0f);
                enemySpawn.scl(1.0f / s);
                enemySpawns.add(enemySpawn);
+            } else if (object.getName().equals("spawnerSpawn")) {
+               Vector2 spawnerSpawn = new Vector2(ellipse.getEllipse().x + ellipse.getEllipse().width / 2.0f, ellipse.getEllipse().y + ellipse.getEllipse().height / 2.0f);
+               spawnerSpawn.scl(1.0f / s);
+               spawnerSpawns.add(spawnerSpawn);
             }
          }
       }

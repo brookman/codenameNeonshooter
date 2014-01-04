@@ -136,4 +136,8 @@ public class MusicManager implements Serializable {
       sound.setPitch(soundId, pitch);
    }
 
+   public ControlTracks getControlTracks() {
+      return controlTracks;
+   }
+
 }

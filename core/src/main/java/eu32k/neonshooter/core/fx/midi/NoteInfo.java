@@ -25,12 +25,14 @@ public class NoteInfo {
    }
 
    public void notifyNoteOn() {
+      on = true;
       for (NoteHandler handler : handlers) {
          handler.noteOn(this);
       }
    }
 
    public void notifyNoteOff() {
+      on = false;
       for (NoteHandler handler : handlers) {
          handler.noteOff(this);
       }

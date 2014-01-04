@@ -23,6 +23,7 @@ import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
 import eu32k.neonshooter.core.entitySystem.system.FxSystem;
+import eu32k.neonshooter.core.entitySystem.system.SpawnerSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
 
 public class InGameScreen implements Screen {
@@ -61,6 +62,7 @@ public class InGameScreen implements Screen {
          artemisWorld.setSystem(new RemoveSystem());
          artemisWorld.setSystem(new FxSystem());
          artemisWorld.setSystem(new CameraSystem(gameStage.getCamera()));
+         artemisWorld.setSystem(new SpawnerSystem(factory));
 
          artemisWorld.initialize();
          Mappers.init(artemisWorld);
@@ -80,6 +82,9 @@ public class InGameScreen implements Screen {
       factory.createPlayerShip(Neon.game.map.playerSpawn.x, Neon.game.map.playerSpawn.y).addToWorld();
       for (Vector2 enemyPos : Neon.game.map.enemySpawns) {
          factory.createEnemyShip(enemyPos.x, enemyPos.y).addToWorld();
+      }
+      for (Vector2 spawnerPos : Neon.game.map.spawnerSpawns) {
+         factory.createSpawner(spawnerPos.x, spawnerPos.y);
       }
 
       Neon.music.loadTrack();

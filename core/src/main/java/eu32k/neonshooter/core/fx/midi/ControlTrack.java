@@ -202,6 +202,15 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       // TODO: On reset, all handlers have to communicate their init value
    }
 
+   public boolean anyNotePlaying() {
+      for (NoteInfo note : notes.values()) {
+         if (note.on) {
+            return true;
+         }
+      }
+      return false;
+   }
+
    public interface AnyNoteHandler {
       public boolean playing(ControlTrack track);
 
