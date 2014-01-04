@@ -24,9 +24,8 @@ public class SpawnerSystem extends EntityProcessingSystem {
 
    @Override
    protected void process(Entity e) {
-      Gdx.app.log("SpawnerSystem", "Processing spawner");
+      // Gdx.app.log("SpawnerSystem", "Processing spawner");
       SpawnerComponent spawner = Mappers.spawnerMapper.get(e);
-      PositionComponent position = Mappers.positionMapper.get(e);
       ControlTracks tracks = Neon.music.getControlTracks();
       ControlTrack track = tracks.getTrack(spawner.track);
       if (track == null) {
