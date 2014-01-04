@@ -104,4 +104,8 @@ public class ControlTracks {
       beatTrack.clear();
       leadTrack.clear();
    }
+
+   public enum TrackType {
+      Beat, Bass, Lead, Pad, Fx
+   }
 }

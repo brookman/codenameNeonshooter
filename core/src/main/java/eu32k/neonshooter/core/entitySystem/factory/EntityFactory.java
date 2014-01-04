@@ -19,6 +19,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
+import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
 
 public class EntityFactory extends Factory {
@@ -153,6 +154,14 @@ public class EntityFactory extends Factory {
       e.addComponent(get(ControllableComponent.class));
       e.addComponent(get(WeaponComponent.class).init(200));
       e.addComponent(get(CameraTargetComponent.class).init(false));
+      return e;
+   }
+
+   public Entity createSpawner(float x, float y, Bits bits) {
+      Entity e = world.createEntity();
+      // x, y, 0.5f, 0.5f, 0, null
+
+      e.addComponent(get(SpawnerComponent.class).init());
       return e;
    }
 }
