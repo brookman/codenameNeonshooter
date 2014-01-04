@@ -16,8 +16,8 @@
 
 package com.leff.midi.event;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 
 import com.leff.midi.event.meta.MetaEvent;
@@ -71,7 +71,7 @@ public abstract class MidiEvent implements Comparable<MidiEvent> {
    private static int sType = -1;
    private static int sChannel = -1;
 
-   public static final MidiEvent parseEvent(long tick, long delta, InputStream in) throws IOException {
+   public static final MidiEvent parseEvent(long tick, long delta, ByteArrayInputStream in) throws IOException {
       in.mark(1);
       boolean reset = false;
 

@@ -81,7 +81,7 @@ public class MidiTrack {
    }
 
    private void readTrackData(byte[] data) throws IOException {
-      InputStream in = new ByteArrayInputStream(data);
+      ByteArrayInputStream in = new ByteArrayInputStream(data);
 
       long totalTicks = 0;
 
@@ -173,22 +173,20 @@ public class MidiTrack {
       // next = (MidiEvent) ceiling.invoke(mEvents, newEvent);
       //
       // } catch (Exception e) {
-      // // methods are not supported - must perform linear search
-      // Iterator<MidiEvent> it = mEvents.iterator();
-      //
-      // while (it.hasNext()) {
-      // next = it.next();
-      //
-      // if (next.getTick() > newEvent.getTick()) {
-      // break;
+      // methods are not supported - must perform linear search
+      Iterator<MidiEvent> it = mEvents.iterator();
+
+      while (it.hasNext()) {
+         next = it.next();
+
+         if (next.getTick() > newEvent.getTick()) {
+            break;
+         }
+
+         prev = next;
+         next = null;
+      }
       // }
-      //
-      // prev = next;
-      // next = null;
-      // }
-      // }
-      prev = mEvents.floor(newEvent);
-      next = mEvents.ceiling(newEvent);
 
       mEvents.add(newEvent);
       mSizeNeedsRecalculating = true;

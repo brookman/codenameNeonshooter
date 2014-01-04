@@ -17,9 +17,6 @@
 package com.leff.midi;
 
 import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -138,22 +135,23 @@ public class MidiFile {
       mType = mTrackCount > 1 ? 1 : 0;
    }
 
-   public void writeToFile(File outFile) throws FileNotFoundException, IOException {
-      FileOutputStream fout = new FileOutputStream(outFile);
-
-      fout.write(IDENTIFIER);
-      fout.write(MidiUtil.intToBytes(6, 4));
-      fout.write(MidiUtil.intToBytes(mType, 2));
-      fout.write(MidiUtil.intToBytes(mTrackCount, 2));
-      fout.write(MidiUtil.intToBytes(mResolution, 2));
-
-      for (MidiTrack T : mTracks) {
-         T.writeToFile(fout);
-      }
-
-      fout.flush();
-      fout.close();
-   }
+   // public void writeToFile(File outFile) throws FileNotFoundException,
+   // IOException {
+   // FileOutputStream fout = new FileOutputStream(outFile);
+   //
+   // fout.write(IDENTIFIER);
+   // fout.write(MidiUtil.intToBytes(6, 4));
+   // fout.write(MidiUtil.intToBytes(mType, 2));
+   // fout.write(MidiUtil.intToBytes(mTrackCount, 2));
+   // fout.write(MidiUtil.intToBytes(mResolution, 2));
+   //
+   // for (MidiTrack T : mTracks) {
+   // T.writeToFile(fout);
+   // }
+   //
+   // fout.flush();
+   // fout.close();
+   // }
 
    private void initFromBuffer(byte[] buffer) {
       if (!MidiUtil.bytesEqual(buffer, IDENTIFIER, 0, 4)) {
