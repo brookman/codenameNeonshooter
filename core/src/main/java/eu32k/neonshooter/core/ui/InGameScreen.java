@@ -141,7 +141,7 @@ public class InGameScreen implements Screen {
       Neon.music.update(scaledDelta);
 
       // Table.drawDebug(hudStage);
-      // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
+      debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
    }
 
    private void handleTimeScale(float delta, float scale, float lastScale, float target) {

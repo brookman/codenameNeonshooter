@@ -8,5 +8,6 @@ android/libs
 */war
 html/src/main/gwt-unitCache
 html/src/main/webapp/WEB-INF
+html/gwt-unitCache
 android/*.jar
 *.gwt-log
