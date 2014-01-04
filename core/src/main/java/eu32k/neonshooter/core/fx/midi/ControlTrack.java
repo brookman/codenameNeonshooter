@@ -112,13 +112,13 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    }
 
    private void registerNoteOnEvent(NoteOn event) {
-      int value = event.getNoteValue();
-      if (notes.containsKey(noteToName(value))) {
+      String key = noteToName(event.getNoteValue());
+      if (notes.containsKey(key)) {
          return;
       }
-      NoteInfo note = new NoteInfo(event.getChannel(), noteToName(event.getNoteValue()));
+      NoteInfo note = new NoteInfo(event.getChannel(), key);
       note.trackName = trackName;
-      notes.put(noteToName(value), note);
+      notes.put(key, note);
       noteList.add(note);
 
    }
@@ -203,6 +203,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       controller.value = event.getValue();
       controller.initValue = controller.value;
       controller.notifyHandlers();
+      Gdx.app.log("ControlTrack", "Controller: " + controller.value);
       // TODO: On reset, all handlers have to communicate their init value
    }
 
