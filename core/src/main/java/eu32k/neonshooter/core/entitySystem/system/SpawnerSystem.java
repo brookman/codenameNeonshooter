@@ -41,8 +41,8 @@ public class SpawnerSystem extends EntityProcessingSystem {
          break;
       }
       if (canSpawn) {
-         spawner.spawnedLastTime = true;
          trySpawn(e, spawner);
+         spawner.spawnedLastTime = true;
       } else {
          spawner.spawnedLastTime = false;
          spawner.timer = 0f;
@@ -50,7 +50,9 @@ public class SpawnerSystem extends EntityProcessingSystem {
    }
 
    private void trySpawn(Entity e, SpawnerComponent spawner) {
-      Gdx.app.log("SpawnerSystem", "Try spawn");
+      if (!canSpawn(spawner)) {
+         return;
+      }
       spawner.timer -= world.delta;
       if (spawner.timer <= 0f) {
          spawner.timer = spawner.spawnFrequency;
@@ -61,11 +63,11 @@ public class SpawnerSystem extends EntityProcessingSystem {
    private void spawn(Entity e, SpawnerComponent spawner) {
       Gdx.app.log("SpawnerSystem", "Spawn");
       PositionComponent position = Mappers.positionMapper.get(e);
-      factory.createEnemyShip(position.x, position.y);
+      factory.createEnemyShip(position.x, position.y).addToWorld();
    }
 
    private boolean anyNoteEnabled(SpawnerComponent spawner, ControlTrack track) {
-      return track.anyNotePlaying() && canSpawn(spawner);
+      return track.anyNotePlaying();
    }
 
    private boolean canSpawn(SpawnerComponent spawner) {

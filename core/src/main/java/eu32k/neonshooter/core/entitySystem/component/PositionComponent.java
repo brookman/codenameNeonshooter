@@ -6,9 +6,9 @@ public class PositionComponent extends Component {
    public float x;
    public float y;
 
-   public Component init() {
-      x = 0;
-      y = 0;
+   public Component init(float x, float y) {
+      this.x = x;
+      this.y = y;
       return this;
    }
 }

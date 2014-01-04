@@ -161,7 +161,7 @@ public class EntityFactory extends Factory {
    public Entity createSpawner(float x, float y) {
       Entity e = world.createEntity();
       e.addComponent(get(SpawnerComponent.class).init());
-      e.addComponent(get(PositionComponent.class).init());
+      e.addComponent(get(PositionComponent.class).init(x, y));
       return e;
    }
 }

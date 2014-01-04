@@ -84,7 +84,7 @@ public class InGameScreen implements Screen {
          factory.createEnemyShip(enemyPos.x, enemyPos.y).addToWorld();
       }
       for (Vector2 spawnerPos : Neon.game.map.spawnerSpawns) {
-         factory.createSpawner(spawnerPos.x, spawnerPos.y);
+         factory.createSpawner(spawnerPos.x, spawnerPos.y).addToWorld();
       }
 
       Neon.music.loadTrack();
