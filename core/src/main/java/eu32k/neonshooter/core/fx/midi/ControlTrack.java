@@ -203,7 +203,6 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       controller.value = event.getValue();
       controller.initValue = controller.value;
       controller.notifyHandlers();
-      Gdx.app.log("ControlTrack", "Controller: " + controller.value);
       // TODO: On reset, all handlers have to communicate their init value
    }
 
