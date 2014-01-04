@@ -1,5 +1,6 @@
 package eu32k.neonshooter.core.fx.midi;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
@@ -54,8 +55,10 @@ public class ControlTracksDisplay extends Actor {
 
    private void drawLine(Batch batch, ControlTrack track, float y) {
       float ratio = MathUtils.clamp(track.intensity().value / 127f, 0, 1);
-      float width = Math.min(SIZE * 4 * ratio, 1);
-
+      float width = Math.max(SIZE * 4 * ratio, 1);
+      if (track.intensity().value > 50) {
+         Gdx.app.log("ControlTracksDisplay", track.key + ": " + track.intensity().value);
+      }
       float r = Interpolation.linear.apply(intensityLow.r, intensityHigh.r, ratio);
       float g = Interpolation.linear.apply(intensityLow.g, intensityHigh.g, ratio);
       float b = Interpolation.linear.apply(intensityLow.b, intensityHigh.b, ratio);
