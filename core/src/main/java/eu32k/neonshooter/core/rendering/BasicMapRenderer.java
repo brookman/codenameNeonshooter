@@ -14,6 +14,7 @@ import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.World;
 
+import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.model.ExtendedMap;
 import eu32k.neonshooter.core.model.ExtendedMap.Line;
@@ -64,7 +65,12 @@ public class BasicMapRenderer implements MapRenderer {
 
    @Override
    public void render() {
-      render(0.04f, Color.WHITE);
+      Color color = new Color(Neon.fx.primaryColor);
+      color.r = 1.0f - color.r * 0.5f;
+      color.g = 1.0f - color.g * 0.5f;
+      color.b = 1.0f - color.b * 0.5f;
+
+      render(0.04f, color);
    }
 
    public void render(float thickness, Color color) {
