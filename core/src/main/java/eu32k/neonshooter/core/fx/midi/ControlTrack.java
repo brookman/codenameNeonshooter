@@ -220,4 +220,8 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 
       public boolean stopped(ControlTrack track);
    }
+
+   public Map<String, NoteInfo> notes() {
+      return notes;
+   }
 }

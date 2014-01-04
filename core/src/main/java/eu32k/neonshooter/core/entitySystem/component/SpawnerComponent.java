@@ -10,14 +10,17 @@ public class SpawnerComponent extends Component {
    public float spawnFrequency = 1f;
    public boolean spawnedLastTime;
    public float timer;
+   public int value = 0;
+   public String note = "C";
 
    public SpawnerComponent init() {
-      source = SpawnInputSource.AnyNote;
+      source = SpawnInputSource.Note;
       spawnContinously = false;
       spawnedLastTime = false;
       timer = 0;
       spawnFrequency = 1f;
       track = TrackType.Beat;
+      value = 0;
       return this;
    }
 

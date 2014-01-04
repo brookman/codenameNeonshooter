@@ -12,6 +12,7 @@ import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.fx.midi.ControlTrack;
 import eu32k.neonshooter.core.fx.midi.ControlTracks;
+import eu32k.neonshooter.core.fx.midi.NoteInfo;
 
 public class SpawnerSystem extends EntityProcessingSystem {
 
@@ -36,6 +37,8 @@ public class SpawnerSystem extends EntityProcessingSystem {
       case AnyNote:
          canSpawn = anyNoteEnabled(spawner, track);
          break;
+      case Note:
+         canSpawn = noteEnabled(spawner, track);
       default:
          break;
       }
@@ -65,12 +68,20 @@ public class SpawnerSystem extends EntityProcessingSystem {
       factory.createEnemyShip(position.x, position.y).addToWorld();
    }
 
+   private boolean canSpawn(SpawnerComponent spawner) {
+      return spawner.spawnContinously || !spawner.spawnedLastTime;
+   }
+
    private boolean anyNoteEnabled(SpawnerComponent spawner, ControlTrack track) {
       return track.anyNotePlaying();
    }
 
-   private boolean canSpawn(SpawnerComponent spawner) {
-      return spawner.spawnContinously || !spawner.spawnedLastTime;
+   private boolean noteEnabled(SpawnerComponent spawner, ControlTrack track) {
+      NoteInfo note = track.notes().get(spawner.note);
+      if (note != null) {
+         return note.on;
+      }
+      return false;
    }
 
 }
