@@ -5,12 +5,12 @@ import java.util.List;
 
 public class NoteInfo {
    public int channel;
-   public int note;
+   public String note;
    public boolean on;
    public String trackName = "";
    private List<NoteHandler> handlers;
 
-   public NoteInfo(int channel, int note) {
+   public NoteInfo(int channel, String note) {
       this.channel = channel;
       this.note = note;
       handlers = new ArrayList<NoteHandler>();

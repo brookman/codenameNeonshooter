@@ -21,8 +21,12 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    public static final int NOTE_OFF = 0x80;
    public static final String[] NOTE_NAMES = { "C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B" };
 
+   public static String noteToName(int value) {
+      return NOTE_NAMES[value % 12];
+   }
+
    private TimedQueue<MidiEvent> queue;
-   private Map<Integer, NoteInfo> notes;
+   private Map<String, NoteInfo> notes;
    List<NoteInfo> noteList;
    private Map<Integer, ControllerInfo> controllers;
    private List<ControllerInfo> controllerList;
@@ -48,7 +52,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       on = new ControllerInfo(0, 1);
       intensity = new ControllerInfo(0, 2);
       queue = new TimedQueue<MidiEvent>();
-      notes = new HashMap<Integer, NoteInfo>();
+      notes = new HashMap<String, NoteInfo>();
       noteList = new ArrayList<NoteInfo>();
       controllers = new HashMap<Integer, ControllerInfo>();
       controllerList = new ArrayList<ControllerInfo>();
@@ -109,12 +113,12 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
 
    private void registerNoteOnEvent(NoteOn event) {
       int value = event.getNoteValue();
-      if (notes.containsKey(value)) {
+      if (notes.containsKey(noteToName(value))) {
          return;
       }
-      NoteInfo note = new NoteInfo(event.getChannel(), event.getNoteValue());
+      NoteInfo note = new NoteInfo(event.getChannel(), noteToName(event.getNoteValue()));
       note.trackName = trackName;
-      notes.put(value, note);
+      notes.put(noteToName(value), note);
       noteList.add(note);
 
    }
@@ -149,7 +153,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    protected void noteOn(NoteOn event) {
       // System.out.println("Note on ");
       int value = event.getNoteValue();
-      NoteInfo note = notes.get(value);
+      NoteInfo note = notes.get(noteToName(value));
       if (note == null) {
          return;
       }
@@ -164,7 +168,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    protected void noteOff(NoteOff event) {
       // System.out.println("Note off");
       int value = event.getNoteValue();
-      NoteInfo note = notes.get(value);
+      NoteInfo note = notes.get(noteToName(value));
       if (note == null) {
          return;
       }
