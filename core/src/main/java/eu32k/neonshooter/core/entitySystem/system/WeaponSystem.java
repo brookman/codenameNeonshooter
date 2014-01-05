@@ -61,7 +61,7 @@ public class WeaponSystem extends EntityProcessingSystem {
       velocity.set(weaponComponent.targetX - stagePosition.x, weaponComponent.targetY - stagePosition.y);
       velocity.rotate((MathUtils.random() * weaponComponent.precision - weaponComponent.precision / 2.0f) * 360);
 
-      velocity.nor().scl(10.0f);
+      velocity.nor().scl(7.0f);
 
       Vector2 pos = new Vector2();
       float rot = (weaponComponent.tick % 2 == 0) ? 90 : -90;

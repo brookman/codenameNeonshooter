@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
@@ -74,7 +75,10 @@ public class EntityFactory extends Factory {
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ship")));
 
-      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Ship1", 2.0f, 0.0f, 0.0f, bits, false, 0.5f);
+      CircleShape shape = new CircleShape();
+      shape.setRadius(0.12f);
+
+      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, bits, false, 0.5f);
       shipModel.getBody().setLinearDamping(3.0f);
       PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
       pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
@@ -84,11 +88,15 @@ public class EntityFactory extends Factory {
    }
 
    public Entity createProjectile(float x, float y, Bits bits, Vector2 velocity) {
-      Entity e = createActorEntity(x, y, 0.1f, 0.3f, velocity.angle(), null);
+      Entity e = createActorEntity(x, y, 0.3f, 0.5f, velocity.angle(), null);
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("projectile")));
 
-      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, "models.json", "Projectile", 0.3f, 1.0f, 0.0f, bits, false, 0.2f);
+      CircleShape shape = new CircleShape();
+      shape.setRadius(0.04f);
+
+      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, shape, 1.0f, 0.0f, 0.0f, bits, true, 0.2f);
+      projectile.getBody().setLinearDamping(0.0f);
       PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
       pc.activate(new Vector2(x, y), velocity.angle() * MathUtils.degRad, velocity);
       e.addComponent(pc);
@@ -106,7 +114,11 @@ public class EntityFactory extends Factory {
 
       e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
 
-      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, "models.json", "Square1", 2.0f, 0.0f, 0.0f, GameBits.ENEMY, false, 0.5f);
+      CircleShape shape = new CircleShape();
+      shape.setRadius(0.15f);
+
+      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, GameBits.ENEMY, false, 0.5f);
+
       PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
       pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
       e.addComponent(pc);
