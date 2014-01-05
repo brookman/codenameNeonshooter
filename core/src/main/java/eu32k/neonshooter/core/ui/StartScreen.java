@@ -16,11 +16,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.fx.SoundSet;
+import eu32k.neonshooter.core.model.LevelInfo;
 
 public class StartScreen implements Screen, EventListener {
    private Stage stage;
    private TextButton backButton;
    private TextButton startButton;
+   private List soundBox;
+   private List levelBox;
+   private java.util.List<SoundSet> sounds;
+   private java.util.List<LevelInfo> levels;
 
    @Override
    public void render(float delta) {
@@ -43,13 +49,15 @@ public class StartScreen implements Screen, EventListener {
          mainTable.setFillParent(true);
          mainTable.pad(20f);
 
-         Object[] levels = Neon.levels.arcade().toArray();
-         List levelBox = new List(levels, skin);
+         this.levels = Neon.levels.arcade();
+         Object[] levelsData = levels.toArray();
+         levelBox = new List(levelsData, skin);
 
          ScrollPane levelScrollPane = new ScrollPane(levelBox);
 
-         Object[] soundSets = Neon.music.arcade().toArray();
-         List soundBox = new List(soundSets, skin);
+         this.sounds = Neon.music.arcade();
+         Object[] soundSets = sounds.toArray();
+         soundBox = new List(soundSets, skin);
          ScrollPane soundScrollPane = new ScrollPane(soundBox);
 
          Label levelCaption = new Label("Levels", skin, "caption");
@@ -103,14 +111,20 @@ public class StartScreen implements Screen, EventListener {
    public boolean handle(Event event) {
       if (event instanceof ChangeEvent) {
          if (event.getTarget() == startButton) {
-            Neon.levels.prepareAnyArcadeLevel();
-            Neon.music.prepareAnyArcadeTrack();
-            Neon.ui.loadThenShowScreen(InGameScreen.class);
+            start();
          } else if (event.getTarget() == backButton) {
             Neon.ui.showScreen(MainMenuScreen.class);
          }
       }
       return false;
+   }
+
+   private void start() {
+      LevelInfo info = levels.get(levelBox.getSelectedIndex());
+      SoundSet sound = sounds.get(soundBox.getSelectedIndex());
+      Neon.levels.prepareLevel(info);
+      Neon.music.prepareSet(sound);
+      Neon.ui.loadThenShowScreen(InGameScreen.class);
    }
 
 }
