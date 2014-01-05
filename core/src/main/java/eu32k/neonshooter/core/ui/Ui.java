@@ -21,6 +21,7 @@ public class Ui {
       addScreen(new MainMenuScreen());
       addScreen(new SettingsScreen());
       addScreen(new InGameScreen());
+      addScreen(new StartScreen());
    }
 
    protected <T extends Screen> T addScreen(T screen) {

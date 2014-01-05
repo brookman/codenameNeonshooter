@@ -100,8 +100,9 @@ public class MainMenuScreen implements Screen {
    }
 
    private void start() {
-      Neon.levels.prepareAnyArcadeLevel();
-      Neon.music.prepareAnyArcadeTrack();
-      Neon.ui.loadThenShowScreen(InGameScreen.class);
+      Neon.ui.showScreen(StartScreen.class);
+      // Neon.levels.prepareAnyArcadeLevel();
+      // Neon.music.prepareAnyArcadeTrack();
+      // Neon.ui.loadThenShowScreen(InGameScreen.class);
    }
 }
