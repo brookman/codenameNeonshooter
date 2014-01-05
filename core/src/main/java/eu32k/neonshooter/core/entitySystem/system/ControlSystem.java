@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.entitySystem.system;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 
 import eu32k.gdx.artemis.base.Aspect;
 import eu32k.gdx.artemis.base.Entity;
@@ -13,6 +14,8 @@ import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 
 public class ControlSystem extends EntityProcessingSystem {
 
+   private Vector2 force = new Vector2();
+
    @SuppressWarnings("unchecked")
    public ControlSystem() {
       super(Aspect.getAspectForAll(PhysicsComponent.class, ControllableComponent.class));
@@ -20,9 +23,9 @@ public class ControlSystem extends EntityProcessingSystem {
 
    @Override
    protected void process(Entity e) {
-      PhysicsComponent physicsComponent = Mappers.physicsMapper.get(e);
+      Body body = Mappers.physicsMapper.get(e).body;
 
-      Vector2 velocity = new Vector2();
+      force.set(0, 0);
 
       if (Neon.controls.t.isPressed) {
          Neon.game.targetTimeScale = 0.15f;
@@ -31,36 +34,32 @@ public class ControlSystem extends EntityProcessingSystem {
       }
 
       if (Neon.controls.up) {
-         velocity.add(0, 1);
+         force.add(0, 1);
       }
       if (Neon.controls.down) {
-         velocity.add(0, -1);
+         force.add(0, -1);
       }
       if (Neon.controls.left) {
-         velocity.add(-1, 0);
+         force.add(-1, 0);
       }
       if (Neon.controls.right) {
-         velocity.add(1, 0);
+         force.add(1, 0);
       }
-      velocity.nor().scl(2.5f);
+      force.nor();
 
       if (Neon.controls.padLeft.len() > 0) {
-         velocity.set(Neon.controls.padLeft);
-         velocity.scl(world.getDelta() * 5.0f);
+         force.set(Neon.controls.padLeft);
       }
 
-      if (velocity.len2() > 0.01f) {
-         physicsComponent.body.applyForceToCenter(velocity, true);
-         physicsComponent.body.setLinearDamping(7);
-         // physicsComponent.body.setLinearVelocity(velocity);
-         // physicsComponent.body.setTransform(physicsComponent.body.getPosition(),
-         // velocity.angle() * MathUtils.degRad);
-         physicsComponent.body.setTransform(physicsComponent.body.getPosition(), velocity.angle() * MathUtils.degRad);
+      force.scl(world.getDelta() * 120.0f);
+
+      if (force.len2() > 0.01f) {
+         body.applyForceToCenter(force, true);
+         body.setLinearDamping(7);
+         body.setTransform(body.getPosition(), force.angle() * MathUtils.degRad);
       } else {
-         physicsComponent.body.setLinearDamping(10);
+         body.setLinearDamping(10);
       }
-
-      physicsComponent.body.setAngularVelocity(0);
-
+      body.setAngularVelocity(0);
    }
 }
