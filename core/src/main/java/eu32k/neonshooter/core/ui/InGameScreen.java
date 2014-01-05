@@ -27,6 +27,7 @@ import eu32k.neonshooter.core.entitySystem.system.EnemySystem;
 import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.SpawnerSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
+import eu32k.neonshooter.core.spawning.SpawnerInfo;
 
 public class InGameScreen implements Screen {
 
@@ -84,8 +85,8 @@ public class InGameScreen implements Screen {
       this.mapRenderer = Neon.levels.getMapRenderer();
 
       factory.createPlayerShip(Neon.game.map.playerSpawn.x, Neon.game.map.playerSpawn.y).addToWorld();
-      for (Vector2 spawner : Neon.game.map.enemySpawns) {
-         factory.createSpawner(spawner.x, spawner.y).addToWorld();
+      for (SpawnerInfo spawner : Neon.game.map.enemySpawns) {
+         factory.createSpawner(spawner).addToWorld();
       }
 
       Neon.music.loadTrack();

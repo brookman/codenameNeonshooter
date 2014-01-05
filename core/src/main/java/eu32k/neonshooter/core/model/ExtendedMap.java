@@ -12,12 +12,14 @@ import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
+import eu32k.neonshooter.core.spawning.SpawnerInfo;
+
 public class ExtendedMap {
 
    public TiledMap map;
    public List<Line> lines = new ArrayList<Line>();
    public Vector2 playerSpawn = new Vector2();
-   public List<Vector2> enemySpawns = new ArrayList<Vector2>();
+   public List<SpawnerInfo> enemySpawns = new ArrayList<SpawnerInfo>();
 
    public ExtendedMap(TiledMap map) {
       this.map = map;
@@ -53,7 +55,7 @@ public class ExtendedMap {
             } else if (object.getName().equals("enemySpawn")) {
                Vector2 enemySpawn = new Vector2(ellipse.getEllipse().x + ellipse.getEllipse().width / 2.0f, ellipse.getEllipse().y + ellipse.getEllipse().height / 2.0f);
                enemySpawn.scl(1.0f / s);
-               enemySpawns.add(enemySpawn);
+               enemySpawns.add(new SpawnerInfo(enemySpawn, object.getProperties()));
             }
          }
       }
