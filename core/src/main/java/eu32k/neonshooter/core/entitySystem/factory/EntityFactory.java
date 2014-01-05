@@ -7,8 +7,10 @@ import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.utils.Pool;
 
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.managers.GroupManager;
@@ -24,6 +26,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.GameBits;
 import eu32k.neonshooter.core.entitySystem.common.Groups;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
+import eu32k.neonshooter.core.entitySystem.common.TempVector;
 import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
 import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
@@ -87,25 +90,43 @@ public class EntityFactory extends Factory {
       return e;
    }
 
+   public Pool<Entity> bulletPool = new Pool<Entity>() {
+
+      @Override
+      protected Entity newObject() {
+         Entity e = createActorEntity(0, 0, 0.3f, 0.5f, 0, null);
+
+         e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("projectile")));
+
+         CircleShape shape = new CircleShape();
+         shape.setRadius(0.04f);
+
+         PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, shape, 1.0f, 0.0f, 0.0f, GameBits.PLAYER_BULLET, true, 0.2f);
+         projectile.getBody().setLinearDamping(0.0f);
+         PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
+         pc.activate(new Vector2(0, 0), 0, new Vector2(0, 0));
+         e.addComponent(pc);
+         ActorComponent actor = Mappers.actorMapper.get(e);
+         actor.actor.addAction(Actions.alpha(0f));
+         actor.actor.act(1f);
+         actor.actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
+
+         world.getManager(GroupManager.class).add(e, Groups.PLAYER_PROJECTILE);
+         return e;
+      }
+
+   };
+   private TempVector temp = new TempVector();
+
    public Entity createProjectile(float x, float y, Bits bits, Vector2 velocity) {
-      Entity e = createActorEntity(x, y, 0.3f, 0.5f, velocity.angle(), null);
+      Entity e = bulletPool.obtain();
+      e.enable();
 
-      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("projectile")));
+      Actor actor = Mappers.actorMapper.get(e).actor;
+      actor.setPosition(x, y);
+      actor.setRotation(velocity.angle());
+      Mappers.physicsMapper.get(e).activate(temp.s(x, y), velocity.angle() * MathUtils.degRad, velocity);
 
-      CircleShape shape = new CircleShape();
-      shape.setRadius(0.04f);
-
-      PhysicsModel projectile = new PhysicsModel(world.box2dWorld, e, shape, 1.0f, 0.0f, 0.0f, bits, true, 0.2f);
-      projectile.getBody().setLinearDamping(0.0f);
-      PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
-      pc.activate(new Vector2(x, y), velocity.angle() * MathUtils.degRad, velocity);
-      e.addComponent(pc);
-      ActorComponent actor = Mappers.actorMapper.get(e);
-      actor.actor.addAction(Actions.alpha(0f));
-      actor.actor.act(1f);
-      actor.actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
-
-      world.getManager(GroupManager.class).add(e, Groups.PLAYER_PROJECTILE);
       return e;
    }
 

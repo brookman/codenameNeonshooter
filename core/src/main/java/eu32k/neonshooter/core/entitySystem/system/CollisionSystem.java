@@ -12,15 +12,18 @@ import eu32k.gdx.artemis.base.systems.VoidEntitySystem;
 import eu32k.gdx.common.RemoveMarker;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Groups;
+import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.ui.SettingsScreen;
 
 public class CollisionSystem extends VoidEntitySystem implements ContactListener {
 
    private World box2dWorld;
+   private EntityFactory factory;
    private GroupManager group;
 
-   public CollisionSystem(World box2dWorld) {
+   public CollisionSystem(World box2dWorld, EntityFactory factory) {
       this.box2dWorld = box2dWorld;
+      this.factory = factory;
    }
 
    @Override
@@ -36,7 +39,9 @@ public class CollisionSystem extends VoidEntitySystem implements ContactListener
 
    private void handleCollision(Entity entityA, Entity entityB) {
       if (is(entityA, Groups.PLAYER_PROJECTILE)) {
-         RemoveMarker.markForRemovalRecursively(entityA);
+         entityA.disable();
+         // Mappers.physicsMapper.get(entityA).body.setActive(false);
+         factory.bulletPool.free(entityA);
       }
       if (is(entityA, Groups.PLAYER_PROJECTILE) && is(entityB, Groups.ENEMY)) {
          RemoveMarker.markForRemovalRecursively(entityB);

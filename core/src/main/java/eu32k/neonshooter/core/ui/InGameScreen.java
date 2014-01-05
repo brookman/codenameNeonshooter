@@ -61,7 +61,7 @@ public class InGameScreen implements Screen {
 
          artemisWorld.setSystem(new WeaponSystem(factory, gameStage));
          artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
-         artemisWorld.setSystem(new CollisionSystem(box2dWorld));
+         artemisWorld.setSystem(new CollisionSystem(box2dWorld, factory));
          artemisWorld.setSystem(new ControlSystem());
          artemisWorld.setSystem(new EnemySystem());
          artemisWorld.setSystem(new RemoveSystem());
@@ -148,7 +148,7 @@ public class InGameScreen implements Screen {
       Neon.music.update(scaledDelta);
 
       // Table.drawDebug(hudStage);
-      // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
+      debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
    }
 
    private void handleTimeScale(float delta, float scale, float lastScale, float target) {
