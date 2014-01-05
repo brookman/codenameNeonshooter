@@ -30,8 +30,19 @@ public class SpawnerSystem extends EntityProcessingSystem {
       if (spawner == null || trigger == null) {
          return;
       }
-      if (trigger.triggers(e) && spawner.spawns(e)) {
-         spawn(e, spawnerComponent);
+      if (trigger.triggers(e)) {
+         if (!spawnerComponent.triggeredLastUpdate) {
+            spawnerComponent.triggeredLastUpdate = true;
+            spawner.activate();
+         }
+         if (spawner.spawns(e)) {
+            spawn(e, spawnerComponent);
+         }
+      } else {
+         if (spawnerComponent.triggeredLastUpdate) {
+            spawner.deactivate();
+         }
+         spawnerComponent.triggeredLastUpdate = false;
       }
    }
 
