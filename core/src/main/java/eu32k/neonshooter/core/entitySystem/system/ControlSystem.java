@@ -27,8 +27,8 @@ public class ControlSystem extends EntityProcessingSystem {
 
       force.set(0, 0);
 
-      if (Neon.controls.t.isPressed) {
-         Neon.game.targetTimeScale = 0.15f;
+      if (Neon.controls.t.isPressed || Neon.controls.mousePressed) {
+         Neon.game.targetTimeScale = 0.45f;
       } else {
          Neon.game.targetTimeScale = 1f;
       }
