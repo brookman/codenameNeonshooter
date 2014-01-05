@@ -30,6 +30,10 @@ public class LevelManager {
       arcadeLevels = new ArrayList<LevelInfo>();
    }
 
+   public List<LevelInfo> arcade() {
+      return arcadeLevels;
+   }
+
    public void create() {
       String content = Gdx.files.internal("levels/levels.json").readString();
       JsonReader reader = new JsonReader();

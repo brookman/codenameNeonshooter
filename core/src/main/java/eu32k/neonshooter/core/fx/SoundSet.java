@@ -43,6 +43,6 @@ public class SoundSet implements Serializable {
 
    @Override
    public String toString() {
-      return id + " - " + artist + " - " + track;
+      return artist + " - " + track;
    }
 }
