@@ -1,9 +1,13 @@
 package eu32k.neonshooter.core.spawning.trigger;
 
+import com.badlogic.gdx.maps.MapProperties;
+
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.World;
+import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.fx.midi.ControlTrack;
 import eu32k.neonshooter.core.fx.midi.NoteInfo;
+import eu32k.neonshooter.core.spawning.PropertyReader;
 
 public class NoteOnTrigger implements Trigger {
    private boolean wasOn;
@@ -19,6 +23,9 @@ public class NoteOnTrigger implements Trigger {
 
    @Override
    public boolean triggers(World world, Entity e) {
+      if (track == null) {
+         return false;
+      }
       NoteInfo info = track.notes().get(note);
       if (info != null) {
 
@@ -34,6 +41,13 @@ public class NoteOnTrigger implements Trigger {
    @Override
    public void reset() {
       wasOn = false;
+   }
+
+   @Override
+   public void init(MapProperties properties, String prefix) {
+      note = PropertyReader.get(properties, prefix, "note");
+      String trackId = PropertyReader.get(properties, prefix, "track");
+      track = Neon.music.getControlTracks().tracks.get(trackId);
    }
 
 }

@@ -1,5 +1,7 @@
 package eu32k.neonshooter.core.spawning.spawner;
 
+import com.badlogic.gdx.maps.MapProperties;
+
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.World;
 
@@ -29,6 +31,11 @@ public class IntervalSpawner implements Spawner {
 
    @Override
    public void deactivate() {
+
+   }
+
+   @Override
+   public void init(MapProperties properties, String prefix) {
 
    }
 

@@ -31,6 +31,7 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
    private Map<Integer, ControllerInfo> controllers;
    private List<ControllerInfo> controllerList;
    private List<AnyNoteHandler> anyHandlers;
+   public String id;
    public String key;
    private String trackName;
    private float resolution;
@@ -48,7 +49,8 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       return intensity;
    }
 
-   public ControlTrack() {
+   public ControlTrack(String id) {
+      this.id = id;
       on = new ControllerInfo(0, 1);
       intensity = new ControllerInfo(0, 2);
       queue = new TimedQueue<MidiEvent>();
@@ -59,6 +61,10 @@ public class ControlTrack implements TimedQueueListener<MidiEvent> {
       anyHandlers = new ArrayList<AnyNoteHandler>();
       clear();
       queue.setListener(this);
+   }
+
+   public String id() {
+      return id;
    }
 
    public void load(MidiTrack track, float resolution, float bpm) {

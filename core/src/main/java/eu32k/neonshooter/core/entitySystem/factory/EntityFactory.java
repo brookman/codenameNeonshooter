@@ -1,5 +1,9 @@
 package eu32k.neonshooter.core.entitySystem.factory;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -25,15 +29,30 @@ import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
 import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
 import eu32k.neonshooter.core.spawning.SpawnerInfo;
+import eu32k.neonshooter.core.spawning.spawner.IntervalSpawner;
 import eu32k.neonshooter.core.spawning.spawner.SimpleSpawner;
 import eu32k.neonshooter.core.spawning.spawner.Spawner;
+import eu32k.neonshooter.core.spawning.trigger.NoteOffTrigger;
 import eu32k.neonshooter.core.spawning.trigger.NoteOnTrigger;
+import eu32k.neonshooter.core.spawning.trigger.NotePlayingTrigger;
 import eu32k.neonshooter.core.spawning.trigger.Trigger;
 
 public class EntityFactory extends Factory {
 
+   private Map<String, Class<?>> spawnerMapping;
+
    public EntityFactory(ExtendedWorld world, Stage stage) {
       super(world, stage);
+      spawnerMapping = new HashMap<String, Class<?>>();
+      registerSpawnerMapping(NoteOffTrigger.class);
+      registerSpawnerMapping(NoteOnTrigger.class);
+      registerSpawnerMapping(NotePlayingTrigger.class);
+      registerSpawnerMapping(SimpleSpawner.class);
+      registerSpawnerMapping(IntervalSpawner.class);
+   }
+
+   public void registerSpawnerMapping(Class<?> classInfo) {
+      spawnerMapping.put(classInfo.getSimpleName(), classInfo);
    }
 
    // public Entity createBox(float x, float y) {
@@ -109,13 +128,34 @@ public class EntityFactory extends Factory {
    public Entity createSpawner(SpawnerInfo info) {
       Entity e = world.createEntity();
       e.addComponent(get(PositionComponent.class).init(info.position.x, info.position.y));
-
-      Trigger trigger = new NoteOnTrigger().init("C", Neon.music.getControlTracks().beatTrack);
-      // Trigger trigger = new NotePlayingTrigger().init("F#",
-      // Neon.music.getControlTracks().leadTrack);
-      Spawner spawner = new SimpleSpawner();
-      // Spawner spawner = new IntervalSpawner().init(1f);
-      e.addComponent(get(SpawnerComponent.class).init(trigger, spawner));
+      SpawnerComponent spawnerComponent = null;
+      try {
+         spawnerComponent = getSpawnerComponent(info);
+      } catch (Exception ex) {
+         NoteOnTrigger trigger = new NoteOnTrigger().init("C", Neon.music.getControlTracks().beatTrack);
+         SimpleSpawner spawner = new SimpleSpawner();
+         spawnerComponent = get(SpawnerComponent.class).init(trigger, spawner);
+      }
+      e.addComponent(spawnerComponent);
       return e;
+   }
+
+   private SpawnerComponent getSpawnerComponent(SpawnerInfo info) {
+      MapProperties properties = info.properties;
+      String triggerConfig = properties.get("Trigger", String.class);
+      String triggerConfigSplit[] = triggerConfig.split(";");
+      Class<?> triggerClass = spawnerMapping.get(triggerConfigSplit[0] + "Trigger");
+      String spawnerConfig = properties.get("Spawner", String.class);
+      String spawnerConfigSplit[] = spawnerConfig.split(";");
+      Class<?> spawnerClass = spawnerMapping.get(spawnerConfigSplit[0] + "Spawner");
+      Trigger trigger = null;
+      Spawner spawner = null;
+      trigger = (Trigger) get(triggerClass);
+      trigger.init(properties, triggerConfigSplit[1]);
+
+      spawner = (Spawner) get(spawnerClass);
+      spawner.init(properties, spawnerConfigSplit[1]);
+      SpawnerComponent spawnerComponent = get(SpawnerComponent.class).init(trigger, spawner);
+      return spawnerComponent;
    }
 }

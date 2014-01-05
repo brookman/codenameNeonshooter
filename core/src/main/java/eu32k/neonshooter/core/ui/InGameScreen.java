@@ -81,6 +81,7 @@ public class InGameScreen implements Screen {
          debugRenderer.setDrawVelocities(true);
 
       }
+      Neon.music.loadTrack();
       Neon.levels.loadLevel(box2dWorld);
       this.mapRenderer = Neon.levels.getMapRenderer();
 
@@ -89,7 +90,6 @@ public class InGameScreen implements Screen {
          factory.createSpawner(spawner).addToWorld();
       }
 
-      Neon.music.loadTrack();
       Neon.music.play();
       Gdx.input.setInputProcessor(hudStage);
       Neon.game.timeScale = 1f;

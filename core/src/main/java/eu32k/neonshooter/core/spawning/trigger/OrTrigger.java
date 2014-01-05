@@ -3,6 +3,8 @@ package eu32k.neonshooter.core.spawning.trigger;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.badlogic.gdx.maps.MapProperties;
+
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.World;
 
@@ -34,6 +36,11 @@ public class OrTrigger implements Trigger {
       for (Trigger trigger : triggers) {
          trigger.reset();
       }
+   }
+
+   @Override
+   public void init(MapProperties properties, String prefix) {
+
    }
 
 }

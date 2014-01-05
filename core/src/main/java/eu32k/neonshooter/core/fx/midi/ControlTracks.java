@@ -1,7 +1,9 @@
 package eu32k.neonshooter.core.fx.midi;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.leff.midi.MidiFile;
 import com.leff.midi.MidiTrack;
@@ -23,22 +25,30 @@ public class ControlTracks {
    public ControlTrack padTrack;
    public ControlTrack fxTrack;
 
-   public List<ControlTrack> tracks;
+   public List<ControlTrack> trackList;
+   public Map<String, ControlTrack> tracks;
    private boolean running;
 
    public ControlTracks() {
-      beatTrack = new ControlTrack();
-      bassTrack = new ControlTrack();
-      leadTrack = new ControlTrack();
-      padTrack = new ControlTrack();
-      fxTrack = new ControlTrack();
 
-      tracks = new ArrayList<ControlTrack>();
-      tracks.add(beatTrack);
-      tracks.add(bassTrack);
-      tracks.add(leadTrack);
-      tracks.add(padTrack);
-      tracks.add(fxTrack);
+      beatTrack = new ControlTrack("beat");
+      bassTrack = new ControlTrack("bass");
+      leadTrack = new ControlTrack("lead");
+      padTrack = new ControlTrack("pad");
+      fxTrack = new ControlTrack("fx");
+
+      trackList = new ArrayList<ControlTrack>();
+      tracks = new HashMap<String, ControlTrack>();
+      addTrack(beatTrack);
+      addTrack(bassTrack);
+      addTrack(leadTrack);
+      addTrack(padTrack);
+      addTrack(fxTrack);
+   }
+
+   private void addTrack(ControlTrack track) {
+      trackList.add(track);
+      tracks.put(track.id(), track);
    }
 
    public void load(MidiFile file) {
@@ -93,7 +103,7 @@ public class ControlTracks {
 
    public void update(float delta) {
       if (running) {
-         for (ControlTrack track : tracks) {
+         for (ControlTrack track : trackList) {
             track.update(delta);
          }
       }
