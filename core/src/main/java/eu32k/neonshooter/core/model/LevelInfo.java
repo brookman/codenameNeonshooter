@@ -36,6 +36,6 @@ public class LevelInfo implements Serializable {
 
    @Override
    public String toString() {
-      return id + " - " + name;
+      return name;
    }
 }

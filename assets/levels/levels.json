@@ -1,17 +1,17 @@
 {
 	levels:[
 		{
-			id: "test-01"
-			, name: "Test Level 1"
-			, file: "levels/line.tmx"
+			id: "beni-01"
+			, name: "Benis testlevel"
+			, file: "levels/beni01.tmx"
 			, description: "A shitty test level"
 		}
 		, {
-			id: "test-02"
-			, name: "Test Level 2"
-			, file: "levels/line2.tmx"
+			id: "tom-01"
+			, name: "Toms test level"
+			, file: "levels/tom01.tmx"
 			, description: "A shitty test level. Testing spawners."
 		}
 	]
-	, arcadeLevels: ["test-02"]
+	, arcadeLevels: ["beni-01", "tom-01"]
 }
