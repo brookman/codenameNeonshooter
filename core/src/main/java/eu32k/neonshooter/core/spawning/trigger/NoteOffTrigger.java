@@ -10,9 +10,9 @@ public class NoteOffTrigger implements Trigger {
    private ControlTrack track;
 
    public void init(String note, ControlTrack track) {
-      wasOn = false;
       this.note = note;
       this.track = track;
+      reset();
    }
 
    @Override

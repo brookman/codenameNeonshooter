@@ -9,9 +9,11 @@ public class NoteOnTrigger implements Trigger {
    private String note;
    private ControlTrack track;
 
-   public void init(String note, ControlTrack track) {
+   public NoteOnTrigger init(String note, ControlTrack track) {
       this.note = note;
       this.track = track;
+      reset();
+      return this;
    }
 
    @Override

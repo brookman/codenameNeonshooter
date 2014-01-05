@@ -24,6 +24,10 @@ import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
 import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
 import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
+import eu32k.neonshooter.core.spawning.spawner.SimpleSpawner;
+import eu32k.neonshooter.core.spawning.spawner.Spawner;
+import eu32k.neonshooter.core.spawning.trigger.NoteOnTrigger;
+import eu32k.neonshooter.core.spawning.trigger.Trigger;
 
 public class EntityFactory extends Factory {
 
@@ -103,7 +107,9 @@ public class EntityFactory extends Factory {
 
    public Entity createSpawner(float x, float y) {
       Entity e = world.createEntity();
-      e.addComponent(get(SpawnerComponent.class).init());
+      Trigger trigger = new NoteOnTrigger().init("C", Neon.music.getControlTracks().beatTrack);
+      Spawner spawner = new SimpleSpawner();
+      e.addComponent(get(SpawnerComponent.class).init(trigger, spawner));
       e.addComponent(get(PositionComponent.class).init(x, y));
       return e;
    }

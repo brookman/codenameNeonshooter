@@ -19,7 +19,7 @@ public class SpawnerComponent extends Component {
    public int value = 0;
    public String note = "C";
 
-   public SpawnerComponent init() {
+   public SpawnerComponent init(Trigger trigger, Spawner spawner) {
       source = SpawnInputSource.Note;
       spawnContinously = false;
       spawnedLastTime = false;
@@ -27,6 +27,8 @@ public class SpawnerComponent extends Component {
       spawnFrequency = 1f;
       track = TrackType.Beat;
       value = 0;
+      this.trigger = trigger;
+      this.spawner = spawner;
       return this;
    }
 
