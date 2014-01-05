@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import eu32k.gdx.artemis.base.Entity;
+import eu32k.gdx.artemis.base.World;
 
 public class OrTrigger implements Trigger {
    private List<Trigger> triggers;
@@ -19,9 +20,9 @@ public class OrTrigger implements Trigger {
    }
 
    @Override
-   public boolean triggers(Entity e) {
+   public boolean triggers(World world, Entity e) {
       for (Trigger trigger : triggers) {
-         if (trigger.triggers(e)) {
+         if (trigger.triggers(world, e)) {
             return true;
          }
       }

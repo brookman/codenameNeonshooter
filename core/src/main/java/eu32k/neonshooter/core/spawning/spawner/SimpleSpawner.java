@@ -1,11 +1,21 @@
 package eu32k.neonshooter.core.spawning.spawner;
 
 import eu32k.gdx.artemis.base.Entity;
+import eu32k.gdx.artemis.base.World;
 
+/**
+ * The SimpleSpawner class simply spawns every time when it is triggerd. Use
+ * this for single triggers like NoteOn or NoteOff. When you use it on a
+ * continuous trigger (NotePlaying, Controller), enemies might spawn every
+ * frame.
+ * 
+ * @author atombrot
+ * 
+ */
 public class SimpleSpawner implements Spawner {
 
    @Override
-   public boolean spawns(Entity entity) {
+   public boolean spawns(World world, Entity entity) {
       return true;
    }
 

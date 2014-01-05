@@ -108,7 +108,10 @@ public class EntityFactory extends Factory {
    public Entity createSpawner(float x, float y) {
       Entity e = world.createEntity();
       Trigger trigger = new NoteOnTrigger().init("C", Neon.music.getControlTracks().beatTrack);
+      // Trigger trigger = new NotePlayingTrigger().init("F#",
+      // Neon.music.getControlTracks().leadTrack);
       Spawner spawner = new SimpleSpawner();
+      // Spawner spawner = new IntervalSpawner().init(1f);
       e.addComponent(get(SpawnerComponent.class).init(trigger, spawner));
       e.addComponent(get(PositionComponent.class).init(x, y));
       return e;
