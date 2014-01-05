@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.entitySystem.system;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 
 import eu32k.gdx.artemis.base.Aspect;
 import eu32k.gdx.artemis.base.Entity;
@@ -20,10 +21,14 @@ public class WeaponSystem extends EntityProcessingSystem {
 
    private EntityFactory factory;
 
+   private Stage referenceStage;
+   private Vector2 mouse = new Vector2();
+
    @SuppressWarnings("unchecked")
-   public WeaponSystem(EntityFactory factory) {
+   public WeaponSystem(EntityFactory factory, Stage referenceStage) {
       super(Aspect.getAspectForAll(WeaponComponent.class, ActorComponent.class));
       this.factory = factory;
+      this.referenceStage = referenceStage;
       velocity = new Vector2();
    }
 
@@ -37,7 +42,14 @@ public class WeaponSystem extends EntityProcessingSystem {
          weaponComponent.targetX = actor.getX() + Neon.controls.padRight.x;
          weaponComponent.targetY = actor.getY() + Neon.controls.padRight.y;
       } else {
-         weaponComponent.shootRequested = false;
+         // weaponComponent.shootRequested = false;
+
+         // Hack
+         weaponComponent.shootRequested = true;
+         mouse.set(Neon.controls.mouseX, Neon.controls.mouseY);
+         referenceStage.screenToStageCoordinates(mouse);
+         weaponComponent.targetX = mouse.x;
+         weaponComponent.targetY = mouse.y;
       }
 
       if (!weaponComponent.shouldShoot()) {
@@ -51,7 +63,13 @@ public class WeaponSystem extends EntityProcessingSystem {
 
       velocity.nor().scl(10.0f);
 
-      factory.createProjectile(actor.getX(), actor.getY(), GameBits.PLAYER_BULLET, velocity).addToWorld();
+      Vector2 pos = new Vector2();
+      float rot = (weaponComponent.tick % 2 == 0) ? 90 : -90;
+
+      pos.x = actor.getX() + MathUtils.cos((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
+      pos.y = actor.getY() + MathUtils.sin((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
+
+      factory.createProjectile(pos.x, pos.y, GameBits.PLAYER_BULLET, velocity).addToWorld();
 
       // shoot
       weaponComponent.shoot();

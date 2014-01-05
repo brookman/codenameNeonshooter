@@ -95,7 +95,7 @@ public class EntityFactory extends Factory {
    public Entity createPlayerShip(float x, float y) {
       Entity e = createShip(x, y, GameBits.PLAYER);
       e.addComponent(get(ControllableComponent.class));
-      e.addComponent(get(WeaponComponent.class).init(200));
+      e.addComponent(get(WeaponComponent.class).init(100));
       e.addComponent(get(CameraTargetComponent.class).init(false));
       world.getManager(GroupManager.class).add(e, Groups.PLAYER);
       return e;

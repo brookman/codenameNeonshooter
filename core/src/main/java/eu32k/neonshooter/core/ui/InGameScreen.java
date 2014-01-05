@@ -58,7 +58,7 @@ public class InGameScreen implements Screen {
 
          factory = new EntityFactory(artemisWorld, gameStage);
 
-         artemisWorld.setSystem(new WeaponSystem(factory));
+         artemisWorld.setSystem(new WeaponSystem(factory, gameStage));
          artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
          artemisWorld.setSystem(new CollisionSystem(box2dWorld));
          artemisWorld.setSystem(new ControlSystem());
@@ -84,11 +84,8 @@ public class InGameScreen implements Screen {
       this.mapRenderer = Neon.levels.getMapRenderer();
 
       factory.createPlayerShip(Neon.game.map.playerSpawn.x, Neon.game.map.playerSpawn.y).addToWorld();
-      for (Vector2 enemyPos : Neon.game.map.enemySpawns) {
-         factory.createEnemyShip(enemyPos.x, enemyPos.y).addToWorld();
-      }
-      for (Vector2 spawnerPos : Neon.game.map.spawnerSpawns) {
-         factory.createSpawner(spawnerPos.x, spawnerPos.y).addToWorld();
+      for (Vector2 spawner : Neon.game.map.enemySpawns) {
+         factory.createSpawner(spawner.x, spawner.y).addToWorld();
       }
 
       Neon.music.loadTrack();
