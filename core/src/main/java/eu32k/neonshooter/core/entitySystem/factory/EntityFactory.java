@@ -112,6 +112,7 @@ public class EntityFactory extends Factory {
          actor.actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
 
          world.getManager(GroupManager.class).add(e, Groups.PLAYER_PROJECTILE);
+         e.addToWorld();
          return e;
       }
 
@@ -123,10 +124,12 @@ public class EntityFactory extends Factory {
       e.enable();
 
       Actor actor = Mappers.actorMapper.get(e).actor;
+      actor.setVisible(true);
       actor.setPosition(x, y);
       actor.setRotation(velocity.angle());
       Mappers.physicsMapper.get(e).activate(temp.s(x, y), velocity.angle() * MathUtils.degRad, velocity);
 
+      e.changedInWorld();
       return e;
    }
 

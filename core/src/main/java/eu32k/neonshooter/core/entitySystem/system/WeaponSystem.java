@@ -69,7 +69,7 @@ public class WeaponSystem extends EntityProcessingSystem {
       pos.x = actor.getX() + MathUtils.cos((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
       pos.y = actor.getY() + MathUtils.sin((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
 
-      factory.createProjectile(pos.x, pos.y, GameBits.PLAYER_BULLET, velocity).addToWorld();
+      factory.createProjectile(pos.x, pos.y, GameBits.PLAYER_BULLET, velocity);
 
       // shoot
       weaponComponent.shoot();

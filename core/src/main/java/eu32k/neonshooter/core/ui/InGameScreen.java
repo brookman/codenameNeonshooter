@@ -23,6 +23,7 @@ import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.entitySystem.system.CollisionSystem;
 import eu32k.neonshooter.core.entitySystem.system.ControlSystem;
+import eu32k.neonshooter.core.entitySystem.system.DeactivateSystem;
 import eu32k.neonshooter.core.entitySystem.system.EnemySystem;
 import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.SpawnerSystem;
@@ -62,6 +63,7 @@ public class InGameScreen implements Screen {
          artemisWorld.setSystem(new WeaponSystem(factory, gameStage));
          artemisWorld.setSystem(new PhysicsSystem(box2dWorld));
          artemisWorld.setSystem(new CollisionSystem(box2dWorld, factory));
+         artemisWorld.setSystem(new DeactivateSystem());
          artemisWorld.setSystem(new ControlSystem());
          artemisWorld.setSystem(new EnemySystem());
          artemisWorld.setSystem(new RemoveSystem());
@@ -148,7 +150,7 @@ public class InGameScreen implements Screen {
       Neon.music.update(scaledDelta);
 
       // Table.drawDebug(hudStage);
-      debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
+      // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
    }
 
    private void handleTimeScale(float delta, float scale, float lastScale, float target) {

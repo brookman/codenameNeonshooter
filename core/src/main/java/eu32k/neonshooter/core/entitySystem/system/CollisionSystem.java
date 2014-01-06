@@ -12,6 +12,7 @@ import eu32k.gdx.artemis.base.systems.VoidEntitySystem;
 import eu32k.gdx.common.RemoveMarker;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Groups;
+import eu32k.neonshooter.core.entitySystem.component.DeactivateComponent;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
 import eu32k.neonshooter.core.ui.SettingsScreen;
 
@@ -39,9 +40,8 @@ public class CollisionSystem extends VoidEntitySystem implements ContactListener
 
    private void handleCollision(Entity entityA, Entity entityB) {
       if (is(entityA, Groups.PLAYER_PROJECTILE)) {
-         entityA.disable();
-         // Mappers.physicsMapper.get(entityA).body.setActive(false);
-         factory.bulletPool.free(entityA);
+         entityA.addComponent(new DeactivateComponent().init(factory.bulletPool));
+         entityA.changedInWorld();
       }
       if (is(entityA, Groups.PLAYER_PROJECTILE) && is(entityB, Groups.ENEMY)) {
          RemoveMarker.markForRemovalRecursively(entityB);
