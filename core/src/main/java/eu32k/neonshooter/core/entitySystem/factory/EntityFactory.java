@@ -15,7 +15,6 @@ import com.badlogic.gdx.utils.Pool;
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.managers.GroupManager;
 import eu32k.gdx.artemis.extension.ExtendedWorld;
-import eu32k.gdx.artemis.extension.component.ActorComponent;
 import eu32k.gdx.artemis.extension.component.CameraTargetComponent;
 import eu32k.gdx.artemis.extension.component.PhysicsComponent;
 import eu32k.gdx.artemis.extension.component.TextureRegionComponent;
@@ -29,6 +28,7 @@ import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.common.TempVector;
 import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
+import eu32k.neonshooter.core.entitySystem.component.PoolableComponent;
 import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
 import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
@@ -106,10 +106,8 @@ public class EntityFactory extends Factory {
          PhysicsComponent pc = get(PhysicsComponent.class).init(projectile.getBody());
          pc.activate(new Vector2(0, 0), 0, new Vector2(0, 0));
          e.addComponent(pc);
-         ActorComponent actor = Mappers.actorMapper.get(e);
-         actor.actor.addAction(Actions.alpha(0f));
-         actor.actor.act(1f);
-         actor.actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
+
+         e.addComponent(new PoolableComponent<Entity>().init(this));
 
          world.getManager(GroupManager.class).add(e, Groups.PLAYER_PROJECTILE);
          e.addToWorld();
@@ -118,6 +116,7 @@ public class EntityFactory extends Factory {
 
    };
    private TempVector temp = new TempVector();
+   private TempVector temp2 = new TempVector();
 
    public Entity createProjectile(float x, float y, Bits bits, Vector2 velocity) {
       Entity e = bulletPool.obtain();
@@ -129,26 +128,53 @@ public class EntityFactory extends Factory {
       actor.setRotation(velocity.angle());
       Mappers.physicsMapper.get(e).activate(temp.s(x, y), velocity.angle() * MathUtils.degRad, velocity);
 
+      actor.getActions().clear();
+      actor.addAction(Actions.alpha(0f));
+      actor.act(1f);
+      actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
+
       e.changedInWorld();
       return e;
    }
 
+   public Pool<Entity> enemyPool = new Pool<Entity>() {
+
+      @Override
+      protected Entity newObject() {
+         Entity e = createActorEntity(0, 0, 0.5f, 0.5f, 0, null);
+
+         e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
+
+         CircleShape shape = new CircleShape();
+         shape.setRadius(0.15f);
+
+         PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, GameBits.ENEMY, false, 0.5f);
+
+         PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
+         pc.activate(new Vector2(0, 0), 0, new Vector2(0, 0));
+         e.addComponent(pc);
+
+         e.addComponent(get(EnemyComponent.class));
+
+         e.addComponent(new PoolableComponent<Entity>().init(this));
+
+         world.getManager(GroupManager.class).add(e, Groups.ENEMY);
+         e.addToWorld();
+         return e;
+      }
+
+   };
+
    public Entity createEnemyShip(float x, float y) {
-      Entity e = createActorEntity(x, y, 0.5f, 0.5f, 0, null);
+      Entity e = enemyPool.obtain();
+      e.enable();
 
-      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
+      Actor actor = Mappers.actorMapper.get(e).actor;
+      actor.setVisible(true);
+      actor.setPosition(x, y);
+      Mappers.physicsMapper.get(e).activate(temp.s(x, y), 0, temp2.s(0, 0));
 
-      CircleShape shape = new CircleShape();
-      shape.setRadius(0.15f);
-
-      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, GameBits.ENEMY, false, 0.5f);
-
-      PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
-      pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
-      e.addComponent(pc);
-
-      e.addComponent(get(EnemyComponent.class));
-      world.getManager(GroupManager.class).add(e, Groups.ENEMY);
+      e.changedInWorld();
       return e;
    }
 

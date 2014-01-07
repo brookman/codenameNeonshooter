@@ -19,7 +19,7 @@ public class DeactivateSystem extends EntityProcessingSystem {
 
    @Override
    protected void process(Entity e) {
-      Mappers.deactivateMapper.get(e).pool.free(e);
+      Mappers.poolableMapper.get(e).pool.free(e);
       Body body = Mappers.physicsMapper.get(e).body;
       body.setActive(false);
       Mappers.actorMapper.get(e).actor.setVisible(false);

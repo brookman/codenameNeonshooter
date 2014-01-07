@@ -49,7 +49,7 @@ public class SpawnerSystem extends EntityProcessingSystem {
    private void spawn(Entity e, SpawnerComponent spawner) {
       Gdx.app.log("SpawnerSystem", "Spawn");
       PositionComponent position = Mappers.positionMapper.get(e);
-      factory.createEnemyShip(position.x, position.y).addToWorld();
+      factory.createEnemyShip(position.x, position.y);
    }
 
 }

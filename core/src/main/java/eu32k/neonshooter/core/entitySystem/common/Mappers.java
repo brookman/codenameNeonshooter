@@ -6,6 +6,7 @@ import eu32k.gdx.artemis.extension.component.ActorComponent;
 import eu32k.gdx.artemis.extension.component.PhysicsComponent;
 import eu32k.neonshooter.core.entitySystem.component.DeactivateComponent;
 import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
+import eu32k.neonshooter.core.entitySystem.component.PoolableComponent;
 import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
 import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
 import eu32k.neonshooter.core.entitySystem.component.WeaponComponent;
@@ -19,6 +20,7 @@ public class Mappers {
    public static ComponentMapper<PositionComponent> positionMapper;
    public static ComponentMapper<SpawnerComponent> spawnerMapper;
    public static ComponentMapper<EnemyComponent> enemyMapper;
+   public static ComponentMapper<PoolableComponent> poolableMapper;
 
    public static void init(ExtendedWorld world) {
       actorMapper = world.getMapper(ActorComponent.class);
@@ -28,5 +30,6 @@ public class Mappers {
       positionMapper = world.getMapper(PositionComponent.class);
       spawnerMapper = world.getMapper(SpawnerComponent.class);
       enemyMapper = world.getMapper(EnemyComponent.class);
+      poolableMapper = world.getMapper(PoolableComponent.class);
    }
 }
