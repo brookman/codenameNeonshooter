@@ -48,15 +48,11 @@ public class EntityFactory extends Factory {
    public EntityFactory(ExtendedWorld world, Stage stage) {
       super(world, stage);
       spawnerMapping = new HashMap<String, Class<?>>();
-      registerSpawnerMapping(NoteOffTrigger.class);
-      registerSpawnerMapping(NoteOnTrigger.class);
-      registerSpawnerMapping(NotePlayingTrigger.class);
-      registerSpawnerMapping(SimpleSpawner.class);
-      registerSpawnerMapping(IntervalSpawner.class);
-   }
-
-   public void registerSpawnerMapping(Class<?> classInfo) {
-      spawnerMapping.put(classInfo.getSimpleName(), classInfo);
+      spawnerMapping.put("NoteOffTrigger", NoteOffTrigger.class);
+      spawnerMapping.put("NoteOnTrigger", NoteOnTrigger.class);
+      spawnerMapping.put("NotePlayingTrigger", NotePlayingTrigger.class);
+      spawnerMapping.put("SimpleSpawner", SimpleSpawner.class);
+      spawnerMapping.put("IntervalSpawner", IntervalSpawner.class);
    }
 
    // public Entity createBox(float x, float y) {
