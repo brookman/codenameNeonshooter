@@ -7,11 +7,17 @@
 			, description: "A shitty test level"
 		}
 		, {
+			id: "beni-02"
+			, name: "Mini level"
+			, file: "levels/beni02.tmx"
+			, description: "A very simple test level."
+		}
+		, {
 			id: "tom-01"
 			, name: "Toms test level"
 			, file: "levels/tom01.tmx"
 			, description: "A shitty test level. Testing spawners."
 		}
 	]
-	, arcadeLevels: ["beni-01", "tom-01"]
+	, arcadeLevels: ["beni-01", "beni-02", "tom-01"]
 }

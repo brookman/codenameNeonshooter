@@ -183,6 +183,13 @@ public class EntityFactory extends Factory {
       return e;
    }
 
+   public Entity createBlackHole(float x, float y) {
+      Entity e = createActorEntity(x, y, 0.5f, 0.5f, 0, null);
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
+      world.getManager(GroupManager.class).add(e, Groups.ATTRACTOR);
+      return e;
+   }
+
    public Entity createSpawner(SpawnerInfo info) {
       Entity e = world.createEntity();
       e.addComponent(get(PositionComponent.class).init(info.position.x, info.position.y));

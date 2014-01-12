@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="20" height="20" tilewidth="32" tileheight="32">
+ <objectgroup name="walls" width="20" height="20">
+  <object x="0" y="480" width="288" height="160"/>
+ </objectgroup>
+ <objectgroup name="objects" width="20" height="20">
+  <object name="playerSpawn" x="128" y="544" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object name="enemySpawn" x="0" y="608" width="32" height="32">
+   <properties>
+    <property name="Spawner" value="Simple;s"/>
+    <property name="Trigger" value="NoteOn;t"/>
+    <property name="t.note" value="C"/>
+    <property name="t.track" value="beat"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="enemySpawn" x="256" y="480" width="32" height="32">
+   <properties>
+    <property name="Spawner" value="Simple;s"/>
+    <property name="Trigger" value="NoteOn;t"/>
+    <property name="t.note" value="C"/>
+    <property name="t.track" value="beat"/>
+   </properties>
+   <ellipse/>
+  </object>
+  <object name="blackHole" x="32" y="512" width="32" height="32">
+   <ellipse/>
+  </object>
+  <object name="blackHole" x="224" y="576" width="32" height="32">
+   <ellipse/>
+  </object>
+ </objectgroup>
+</map>

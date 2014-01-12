@@ -9,6 +9,7 @@ import com.badlogic.gdx.maps.objects.EllipseMapObject;
 import com.badlogic.gdx.maps.objects.PolylineMapObject;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.math.Ellipse;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
@@ -20,6 +21,7 @@ public class ExtendedMap {
    public List<Line> lines = new ArrayList<Line>();
    public Vector2 playerSpawn = new Vector2();
    public List<SpawnerInfo> enemySpawns = new ArrayList<SpawnerInfo>();
+   public List<Vector2> blackHoles = new ArrayList<Vector2>();
 
    public ExtendedMap(TiledMap map) {
       this.map = map;
@@ -36,7 +38,6 @@ public class ExtendedMap {
          } else if (object instanceof RectangleMapObject) {
             RectangleMapObject rectangleMapObject = (RectangleMapObject) object;
             Rectangle rect = rectangleMapObject.getRectangle();
-
             lines.add(new Line(rect.x / s, rect.y / s, rect.width / s, rect.y / s));
             lines.add(new Line(rect.x / s, rect.y / s, rect.x / s, rect.height / s));
             lines.add(new Line(rect.width / s, rect.height / s, rect.x / s, rect.height / s));
@@ -47,15 +48,15 @@ public class ExtendedMap {
       MapLayer layer2 = map.getLayers().get(1);
       for (MapObject object : layer2.getObjects()) {
          if (object instanceof EllipseMapObject) {
-            EllipseMapObject ellipse = (EllipseMapObject) object;
+            Ellipse ellipse = ((EllipseMapObject) object).getEllipse();
             if (object.getName().equals("playerSpawn")) {
-               playerSpawn.x = ellipse.getEllipse().x + ellipse.getEllipse().width / 2.0f;
-               playerSpawn.y = ellipse.getEllipse().y + ellipse.getEllipse().height / 2.0f;
-               playerSpawn.scl(1.0f / s);
+               playerSpawn.x = ellipse.x / s + (ellipse.width / s) / 2.0f;
+               playerSpawn.y = ellipse.y / s + (ellipse.height / s) / 2.0f;
             } else if (object.getName().equals("enemySpawn")) {
-               Vector2 enemySpawn = new Vector2(ellipse.getEllipse().x + ellipse.getEllipse().width / 2.0f, ellipse.getEllipse().y + ellipse.getEllipse().height / 2.0f);
-               enemySpawn.scl(1.0f / s);
+               Vector2 enemySpawn = new Vector2(ellipse.x / s + (ellipse.width / s) / 2.0f, ellipse.y / s + (ellipse.height / s) / 2.0f);
                enemySpawns.add(new SpawnerInfo(enemySpawn, object.getProperties()));
+            } else if (object.getName().equals("blackHole")) {
+               blackHoles.add(new Vector2(ellipse.x / s + (ellipse.width / s) / 2.0f, ellipse.y / s + (ellipse.height / s) / 2.0f));
             }
          }
       }
