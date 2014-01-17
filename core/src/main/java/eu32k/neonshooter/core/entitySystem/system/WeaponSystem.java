@@ -66,8 +66,8 @@ public class WeaponSystem extends EntityProcessingSystem {
       Vector2 pos = new Vector2();
       float rot = (weaponComponent.tick % 2 == 0) ? 90 : -90;
 
-      pos.x = actor.getX() + MathUtils.cos((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
-      pos.y = actor.getY() + MathUtils.sin((velocity.angle() + rot) * MathUtils.degRad) * 0.1f;
+      pos.x = actor.getX() + MathUtils.cos((velocity.angle() + rot) * MathUtils.degRad) * 0.05f;
+      pos.y = actor.getY() + MathUtils.sin((velocity.angle() + rot) * MathUtils.degRad) * 0.05f;
 
       factory.createProjectile(pos.x, pos.y, GameBits.PLAYER_BULLET, velocity);
 
