@@ -30,11 +30,17 @@ public class GravitySystem extends EntityProcessingSystem {
          return;
       }
 
+      float radiusOfInfluence = 4;
+
       for (Entity attractor : world.getManager(GroupManager.class).getEntities(Groups.ATTRACTOR)) {
          ActorComponent actor = Mappers.actorMapper.get(attractor);
+         force.set(actor.actor.getX(), actor.actor.getY());
+         float dist = force.dst(body.getPosition());
+         float strength = 1.0f - Math.min(dist, radiusOfInfluence) / radiusOfInfluence;
+
          force.set(actor.actor.getX() - body.getPosition().x, actor.actor.getY() - body.getPosition().y);
          if (force.len2() < 2) {
-            force.nor().scl(body.getMass() * world.delta * 500.0f);
+            force.nor().scl(body.getMass() * world.delta * 1000.0f * strength);
             body.applyForceToCenter(force, true);
          }
       }

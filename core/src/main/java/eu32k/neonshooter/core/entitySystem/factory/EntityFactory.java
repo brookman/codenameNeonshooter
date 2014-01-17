@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -185,7 +186,18 @@ public class EntityFactory extends Factory {
 
    public Entity createBlackHole(float x, float y) {
       Entity e = createActorEntity(x, y, 0.5f, 0.5f, 0, null);
-      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
+      e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("ring")));
+
+      CircleShape shape = new CircleShape();
+      shape.setRadius(0.2f);
+
+      PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, GameBits.SCENERY, false, 0.5f);
+
+      PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
+      pc.body.setType(BodyType.StaticBody);
+      pc.activate(new Vector2(x, y), 0, new Vector2(0, 0));
+      e.addComponent(pc);
+
       world.getManager(GroupManager.class).add(e, Groups.ATTRACTOR);
       return e;
    }
