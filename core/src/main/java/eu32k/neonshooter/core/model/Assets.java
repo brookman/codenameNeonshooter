@@ -15,7 +15,7 @@ import com.leff.midi.MidiFile;
 import eu32k.neonshooter.core.fx.midi.MidiLoader;
 
 public class Assets {
-   private static final String TEXTURE_ATLAS = "atlas/atlas.txt";
+   private static final String TEXTURE_ATLAS = "atlas/atlas.atlas";
    public AssetManager manager;
    private TextureAtlas atlas;
 
