@@ -1,0 +1,54 @@
+
+atlas.png
+format: RGBA8888
+filter: Nearest,Nearest
+repeat: none
+debug
+  rotate: false
+  xy: 2, 536
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+line
+  rotate: false
+  xy: 518, 728
+  size: 64, 64
+  orig: 64, 64
+  offset: 0, 0
+  index: -1
+projectile
+  rotate: false
+  xy: 2, 278
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+ring
+  rotate: false
+  xy: 260, 536
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+ship
+  rotate: false
+  xy: 2, 20
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+square
+  rotate: false
+  xy: 260, 278
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+square-filled
+  rotate: false
+  xy: 2, 2
+  size: 16, 16
+  orig: 16, 16
+  offset: 0, 0
+  index: -1
