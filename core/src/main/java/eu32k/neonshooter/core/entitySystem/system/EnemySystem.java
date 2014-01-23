@@ -11,6 +11,7 @@ import eu32k.gdx.artemis.extension.component.PhysicsComponent;
 import eu32k.neonshooter.core.entitySystem.common.Groups;
 import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
+import eu32k.neonshooter.core.entitySystem.component.EnemyComponent.EnemyBehaviour;
 
 public class EnemySystem extends EntityProcessingSystem {
 
@@ -26,6 +27,12 @@ public class EnemySystem extends EntityProcessingSystem {
    protected void process(Entity e) {
       Body body = Mappers.physicsMapper.get(e).body;
 
+      EnemyComponent enemyComponent = Mappers.enemyMapper.get(e);
+
+      if (enemyComponent.behaviour == EnemyBehaviour.PASSIVE) {
+         return;
+      }
+
       float nearest = Float.MAX_VALUE;
       nearestPosition.set(0, 0);
       for (Entity player : world.getManager(GroupManager.class).getEntities(Groups.PLAYER)) {
@@ -40,7 +47,16 @@ public class EnemySystem extends EntityProcessingSystem {
 
       force.set(nearestPosition);
       force.sub(body.getPosition());
-      force.nor().scl(world.getDelta() * 60.0f);
+
+      if (enemyComponent.behaviour == EnemyBehaviour.FOLLOW) {
+         force.nor().scl(1.3f);
+      } else if (enemyComponent.behaviour == EnemyBehaviour.FLEE) {
+         force.nor().scl(-1.3f);
+      } else if (enemyComponent.behaviour == EnemyBehaviour.WANDER) {
+         enemyComponent.currentWanderDirection += (Math.random() - 0.5f) * world.delta * 500.0f;
+         force.setAngle(enemyComponent.currentWanderDirection);
+         force.nor().scl(1.3f);
+      }
 
       body.applyForceToCenter(force, true);
       body.setLinearDamping(4);

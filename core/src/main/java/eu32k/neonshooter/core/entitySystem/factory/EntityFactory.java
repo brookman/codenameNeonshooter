@@ -3,6 +3,7 @@ package eu32k.neonshooter.core.entitySystem.factory;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.maps.MapProperties;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -29,6 +30,7 @@ import eu32k.neonshooter.core.entitySystem.common.Mappers;
 import eu32k.neonshooter.core.entitySystem.common.TempVector;
 import eu32k.neonshooter.core.entitySystem.component.ControllableComponent;
 import eu32k.neonshooter.core.entitySystem.component.EnemyComponent;
+import eu32k.neonshooter.core.entitySystem.component.EnemyComponent.EnemyBehaviour;
 import eu32k.neonshooter.core.entitySystem.component.PoolableComponent;
 import eu32k.neonshooter.core.entitySystem.component.PositionComponent;
 import eu32k.neonshooter.core.entitySystem.component.SpawnerComponent;
@@ -138,20 +140,21 @@ public class EntityFactory extends Factory {
 
       @Override
       protected Entity newObject() {
-         Entity e = createActorEntity(0, 0, 0.5f, 0.5f, 0, null);
+         Entity e = createActorEntity(0, 0, 0.4f, 0.4f, 0, null);
 
          e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
 
          CircleShape shape = new CircleShape();
          shape.setRadius(0.15f);
 
-         PhysicsModel shipModel = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.0f, 0.0f, GameBits.ENEMY, false, 0.5f);
+         PhysicsModel model = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.1f, 0.2f, GameBits.ENEMY, false, 0.5f);
 
-         PhysicsComponent pc = get(PhysicsComponent.class).init(shipModel.getBody());
+         PhysicsComponent pc = get(PhysicsComponent.class).init(model.getBody());
+         model.getBody().setAngularDamping(1.0f);
          pc.activate(new Vector2(0, 0), 0, new Vector2(0, 0));
          e.addComponent(pc);
 
-         e.addComponent(get(EnemyComponent.class));
+         e.addComponent(get(EnemyComponent.class).init(EnemyBehaviour.FOLLOW));
 
          e.addComponent(new PoolableComponent<Entity>().init(this));
 
@@ -166,10 +169,26 @@ public class EntityFactory extends Factory {
       Entity e = enemyPool.obtain();
       e.enable();
 
+      float randomRotation = MathUtils.random(360);
+      EnemyBehaviour randomBehaviour = EnemyBehaviour.values()[(int) (MathUtils.random() * EnemyBehaviour.values().length)];
+
       Actor actor = Mappers.actorMapper.get(e).actor;
       actor.setVisible(true);
       actor.setPosition(x, y);
-      Mappers.physicsMapper.get(e).activate(temp.s(x, y), 0, temp2.s(0, 0));
+      actor.setRotation(randomRotation);
+
+      if (randomBehaviour == EnemyBehaviour.PASSIVE) {
+         actor.setColor(Color.BLUE);
+      } else if (randomBehaviour == EnemyBehaviour.FOLLOW) {
+         actor.setColor(Color.RED);
+      } else if (randomBehaviour == EnemyBehaviour.FLEE) {
+         actor.setColor(Color.GREEN);
+      } else if (randomBehaviour == EnemyBehaviour.WANDER) {
+         actor.setColor(Color.YELLOW);
+      }
+
+      Mappers.physicsMapper.get(e).activate(temp.s(x, y), randomRotation * MathUtils.degRad, temp2.s(0, 0));
+      Mappers.enemyMapper.get(e).behaviour = randomBehaviour;
 
       e.changedInWorld();
       return e;

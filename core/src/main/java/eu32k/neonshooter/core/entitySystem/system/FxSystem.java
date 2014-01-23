@@ -20,6 +20,9 @@ public class FxSystem extends EntityProcessingSystem {
    protected void process(Entity e) {
       ActorComponent actorComponent = Mappers.actorMapper.get(e);
       Actor actor = actorComponent.actor;
-      actor.setColor(Neon.fx.primaryColor);
+
+      if (!Mappers.enemyMapper.has(e)) {
+         actor.setColor(Neon.fx.primaryColor);
+      }
    }
 }

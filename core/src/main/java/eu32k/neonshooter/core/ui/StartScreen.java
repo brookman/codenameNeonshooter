@@ -1,11 +1,7 @@
 package eu32k.neonshooter.core.ui;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.scenes.scene2d.Event;
-import com.badlogic.gdx.scenes.scene2d.EventListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.List;
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane;
@@ -13,14 +9,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.Align;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.fx.SoundSet;
 import eu32k.neonshooter.core.model.LevelInfo;
+import eu32k.neonshooter.core.model.LoadableScreen;
 
-public class StartScreen implements Screen, EventListener {
-   private Stage stage;
+public class StartScreen extends LoadableScreen {
+
    private TextButton backButton;
    private TextButton startButton;
    private List soundBox;
@@ -29,94 +25,58 @@ public class StartScreen implements Screen, EventListener {
    private java.util.List<LevelInfo> levels;
 
    @Override
-   public void render(float delta) {
-      stage.act(delta);
-      stage.draw();
-   }
+   protected void init() {
+      Skin skin = Neon.assets.skin;
+      Table mainTable = new Table(skin);
+      mainTable.setFillParent(true);
+      mainTable.pad(20f);
 
-   @Override
-   public void resize(int width, int height) {
-      Rectangle viewport = Neon.viewport;
-      stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-   }
+      levels = Neon.levels.arcade();
+      Object[] levelsData = levels.toArray();
+      levelBox = new List(levelsData, skin);
 
-   @Override
-   public void show() {
-      if (stage == null) {
-         stage = new Stage();
-         Skin skin = Neon.assets.skin;
-         Table mainTable = new Table(skin);
-         mainTable.setFillParent(true);
-         mainTable.pad(20f);
+      ScrollPane levelScrollPane = new ScrollPane(levelBox);
 
-         this.levels = Neon.levels.arcade();
-         Object[] levelsData = levels.toArray();
-         levelBox = new List(levelsData, skin);
+      sounds = Neon.music.arcade();
+      Object[] soundSets = sounds.toArray();
+      soundBox = new List(soundSets, skin);
+      ScrollPane soundScrollPane = new ScrollPane(soundBox);
 
-         ScrollPane levelScrollPane = new ScrollPane(levelBox);
+      Label levelCaption = new Label("Levels", skin, "caption");
+      Label soundCaption = new Label("Sound Sets", skin, "caption");
 
-         this.sounds = Neon.music.arcade();
-         Object[] soundSets = sounds.toArray();
-         soundBox = new List(soundSets, skin);
-         ScrollPane soundScrollPane = new ScrollPane(soundBox);
+      mainTable.add(levelCaption).align(Align.top | Align.left);
+      mainTable.add(soundCaption).align(Align.top | Align.left);
 
-         Label levelCaption = new Label("Levels", skin, "caption");
-         Label soundCaption = new Label("Sound Sets", skin, "caption");
+      mainTable.row();
 
-         mainTable.add(levelCaption).align(Align.top | Align.left);
-         mainTable.add(soundCaption).align(Align.top | Align.left);
+      mainTable.add(levelScrollPane).expand().align(Align.top | Align.left);
+      mainTable.add(soundScrollPane).expand().align(Align.top | Align.left);
 
-         mainTable.row();
-
-         mainTable.add(levelScrollPane).expand().align(Align.top | Align.left);
-         mainTable.add(soundScrollPane).expand().align(Align.top | Align.left);
-
-         backButton = new TextButton("Back", skin, "startScreen");
-         backButton.addListener(this);
-         startButton = new TextButton("Start", skin, "startScreen");
-         startButton.addListener(this);
-
-         mainTable.row();
-
-         mainTable.add(backButton);
-         mainTable.add(startButton);
-
-         stage.addActor(mainTable);
-      }
-
-      Gdx.input.setInputProcessor(stage);
-   }
-
-   @Override
-   public void hide() {
-
-   }
-
-   @Override
-   public void pause() {
-
-   }
-
-   @Override
-   public void resume() {
-
-   }
-
-   @Override
-   public void dispose() {
-
-   }
-
-   @Override
-   public boolean handle(Event event) {
-      if (event instanceof ChangeEvent) {
-         if (event.getTarget() == startButton) {
-            start();
-         } else if (event.getTarget() == backButton) {
+      backButton = new TextButton("Back", skin, "startScreen");
+      backButton.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Neon.ui.showScreen(MainMenuScreen.class);
+            return false;
          }
-      }
-      return false;
+      });
+
+      startButton = new TextButton("Start", skin, "startScreen");
+      startButton.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            start();
+            return false;
+         }
+      });
+
+      mainTable.row();
+
+      mainTable.add(backButton);
+      mainTable.add(startButton);
+
+      stage.addActor(mainTable);
    }
 
    private void start() {
@@ -124,7 +84,21 @@ public class StartScreen implements Screen, EventListener {
       SoundSet sound = sounds.get(soundBox.getSelectedIndex());
       Neon.levels.prepareLevel(info);
       Neon.music.prepareSet(sound);
-      Neon.ui.loadThenShowScreen(InGameScreen.class);
+      Neon.ui.showScreen(InGameScreen.class);
    }
 
+   @Override
+   public void dispose() {
+      //NOP
+   }
+
+   @Override
+   public void initAssets() {
+      //NOP
+   }
+
+   @Override
+   public void reset() {
+      //NOP
+   }
 }

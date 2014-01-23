@@ -10,10 +10,10 @@ public class NeonshooterDesktop {
    public static void main(String[] args) {
       LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
       config.title = "Neonshooter";
-      config.vSyncEnabled = true;
+      config.vSyncEnabled = false;
       config.resizable = true;
       config.useGL20 = true;
-      config.samples = 8;
+      config.samples = 1;
       config.width = 1024;
       config.height = 576;
       // config.foregroundFPS = 60;

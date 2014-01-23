@@ -13,7 +13,7 @@ import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.entitySystem.common.Groups;
 import eu32k.neonshooter.core.entitySystem.component.DeactivateComponent;
 import eu32k.neonshooter.core.entitySystem.factory.EntityFactory;
-import eu32k.neonshooter.core.ui.SettingsScreen;
+import eu32k.neonshooter.core.ui.GameOverScreen;
 
 public class CollisionSystem extends VoidEntitySystem implements ContactListener {
 
@@ -47,7 +47,7 @@ public class CollisionSystem extends VoidEntitySystem implements ContactListener
          entityB.addComponent(new DeactivateComponent());
          entityB.changedInWorld();
       } else if (is(entityA, Groups.PLAYER) && (is(entityB, Groups.ENEMY) || is(entityB, Groups.ATTRACTOR))) {
-         Neon.ui.showScreen(SettingsScreen.class);
+         Neon.ui.showScreen(GameOverScreen.class);
       }
    }
 

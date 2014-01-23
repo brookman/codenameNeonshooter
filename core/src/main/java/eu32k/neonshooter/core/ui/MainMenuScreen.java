@@ -2,45 +2,22 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.model.LoadableScreen;
 
-public class MainMenuScreen implements Screen {
+public class MainMenuScreen extends LoadableScreen {
 
-   private Stage stage;
    private TextButton start;
    private TextButton settings;
    private TextButton exit;
 
    @Override
-   public void render(float delta) {
-      stage.act(delta);
-      stage.draw();
-   }
-
-   @Override
-   public void resize(int width, int height) {
-      Rectangle viewport = Neon.viewport;
-      stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
-   }
-
-   @Override
-   public void show() {
-      if (stage == null) {
-         buildStage();
-      }
-      Gdx.input.setInputProcessor(stage);
-   }
-
-   private void buildStage() {
-      stage = new Stage();
+   protected void init() {
 
       Table table = new Table(Neon.assets.skin);
       table.setFillParent(true);
@@ -51,7 +28,7 @@ public class MainMenuScreen implements Screen {
       start.addListener(new InputListener() {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            start();
+            Neon.ui.showScreen(StartScreen.class);
             return false;
          }
       });
@@ -80,29 +57,20 @@ public class MainMenuScreen implements Screen {
    }
 
    @Override
-   public void hide() {
-
-   }
-
-   @Override
-   public void pause() {
-
-   }
-
-   @Override
-   public void resume() {
-
-   }
-
-   @Override
    public void dispose() {
+      // TODO Auto-generated method stub
 
    }
 
-   private void start() {
-      Neon.ui.showScreen(StartScreen.class);
-      // Neon.levels.prepareAnyArcadeLevel();
-      // Neon.music.prepareAnyArcadeTrack();
-      // Neon.ui.loadThenShowScreen(InGameScreen.class);
+   @Override
+   public void initAssets() {
+      // TODO Auto-generated method stub
+
+   }
+
+   @Override
+   public void reset() {
+      // TODO Auto-generated method stub
+
    }
 }

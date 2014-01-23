@@ -51,7 +51,7 @@ public class ControlSystem extends EntityProcessingSystem {
          force.set(Neon.controls.padLeft);
       }
 
-      force.scl(world.getDelta() * 120.0f);
+      force.scl(2.7f);
 
       if (force.len2() > 0.01f) {
          body.applyForceToCenter(force, true);

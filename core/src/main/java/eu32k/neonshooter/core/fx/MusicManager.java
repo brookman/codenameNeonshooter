@@ -115,7 +115,7 @@ public class MusicManager implements Serializable {
       if (set == null) {
          return;
       }
-      this.currentSet = set;
+      currentSet = set;
       Neon.assets.manager.load(set.audioFile, Sound.class);
       Neon.assets.manager.load(set.controlFile, MidiFile.class);
    }

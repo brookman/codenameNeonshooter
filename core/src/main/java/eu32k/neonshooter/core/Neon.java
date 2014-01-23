@@ -17,7 +17,7 @@ import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.model.GameState;
 import eu32k.neonshooter.core.model.LevelManager;
-import eu32k.neonshooter.core.ui.LoadingScreen;
+import eu32k.neonshooter.core.ui.IntroScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
 public class Neon extends Game {
@@ -44,6 +44,8 @@ public class Neon extends Game {
 
    @Override
    public void create() {
+      viewport = new Rectangle();
+      resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
       Neon.instance = this;
       Neon.random = new Random();
@@ -66,9 +68,7 @@ public class Neon extends Game {
       Neon.levels.create();
       Neon.game.create();
 
-      viewport = new Rectangle();
-
-      Neon.ui.showScreen(LoadingScreen.class);
+      Neon.ui.showScreen(IntroScreen.class);
    }
 
    @Override

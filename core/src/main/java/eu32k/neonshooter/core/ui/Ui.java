@@ -6,6 +6,7 @@ import java.util.Map;
 import com.badlogic.gdx.Screen;
 
 import eu32k.neonshooter.core.Neon;
+import eu32k.neonshooter.core.model.LoadableScreen;
 
 public class Ui {
    private Map<Class<?>, Screen> screens;
@@ -16,12 +17,13 @@ public class Ui {
    }
 
    public void create() {
-      loadingScreen = addScreen(new LoadingScreen(IntroScreen.class));
+      loadingScreen = addScreen(new LoadingScreen());
       addScreen(new IntroScreen());
       addScreen(new MainMenuScreen());
       addScreen(new SettingsScreen());
       addScreen(new InGameScreen());
       addScreen(new StartScreen());
+      addScreen(new GameOverScreen());
    }
 
    protected <T extends Screen> T addScreen(T screen) {
@@ -31,17 +33,24 @@ public class Ui {
 
    public void showScreen(Class<?> clazz) {
       Screen screen = screens.get(clazz);
-      if (screen != null) {
+      if (screen == null) {
+         return;
+      }
+
+      if (screen instanceof LoadableScreen) {
+         LoadableScreen targetScreen = (LoadableScreen) screen;
+         loadingScreen.load(targetScreen);
+      } else {
          Neon.instance.setScreen(screen);
       }
    }
 
-   public void loadThenShowScreen(Class<?> clazz) {
-      if (loadingScreen == null) {
-         showScreen(clazz);
-         return;
-      }
-      loadingScreen.targetScreen = clazz;
-      showScreen(loadingScreen.getClass());
-   }
+   //   public void loadThenShowScreen(Class<?> clazz) {
+   //      if (loadingScreen == null) {
+   //         showScreen(clazz);
+   //         return;
+   //      }
+   //      loadingScreen.targetScreen = clazz;
+   //      showScreen(loadingScreen.getClass());
+   //   }
 }

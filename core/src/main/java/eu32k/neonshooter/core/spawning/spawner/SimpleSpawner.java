@@ -6,7 +6,7 @@ import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.World;
 
 /**
- * The SimpleSpawner class simply spawns every time when it is triggerd. Use
+ * The SimpleSpawner class simply spawns every time when it is triggered. Use
  * this for single triggers like NoteOn or NoteOff. When you use it on a
  * continuous trigger (NotePlaying, Controller), enemies might spawn every
  * frame.
