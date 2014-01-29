@@ -1,9 +1,9 @@
 package eu32k.neonshooter.core.fx.midi;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -15,7 +15,8 @@ public class ControlTracksDisplay extends Actor {
    public final static int PADDING = 0;
    private BitmapFont font;
    private ControlTracks state;
-   private Texture textureOutline;
+   private TextureRegion textureFilled;
+   private TextureRegion textureOutline;
 
    private final static Color noteOn = new Color(0f, 1f, 0f, 1f);
    private final static Color noteOff = new Color(0.5f, 0.5f, 0.5f, 0.5f);
@@ -26,13 +27,12 @@ public class ControlTracksDisplay extends Actor {
    private final static Color intensityBackground = new Color(0.25f, 0.25f, 0.25f, 0.25f);
 
    private Color tempColor;
-   private Texture textureFilled;
 
    public ControlTracksDisplay(BitmapFont font) {
       tempColor = new Color(1f, 1f, 1f, 1f);
       this.font = font;
-      this.textureOutline = Neon.assets.manager.get("textures/square.png", Texture.class);
-      this.textureFilled = Neon.assets.manager.get("textures/square-filled.png", Texture.class);
+      textureOutline = Neon.assets.getTextureRegion("square");
+      textureFilled = Neon.assets.getTextureRegion("square-filled");
    }
 
    public void setState(ControlTracks state) {

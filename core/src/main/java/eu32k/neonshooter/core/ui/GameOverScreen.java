@@ -48,7 +48,17 @@ public class GameOverScreen implements Screen {
       Label gameOverLabel = new Label("Game Over", Neon.assets.skin);
       table.add(gameOverLabel).row();
 
-      select = new TextButton("Level select", Neon.assets.skin);
+      TextButton retry = new TextButton("Retry", Neon.assets.skin);
+      table.add(retry).row();
+      retry.addListener(new InputListener() {
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+            Neon.ui.showScreen(StartScreen.class);
+            return false;
+         }
+      });
+
+      TextButton select = new TextButton("Level select", Neon.assets.skin);
       table.add(select).row();
       select.addListener(new InputListener() {
          @Override
@@ -58,7 +68,7 @@ public class GameOverScreen implements Screen {
          }
       });
 
-      exit = new TextButton("Main menu", Neon.assets.skin);
+      TextButton exit = new TextButton("Main menu", Neon.assets.skin);
       table.add(exit);
       exit.addListener(new InputListener() {
          @Override
@@ -67,7 +77,6 @@ public class GameOverScreen implements Screen {
             return false;
          }
       });
-
    }
 
    @Override

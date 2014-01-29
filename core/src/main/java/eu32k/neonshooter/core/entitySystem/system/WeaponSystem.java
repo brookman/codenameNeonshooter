@@ -37,19 +37,12 @@ public class WeaponSystem extends EntityProcessingSystem {
       WeaponComponent weaponComponent = Mappers.weaponMapper.get(e);
       EntityActor actor = Mappers.actorMapper.get(e).actor;
 
-      if (Neon.controls.padRight.len() > 0) {
+      if (Neon.controls.shoot) {
          weaponComponent.shootRequested = true;
-         weaponComponent.targetX = actor.getX() + Neon.controls.padRight.x;
-         weaponComponent.targetY = actor.getY() + Neon.controls.padRight.y;
+         weaponComponent.targetX = actor.getX() + Neon.controls.shootDirection.x;
+         weaponComponent.targetY = actor.getY() + Neon.controls.shootDirection.y;
       } else {
-         // weaponComponent.shootRequested = false;
-
-         // Hack
-         weaponComponent.shootRequested = true;
-         mouse.set(Neon.controls.mouseX, Neon.controls.mouseY);
-         referenceStage.screenToStageCoordinates(mouse);
-         weaponComponent.targetX = mouse.x;
-         weaponComponent.targetY = mouse.y;
+         weaponComponent.shootRequested = false;
       }
 
       if (!weaponComponent.shouldShoot()) {
@@ -64,7 +57,7 @@ public class WeaponSystem extends EntityProcessingSystem {
       velocity.nor().scl(7.0f);
 
       Vector2 pos = new Vector2();
-      float rot = (weaponComponent.tick % 2 == 0) ? 90 : -90;
+      float rot = weaponComponent.tick % 2 == 0 ? 90 : -90;
 
       pos.x = actor.getX() + MathUtils.cos((velocity.angle() + rot) * MathUtils.degRad) * 0.05f;
       pos.y = actor.getY() + MathUtils.sin((velocity.angle() + rot) * MathUtils.degRad) * 0.05f;

@@ -27,31 +27,16 @@ public class ControlSystem extends EntityProcessingSystem {
 
       force.set(0, 0);
 
-      if (Neon.controls.t.isPressed || Neon.controls.mousePressed) {
+      if (Neon.controls.slowTime) {
          Neon.game.targetTimeScale = 0.45f;
       } else {
          Neon.game.targetTimeScale = 1f;
       }
 
-      if (Neon.controls.up) {
-         force.add(0, 1);
+      if (Neon.controls.move) {
+         force.set(Neon.controls.moveDirection);
+         force.scl(2.7f);
       }
-      if (Neon.controls.down) {
-         force.add(0, -1);
-      }
-      if (Neon.controls.left) {
-         force.add(-1, 0);
-      }
-      if (Neon.controls.right) {
-         force.add(1, 0);
-      }
-      force.nor();
-
-      if (Neon.controls.padLeft.len() > 0) {
-         force.set(Neon.controls.padLeft);
-      }
-
-      force.scl(2.7f);
 
       if (force.len2() > 0.01f) {
          body.applyForceToCenter(force, true);

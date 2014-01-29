@@ -102,9 +102,9 @@ public class MusicManager implements Serializable {
       getMidiDisplay().setState(controlTracks);
    }
 
-   public void play() {
+   public void play(float volume) {
       controlTracks.play();
-      soundId = sound.play(0.5f);
+      soundId = sound.play(volume);
    }
 
    public void prepareSet(String id) {
@@ -136,8 +136,13 @@ public class MusicManager implements Serializable {
       sound.setPitch(soundId, pitch);
    }
 
+   public void setVolume(float volume) {
+      if (sound != null) {
+         sound.setVolume(soundId, volume);
+      }
+   }
+
    public ControlTracks getControlTracks() {
       return controlTracks;
    }
-
 }

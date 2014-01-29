@@ -12,10 +12,6 @@ import eu32k.neonshooter.core.model.LoadableScreen;
 
 public class MainMenuScreen extends LoadableScreen {
 
-   private TextButton start;
-   private TextButton settings;
-   private TextButton exit;
-
    @Override
    protected void init() {
 
@@ -23,7 +19,7 @@ public class MainMenuScreen extends LoadableScreen {
       table.setFillParent(true);
       stage.addActor(table);
 
-      start = new TextButton("Start", Neon.assets.skin);
+      TextButton start = new TextButton("Start", Neon.assets.skin);
       table.add(start).row();
       start.addListener(new InputListener() {
          @Override
@@ -33,7 +29,7 @@ public class MainMenuScreen extends LoadableScreen {
          }
       });
 
-      settings = new TextButton("Settings", Neon.assets.skin);
+      TextButton settings = new TextButton("Settings", Neon.assets.skin);
       table.add(settings).row();
       settings.addListener(new InputListener() {
          @Override
@@ -44,7 +40,7 @@ public class MainMenuScreen extends LoadableScreen {
       });
 
       if (Gdx.app.getType() != ApplicationType.WebGL) {
-         exit = new TextButton("Exit", Neon.assets.skin);
+         TextButton exit = new TextButton("Exit", Neon.assets.skin);
          table.add(exit);
          exit.addListener(new InputListener() {
             @Override

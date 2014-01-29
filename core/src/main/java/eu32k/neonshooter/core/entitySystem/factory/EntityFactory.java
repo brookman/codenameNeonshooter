@@ -9,6 +9,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -144,8 +145,10 @@ public class EntityFactory extends Factory {
 
          e.addComponent(get(TextureRegionComponent.class).init(Neon.assets.getTextureRegion("square")));
 
-         CircleShape shape = new CircleShape();
-         shape.setRadius(0.15f);
+         PolygonShape shape = new PolygonShape();
+         shape.setAsBox(0.15f, 0.15f);
+         // CircleShape shape = new CircleShape();
+         // shape.setRadius(0.15f);
 
          PhysicsModel model = new PhysicsModel(world.box2dWorld, e, shape, 2.0f, 0.1f, 0.2f, GameBits.ENEMY, false, 0.5f);
 

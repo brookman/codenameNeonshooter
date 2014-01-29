@@ -1,8 +1,10 @@
 package eu32k.neonshooter.core.ui;
 
+import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapRenderer;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -37,8 +39,6 @@ public class InGameScreen extends LoadableScreen {
    private Stage hudStage;
 
    private Label fpsLabel;
-   private Touchpad padLeft;
-   private Touchpad padRight;
 
    private World box2dWorld;
    private ExtendedWorld artemisWorld;
@@ -98,7 +98,7 @@ public class InGameScreen extends LoadableScreen {
 
    @Override
    public void show() {
-      Neon.music.play();
+      Neon.music.play(Neon.settings.musicVolume);
       Gdx.input.setInputProcessor(hudStage);
       Neon.game.timeScale = 1f;
    }
@@ -111,13 +111,14 @@ public class InGameScreen extends LoadableScreen {
       fpsLabel = new Label("", Neon.assets.skin);
       fpsLabel.setFontScale(0.5f);
 
-      padLeft = new Touchpad(20.0f, Neon.assets.skin);
-      padRight = new Touchpad(20.0f, Neon.assets.skin);
-
       table.add(fpsLabel).expand().top().left().pad(10);
-      table.row();
-      table.add(padLeft).prefWidth(150).prefHeight(150).expand().bottom().left().pad(10);
-      table.add(padRight).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
+      if (Gdx.app.getType() == ApplicationType.Android) {
+         table.row();
+         Neon.controls.padLeft = new Touchpad(20.0f, Neon.assets.skin);
+         Neon.controls.padRight = new Touchpad(20.0f, Neon.assets.skin);
+         table.add(Neon.controls.padLeft).prefWidth(150).prefHeight(150).expand().bottom().left().pad(10);
+         table.add(Neon.controls.padLeft).prefWidth(150).prefHeight(150).expand().bottom().right().pad(10);
+      }
 
       hudStage.addActor(table);
       hudStage.addActor(Neon.music.getMidiDisplay());
@@ -132,8 +133,6 @@ public class InGameScreen extends LoadableScreen {
       handleTimeScale(delta, scale, lastScale, target);
 
       float scaledDelta = delta * Neon.game.timeScale;
-      Neon.controls.padLeft.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
-      Neon.controls.padRight.set(padRight.getKnobPercentX(), padRight.getKnobPercentY());
 
       Neon.fx.update(scaledDelta);
 
@@ -158,18 +157,7 @@ public class InGameScreen extends LoadableScreen {
    }
 
    private void handleTimeScale(float delta, float scale, float lastScale, float target) {
-      if (scale < target) {
-         scale += TIME_SCALE_RATE * delta;
-         if (scale > target) {
-            scale = target;
-         }
-         Neon.game.timeScale = scale;
-      } else if (scale > target) {
-         scale -= TIME_SCALE_RATE * delta;
-         if (scale < target) {
-            scale = target;
-         }
-      }
+      scale = MathUtils.clamp(scale + TIME_SCALE_RATE * delta * Math.signum(target - scale), 0, 1);
       if (lastScale != scale) {
          Neon.game.timeScale = scale;
          Neon.music.pitch(Neon.game.timeScale);

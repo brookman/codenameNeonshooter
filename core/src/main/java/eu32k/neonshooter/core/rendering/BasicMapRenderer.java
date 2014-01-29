@@ -70,7 +70,7 @@ public class BasicMapRenderer implements MapRenderer {
       color.g = 1.0f - color.g * 0.5f;
       color.b = 1.0f - color.b * 0.5f;
 
-      render(0.04f, color);
+      render(0.03f, color);
    }
 
    public void render(float thickness, Color color) {
