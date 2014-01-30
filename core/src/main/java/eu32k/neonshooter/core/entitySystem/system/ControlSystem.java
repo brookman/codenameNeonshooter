@@ -28,14 +28,14 @@ public class ControlSystem extends EntityProcessingSystem {
       force.set(0, 0);
 
       if (Neon.controls.slowTime) {
-         Neon.game.targetTimeScale = 0.45f;
+         Neon.game.timeScale.fadeTo(0.45f);
       } else {
-         Neon.game.targetTimeScale = 1f;
+         Neon.game.timeScale.fadeTo(1.0f);
       }
 
       if (Neon.controls.move) {
          force.set(Neon.controls.moveDirection);
-         force.scl(2.7f);
+         force.scl(2.0f);
       }
 
       if (force.len2() > 0.01f) {

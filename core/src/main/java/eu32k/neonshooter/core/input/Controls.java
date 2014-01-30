@@ -33,13 +33,16 @@ public class Controls {
    }
 
    public void update() {
-      //      for (int i = 0; i < 10; i++) {
-      //         Gdx.app.log("Control", "button " + i + " " + controller.getButton(i));
-      //      }
+      // for (int i = 0; i < 10; i++) {
+      // Gdx.app.log("Control", "button " + i + " " + controller.getButton(i));
+      // }
+
+      slowTime = false;
+
       if (controller != null) {
          moveDirection.set(controller.getAxis(0), -controller.getAxis(1));
          shootDirection.set(controller.getAxis(2), -controller.getAxis(3));
-         slowTime = controller.getButton(5);
+         slowTime |= controller.getButton(5);
       } else if (Gdx.app.getType() == ApplicationType.Android) {
          moveDirection.set(padLeft.getKnobPercentX(), padLeft.getKnobPercentY());
          shootDirection.set(padRight.getKnobPercentX(), padRight.getKnobPercentY()).nor();
@@ -57,7 +60,7 @@ public class Controls {
          if (Gdx.input.isKeyPressed(Input.Keys.D) || Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             moveDirection.add(1, 0);
          }
-         shootDirection.set(Gdx.input.getX() - Gdx.graphics.getWidth() / 2.0f, Gdx.input.getY() - Gdx.graphics.getHeight() / 2.0f).nor();
+         shootDirection.set(Gdx.input.getX() - Gdx.graphics.getWidth() / 2.0f, -(Gdx.input.getY() - Gdx.graphics.getHeight() / 2.0f)).nor();
       }
 
       move = moveDirection.len() > 0.1f;

@@ -4,7 +4,6 @@ import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapRenderer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
@@ -100,7 +99,7 @@ public class InGameScreen extends LoadableScreen {
    public void show() {
       Neon.music.play(Neon.settings.musicVolume);
       Gdx.input.setInputProcessor(hudStage);
-      Neon.game.timeScale = 1f;
+      Neon.game.timeScale.setFade(1, 1);
    }
 
    private void createHud() {
@@ -126,13 +125,7 @@ public class InGameScreen extends LoadableScreen {
 
    @Override
    public void render(float delta) {
-      float scale = Neon.game.timeScale;
-      float lastScale = scale;
-      float target = Neon.game.targetTimeScale;
-
-      handleTimeScale(delta, scale, lastScale, target);
-
-      float scaledDelta = delta * Neon.game.timeScale;
+      float scaledDelta = Neon.game.timeScale.update(delta) * delta;
 
       Neon.fx.update(scaledDelta);
 
@@ -153,16 +146,7 @@ public class InGameScreen extends LoadableScreen {
       Neon.music.update(scaledDelta);
 
       // Table.drawDebug(hudStage);
-      debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
-   }
-
-   private void handleTimeScale(float delta, float scale, float lastScale, float target) {
-      scale = MathUtils.clamp(scale + TIME_SCALE_RATE * delta * Math.signum(target - scale), 0, 1);
-      if (lastScale != scale) {
-         Neon.game.timeScale = scale;
-         Neon.music.pitch(Neon.game.timeScale);
-         Gdx.app.log("InGameScreen", "Sound scale set to " + Neon.game.timeScale);
-      }
+      // debugRenderer.render(box2dWorld, gameStage.getCamera().combined);
    }
 
    @Override

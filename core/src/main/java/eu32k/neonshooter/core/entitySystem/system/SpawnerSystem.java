@@ -1,7 +1,5 @@
 package eu32k.neonshooter.core.entitySystem.system;
 
-import com.badlogic.gdx.Gdx;
-
 import eu32k.gdx.artemis.base.Aspect;
 import eu32k.gdx.artemis.base.Entity;
 import eu32k.gdx.artemis.base.systems.EntityProcessingSystem;
@@ -47,7 +45,7 @@ public class SpawnerSystem extends EntityProcessingSystem {
    }
 
    private void spawn(Entity e, SpawnerComponent spawner) {
-      Gdx.app.log("SpawnerSystem", "Spawn");
+      // Gdx.app.log("SpawnerSystem", "Spawn");
       PositionComponent position = Mappers.positionMapper.get(e);
       factory.createEnemyShip(position.x, position.y);
    }

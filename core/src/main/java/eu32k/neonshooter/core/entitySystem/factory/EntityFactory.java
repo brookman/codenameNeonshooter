@@ -131,7 +131,7 @@ public class EntityFactory extends Factory {
       actor.getActions().clear();
       actor.addAction(Actions.alpha(0f));
       actor.act(1f);
-      actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale));
+      actor.addAction(Actions.alpha(1f, 0.05f / Neon.game.timeScale.getValue()));
 
       e.changedInWorld();
       return e;

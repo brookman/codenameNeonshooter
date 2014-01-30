@@ -27,7 +27,7 @@ public class WeaponComponent extends Component {
    }
 
    public boolean shouldShoot() {
-      return shootRequested && Time.getTime() - lastShoot >= shootDelay / Neon.game.timeScale;
+      return shootRequested && Time.getTime() - lastShoot >= shootDelay / Neon.game.timeScale.getValue();
    }
 
    public void shoot() {
