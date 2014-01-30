@@ -64,11 +64,10 @@ public abstract class LoadableScreen implements Screen, Loadable {
    }
 
    @Override
-   public void resize(int arg0, int arg1) {
-      Gdx.app.log("LoadableScreen", "resize " + Neon.viewport);
+   public void resize(int width, int height) {
       Rectangle viewport = Neon.viewport;
-      for (Stage stage : stages) {
-         stage.setViewport(stage.getWidth(), stage.getHeight(), true, viewport.x, viewport.y, viewport.width, viewport.height);
+      for (Stage s : stages) {
+         s.setViewport(stage.getWidth(), stage.getHeight(), true, (int) viewport.x, (int) viewport.y, (int) viewport.width, (int) viewport.height);
       }
    }
 
