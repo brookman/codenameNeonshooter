@@ -71,11 +71,12 @@ public class LoadingScreen extends NeonScreen {
          return;
       }
 
-      if (percentageLabel != null) {
-         int progress = Math.round(Neon.assets.getProgress() * 100f);
-         percentageLabel.setText(progress + "%");
-         super.render(delta);
-      }
+      // if (percentageLabel != null) {
+      // int progress = Math.round(Neon.assets.getProgress() * 100f);
+      // percentageLabel.setText(progress + "%");
+      // super.render(delta);
+      // }
+      // super.render(delta);
 
       shader.begin();
       shader.setUniformf("loaded", progress);
