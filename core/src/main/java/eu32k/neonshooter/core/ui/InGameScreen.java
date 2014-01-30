@@ -2,6 +2,7 @@ package eu32k.neonshooter.core.ui;
 
 import com.badlogic.gdx.Application.ApplicationType;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.maps.MapRenderer;
 import com.badlogic.gdx.math.Vector2;
@@ -28,12 +29,11 @@ import eu32k.neonshooter.core.entitySystem.system.FxSystem;
 import eu32k.neonshooter.core.entitySystem.system.GravitySystem;
 import eu32k.neonshooter.core.entitySystem.system.SpawnerSystem;
 import eu32k.neonshooter.core.entitySystem.system.WeaponSystem;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 import eu32k.neonshooter.core.spawning.SpawnerInfo;
 
-public class InGameScreen extends LoadableScreen {
+public class InGameScreen extends NeonScreen {
 
-   private static final float TIME_SCALE_RATE = 0.8f;
    private Stage gameStage;
    private Stage hudStage;
 
@@ -96,9 +96,17 @@ public class InGameScreen extends LoadableScreen {
    }
 
    @Override
+   public boolean keyDown(int key) {
+      if (key == Keys.P || key == Keys.ESCAPE) {
+         Neon.ui.pushScreen(PauseScreen.class);
+      }
+      return false;
+   }
+
+   @Override
    public void show() {
       Neon.music.play(Neon.settings.musicVolume);
-      Gdx.input.setInputProcessor(hudStage);
+      Gdx.input.setInputProcessor(multiplexer);
       Neon.game.timeScale.setFade(1, 1);
    }
 
@@ -151,8 +159,7 @@ public class InGameScreen extends LoadableScreen {
 
    @Override
    public void initAssets() {
-      // TODO Auto-generated method stub
-
+      // NOP
    }
 
    @Override
@@ -162,7 +169,6 @@ public class InGameScreen extends LoadableScreen {
 
    @Override
    public void dispose() {
-      // TODO Auto-generated method stub
-
+      // NOP
    }
 }

@@ -5,11 +5,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.esotericsoftware.tablelayout.BaseTableLayout;
 
 import eu32k.neonshooter.core.Neon;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 
-public class LoadingScreen extends LoadableScreen {
+public class LoadingScreen extends NeonScreen {
 
-   private LoadableScreen targetScreen;
+   private NeonScreen targetScreen;
 
    private Label percentageLabel;
 
@@ -33,7 +33,7 @@ public class LoadingScreen extends LoadableScreen {
       innerTable.add(percentageLabel).align(BaseTableLayout.RIGHT);
    }
 
-   public void load(LoadableScreen targetScreen) {
+   public void load(NeonScreen targetScreen) {
       this.targetScreen = targetScreen;
       targetScreen.initAssets();
       if (targetScreen != this) {

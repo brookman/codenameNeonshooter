@@ -47,7 +47,7 @@ public class CollisionSystem extends VoidEntitySystem implements ContactListener
          entityB.addComponent(new DeactivateComponent());
          entityB.changedInWorld();
       } else if (is(entityA, Groups.PLAYER) && (is(entityB, Groups.ENEMY) || is(entityB, Groups.ATTRACTOR))) {
-         Neon.ui.showScreen(GameOverScreen.class);
+         Neon.ui.pushScreen(GameOverScreen.class);
       }
    }
 

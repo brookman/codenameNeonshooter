@@ -1,5 +1,6 @@
 package eu32k.neonshooter.core.ui;
 
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
@@ -13,9 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.Align;
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.fx.SoundSet;
 import eu32k.neonshooter.core.model.LevelInfo;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 
-public class StartScreen extends LoadableScreen {
+public class LevelSelectScreen extends NeonScreen {
 
    private TextButton backButton;
    private TextButton startButton;
@@ -57,7 +58,7 @@ public class StartScreen extends LoadableScreen {
       backButton.addListener(new InputListener() {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-            Neon.ui.showScreen(MainMenuScreen.class);
+            Neon.ui.popScreen();
             return false;
          }
       });
@@ -84,21 +85,29 @@ public class StartScreen extends LoadableScreen {
       SoundSet sound = sounds.get(soundBox.getSelectedIndex());
       Neon.levels.prepareLevel(info);
       Neon.music.prepareSet(sound);
-      Neon.ui.showScreen(InGameScreen.class);
+      Neon.ui.pushScreen(InGameScreen.class);
+   }
+
+   @Override
+   public boolean keyDown(int key) {
+      if (key == Keys.ESCAPE) {
+         Neon.ui.popScreen();
+      }
+      return false;
    }
 
    @Override
    public void dispose() {
-      //NOP
+      // NOP
    }
 
    @Override
    public void initAssets() {
-      //NOP
+      // NOP
    }
 
    @Override
    public void reset() {
-      //NOP
+      // NOP
    }
 }

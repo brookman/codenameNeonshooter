@@ -17,7 +17,6 @@ import eu32k.neonshooter.core.input.Controls;
 import eu32k.neonshooter.core.model.Assets;
 import eu32k.neonshooter.core.model.GameState;
 import eu32k.neonshooter.core.model.LevelManager;
-import eu32k.neonshooter.core.ui.IntroScreen;
 import eu32k.neonshooter.core.ui.Ui;
 
 public class Neon extends Game {
@@ -68,7 +67,7 @@ public class Neon extends Game {
       Neon.levels.create();
       Neon.game.create();
 
-      Neon.ui.showScreen(IntroScreen.class);
+      Neon.ui.showTopScreen();
    }
 
    @Override

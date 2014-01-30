@@ -1,6 +1,6 @@
 package eu32k.neonshooter.core.ui;
 
-import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input.Keys;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
@@ -11,9 +11,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 
 import eu32k.neonshooter.core.Neon;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 
-public class SettingsScreen extends LoadableScreen {
+public class SettingsScreen extends NeonScreen {
 
    private Slider musicVolume;
    private Slider fxVolume;
@@ -55,7 +55,7 @@ public class SettingsScreen extends LoadableScreen {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Neon.settings.reset();
-            load();
+            initWidgets();
             return false;
          }
       });
@@ -66,7 +66,7 @@ public class SettingsScreen extends LoadableScreen {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Neon.settings.load();
-            Neon.ui.showScreen(MainMenuScreen.class);
+            Neon.ui.popScreen();
             return false;
          }
       });
@@ -77,14 +77,13 @@ public class SettingsScreen extends LoadableScreen {
          @Override
          public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             Neon.settings.save();
-            Neon.ui.showScreen(MainMenuScreen.class);
+            Neon.ui.popScreen();
             return false;
          }
       });
    }
 
-   private void load() {
-      Gdx.app.log("SettingsScreen", "load");
+   private void initWidgets() {
       musicVolume.setValue(Neon.settings.musicVolume);
       fxVolume.setValue(Neon.settings.fxVolume);
    }
@@ -92,14 +91,25 @@ public class SettingsScreen extends LoadableScreen {
    @Override
    public void show() {
       super.show();
-      load();
+      initWidgets();
+   }
+
+   @Override
+   public boolean keyDown(int key) {
+      if (key == Keys.ESCAPE) {
+         Neon.settings.load();
+         Neon.ui.popScreen();
+      }
+      return false;
    }
 
    @Override
    public void dispose() {
+      // NOP
    }
 
    @Override
    public void reset() {
+      // NOP
    }
 }

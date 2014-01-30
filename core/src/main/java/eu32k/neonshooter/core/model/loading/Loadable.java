@@ -1,4 +1,4 @@
-package eu32k.neonshooter.core.model;
+package eu32k.neonshooter.core.model.loading;
 
 
 public interface Loadable {

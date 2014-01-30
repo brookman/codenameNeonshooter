@@ -14,9 +14,9 @@ import com.badlogic.gdx.graphics.g3d.utils.AnimationController.AnimationListener
 
 import eu32k.neonshooter.core.Neon;
 import eu32k.neonshooter.core.model.Asset;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 
-public class IntroScreen extends LoadableScreen {
+public class IntroScreen extends NeonScreen {
 
    private Environment environment;
    private PerspectiveCamera camera;
@@ -27,12 +27,11 @@ public class IntroScreen extends LoadableScreen {
 
    @Override
    public void initAssets() {
-      model = getAsset("models/text.g3dj", Model.class);
+      model = createAsset("models/text.g3dj", Model.class);
    }
 
    @Override
    protected void init() {
-
       environment = new Environment();
       environment.set(new ColorAttribute(ColorAttribute.AmbientLight, 0.4f, 0.4f, 0.4f, 1.f));
       environment.add(new DirectionalLight().set(0.8f, 0.8f, 0.8f, -1f, -0.8f, -0.2f));
@@ -56,7 +55,7 @@ public class IntroScreen extends LoadableScreen {
 
          @Override
          public void onEnd(AnimationDesc animation) {
-            Neon.ui.showScreen(MainMenuScreen.class);
+            Neon.ui.popScreen();
          }
       };
    }
@@ -77,8 +76,19 @@ public class IntroScreen extends LoadableScreen {
    }
 
    @Override
-   public void reset() {
-      //NOP
+   public boolean keyDown(int keycode) {
+      Neon.ui.popScreen();
+      return false;
    }
 
+   @Override
+   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+      Neon.ui.popScreen();
+      return false;
+   }
+
+   @Override
+   public void reset() {
+      // NOP
+   }
 }

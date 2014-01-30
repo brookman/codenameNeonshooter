@@ -2,18 +2,18 @@ package eu32k.neonshooter.core.ui;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Stack;
 
-import com.badlogic.gdx.Screen;
-
-import eu32k.neonshooter.core.Neon;
-import eu32k.neonshooter.core.model.LoadableScreen;
+import eu32k.neonshooter.core.model.loading.NeonScreen;
 
 public class Ui {
-   private Map<Class<?>, Screen> screens;
+   private Map<Class<?>, NeonScreen> screens;
+   private Stack<Class<?>> stack;
    private LoadingScreen loadingScreen;
 
    public Ui() {
-      screens = new HashMap<Class<?>, Screen>();
+      screens = new HashMap<Class<?>, NeonScreen>();
+      stack = new Stack<Class<?>>();
    }
 
    public void create() {
@@ -21,36 +21,42 @@ public class Ui {
       addScreen(new IntroScreen());
       addScreen(new MainMenuScreen());
       addScreen(new SettingsScreen());
+      addScreen(new LevelSelectScreen());
       addScreen(new InGameScreen());
-      addScreen(new StartScreen());
+      addScreen(new PauseScreen());
       addScreen(new GameOverScreen());
+
+      stack.push(MainMenuScreen.class);
+      stack.push(IntroScreen.class);
    }
 
-   protected <T extends Screen> T addScreen(T screen) {
+   private <T extends NeonScreen> T addScreen(T screen) {
       screens.put(screen.getClass(), screen);
       return screen;
    }
 
-   public void showScreen(Class<?> clazz) {
-      Screen screen = screens.get(clazz);
-      if (screen == null) {
-         return;
-      }
-
-      if (screen instanceof LoadableScreen) {
-         LoadableScreen targetScreen = (LoadableScreen) screen;
-         loadingScreen.load(targetScreen);
-      } else {
-         Neon.instance.setScreen(screen);
-      }
+   public void pushScreen(Class<?> clazz) {
+      stack.push(clazz);
+      showTopScreen();
    }
 
-   //   public void loadThenShowScreen(Class<?> clazz) {
-   //      if (loadingScreen == null) {
-   //         showScreen(clazz);
-   //         return;
-   //      }
-   //      loadingScreen.targetScreen = clazz;
-   //      showScreen(loadingScreen.getClass());
-   //   }
+   public void popScreen() {
+      popScreens(1);
+   }
+
+   public void popScreens(int numberToPop) {
+      for (int i = 0; i < numberToPop; i++) {
+         stack.pop();
+      }
+      showTopScreen();
+   }
+
+   public void swapScreen(Class<?> clazz) {
+      stack.pop();
+      pushScreen(clazz);
+   }
+
+   public void showTopScreen() {
+      loadingScreen.load(screens.get(stack.peek()));
+   }
 }
